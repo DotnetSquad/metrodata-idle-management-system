@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\metrodata-idle-management-system-API.props" />
+</Project>
