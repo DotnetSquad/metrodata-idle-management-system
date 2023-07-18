@@ -224,27 +224,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ACER.DESKTOP-0GM6MAB\\.nuget\\packages\\": {}
+    "/home/rifkymaulana/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ACER.DESKTOP-0GM6MAB\\source\\repos\\metrodata-idle-management-system\\metrodata-idle-management-system-API\\metrodata-idle-management-system-API.csproj",
+      "projectUniqueName": "/home/rifkymaulana/Repos/metrodata-idle-management-system/metrodata-idle-management-system-API/metrodata-idle-management-system-API.csproj",
       "projectName": "metrodata-idle-management-system-API",
-      "projectPath": "C:\\Users\\ACER.DESKTOP-0GM6MAB\\source\\repos\\metrodata-idle-management-system\\metrodata-idle-management-system-API\\metrodata-idle-management-system-API.csproj",
-      "packagesPath": "C:\\Users\\ACER.DESKTOP-0GM6MAB\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ACER.DESKTOP-0GM6MAB\\source\\repos\\metrodata-idle-management-system\\metrodata-idle-management-system-API\\obj\\",
+      "projectPath": "/home/rifkymaulana/Repos/metrodata-idle-management-system/metrodata-idle-management-system-API/metrodata-idle-management-system-API.csproj",
+      "packagesPath": "/home/rifkymaulana/.nuget/packages/",
+      "outputPath": "/home/rifkymaulana/Repos/metrodata-idle-management-system/metrodata-idle-management-system-API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ACER.DESKTOP-0GM6MAB\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/rifkymaulana/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -279,6 +276,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[6.0.20, 6.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -287,7 +290,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.109/RuntimeIdentifierGraph.json"
       }
     }
   }
