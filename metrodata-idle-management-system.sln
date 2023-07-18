@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metrodata-idle-management-system-API", "metrodata-idle-management-system-API\metrodata-idle-management-system-API.csproj", "{AE8C4122-7E3A-464E-87D2-7B7C97259C40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{AE8C4122-7E3A-464E-87D2-7B7C97259C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{56C58A21-022A-4D73-A9BC-2F26C7924483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0FD5B669-526C-428A-A155-A573999B0CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FD5B669-526C-428A-A155-A573999B0CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FD5B669-526C-428A-A155-A573999B0CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C58A21-022A-4D73-A9BC-2F26C7924483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C58A21-022A-4D73-A9BC-2F26C7924483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C58A21-022A-4D73-A9BC-2F26C7924483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C58A21-022A-4D73-A9BC-2F26C7924483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

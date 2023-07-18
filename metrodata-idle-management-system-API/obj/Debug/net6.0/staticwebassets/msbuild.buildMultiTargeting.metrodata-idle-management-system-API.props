@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\metrodata-idle-management-system-API.props" />
-</Project>
