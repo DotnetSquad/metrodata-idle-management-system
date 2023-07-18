@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace metrodata_idle_management_system_API.Models;
+namespace API.Models;
 
 public abstract class BaseEntity
 {
-    [Key] [Column("guid")] public Guid Guid { get; set; }
+    [Key][Column("guid")] public Guid Guid { get; set; }
 
     [Column("created_date")] public DateTime CreatedDate { get; set; }
 

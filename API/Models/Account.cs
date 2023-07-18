@@ -1,5 +1,4 @@
-﻿using metrodata_idle_management_system_API.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models;
 
