@@ -1,4 +1,4 @@
-﻿namespace metrodata-idle-management-system-API.Contracts;
+﻿namespace API.Contracts;
 
 public interface IBaseRepository<TEntity>
 {
