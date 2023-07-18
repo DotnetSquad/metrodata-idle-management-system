@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace metrodata_idle_management_system_API.Models;
+namespace API.Models;
 
 public abstract class BaseEntity
 {
