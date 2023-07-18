@@ -3,11 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metrodata-idle-management-system-API", "metrodata-idle-management-system-API\metrodata-idle-management-system-API.csproj", "{AE8C4122-7E3A-464E-87D2-7B7C97259C40}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F101D185-6C46-4A65-9410-3D1370F305FC}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE8C4122-7E3A-464E-87D2-7B7C97259C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8C4122-7E3A-464E-87D2-7B7C97259C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8C4122-7E3A-464E-87D2-7B7C97259C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8C4122-7E3A-464E-87D2-7B7C97259C40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 EndGlobal
