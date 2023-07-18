@@ -5,7 +5,7 @@ namespace API.Models;
 
 public abstract class BaseEntity
 {
-    [Key] [Column("guid")] public Guid Guid { get; set; }
+    [Key][Column("guid")] public Guid Guid { get; set; }
 
     [Column("created_date")] public DateTime CreatedDate { get; set; }
 
