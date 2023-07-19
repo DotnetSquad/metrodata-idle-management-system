@@ -1,9 +1,9 @@
 # Metrodata Idle Management System
-Sistem untuk mengelola karyawan dengan status _idle_.
+System for manage employees with _idle_ status.
 
 ## Description
-Metrodata Idle Management System adalah sebuah aplikasi untuk mengelola karyawan yang sudah menyelesaikan coding camp dan berstatus _idle_.
-Aplikasi ini dapat memantau karyawan mana saja yang masih berstatus _idle_, sehingga dapat ditempatkan pada projek internal maupun projek client.
+Metrodata Idle Management System is an application to manage employees who have completed coding camp and have _idle_ status.
+This application can monitor which employees are still in _idle_ status, so they can be placed on internal projects or client projects
 
 ## Getting Started
 ### Installation
@@ -16,4 +16,6 @@ https://github.com/DotnetSquad/metrodata-idle-management-system.git
 
 Contributors names and contact info
 
-[Rifki Maulana](https://github.com/rifkymaulana)
+[Rifky Maulana](https://github.com/rifkymaulana)
+[Aef Saeful Rohman](https://github.com/aefshaeful)
+[Putu Agrahita](https://github.com/Putuagra)
