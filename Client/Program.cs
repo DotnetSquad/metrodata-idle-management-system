@@ -28,6 +28,10 @@ app.UseStatusCodePages(async context =>
     {
         response.Redirect("/Home/Error404");
     }
+    if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized))
+    {
+        response.Redirect("/Home/Error401");
+    }
 });
 
 app.UseAuthorization();
