@@ -18,9 +18,9 @@ Contributors names and contact info
 <table>
   <tbody>
     <tr>
-        <td align="center" valign="top" width="14.28%"><a href="https://github.com/rifkymaulana"><img src="https://avatars.githubusercontent.com/u/49428466?v=4" width="100px;" alt="maul"/><br /><sub><b>Rifky Maulana</b></sub></a><br /><a href="#content-maul" title="Content">💻 🖋</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/aefshaeful"><img src="https://avatars.githubusercontent.com/u/105156900?v=4" width="100px;" alt="aef"/><br /><sub><b>Aef Saeful Rohman</b></sub></a><br /><a href="#content-aef" title="Content">💻 🖋</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Putuagra"><img src="https://avatars.githubusercontent.com/u/26531099?v=4" width="100px;" alt="putaw"/><br /><sub><b>Putu Agrahita</b></sub></a><br /><a href="#content-putu" title="Content">💻 🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rifkymaulana"><img src="https://avatars.githubusercontent.com/u/49428466?v=4?s=100" width="100px;" alt="maul"/><br /><sub><b>Rifky Maulana</b></sub></a><br /><a href="#content-maul" title="Content">💻 🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/aefshaeful"><img src="https://avatars.githubusercontent.com/u/105156900?v=4?s=100" width="100px;" alt="aef"/><br /><sub><b>Aef Saeful Rohman</b></sub></a><br /><a href="#content-aef" title="Content">💻 🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Putuagra"><img src="https://avatars.githubusercontent.com/u/26531099?v=4?s=100" width="100px;" alt="putaw"/><br /><sub><b>Putu Agrahita</b></sub></a><br /><a href="#content-putu" title="Content">💻 🖋</a></td>
     </tr>
   </tbody>
 </table>
