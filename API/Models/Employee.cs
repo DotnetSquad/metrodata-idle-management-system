@@ -4,7 +4,7 @@ using API.Utilities.Enums;
 namespace API.Models;
 
 [Table("tb_m_employees")]
-public class Employee
+public class Employee : BaseEntity
 {
     [Column("nik", TypeName = "nvarchar(6)")]
     public string Nik { get; set; }
