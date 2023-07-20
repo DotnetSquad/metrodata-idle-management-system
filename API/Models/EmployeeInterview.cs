@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace API.Models;
 
 [Table("tb_tr_employee_interview")]
-public class EmployeeInterview
+public class EmployeeInterview : BaseEntity
 {
     [Column("employee_guid")]
     public Guid EmployeeGuid { get; set; }
