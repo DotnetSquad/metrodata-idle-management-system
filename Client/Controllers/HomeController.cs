@@ -23,6 +23,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Error403()
+    {
+        return View();
+    }
+
     public IActionResult Error404()
     {
         return View();
