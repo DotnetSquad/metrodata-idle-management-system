@@ -25,7 +25,7 @@ public class Employee
     public DateTime HiringDate { get; set; }
     
     [Column("status")]
-    public StatusEnum StatusEnum { get; set; }
+    public StatusEnum Status { get; set; }
 
     [Column("email", TypeName = "nvarchar(50)")]
     public string Email { get; set; }
