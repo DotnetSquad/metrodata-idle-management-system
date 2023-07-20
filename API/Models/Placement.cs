@@ -19,5 +19,5 @@ public class Placement : BaseEntity
 
     // Cardinality
     /*public Employee? Employee { get; set; }
-    public ICollection<Company>? Company { get; set; }*/
+    public Company? Company { get; set; }*/
 }
