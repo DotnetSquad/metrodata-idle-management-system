@@ -6,8 +6,8 @@ namespace API.Models;
 [Table("tb_m_interviews")]
 public class Interview : BaseEntity
 {
-    [Column("job_name", TypeName = "nvarchar(255)")]
-    public string JobName { get; set; }
+    [Column("title", TypeName = "nvarchar(255)")]
+    public string Title { get; set; }
 
     [Column("link", TypeName = "nvarchar(255)")]
     public string? Link { get; set; }

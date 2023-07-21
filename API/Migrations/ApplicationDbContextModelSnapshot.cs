@@ -340,11 +340,6 @@ namespace API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("job_guid");
 
-                    b.Property<string>("JobName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("job_name");
-
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("link");
@@ -356,6 +351,11 @@ namespace API.Migrations
                     b.Property<int?>("StatusInterview")
                         .HasColumnType("int")
                         .HasColumnName("status_interview");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("title");
 
                     b.HasKey("Guid");
 

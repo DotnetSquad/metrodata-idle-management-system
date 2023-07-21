@@ -5,7 +5,7 @@ namespace API.DataTransferObjects.Interviews;
 
 public class InterviewDtoCreate
 {
-    public string JobName { get; set; }
+    public string Title { get; set; }
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
@@ -17,7 +17,7 @@ public class InterviewDtoCreate
     {
         return new Interview
         {
-            JobName = interviewDtoCreate.JobName,
+            Title = interviewDtoCreate.Title,
             Link = interviewDtoCreate.Link,
             InterviewDate = interviewDtoCreate.InterviewDate,
             Description = interviewDtoCreate.Description,
@@ -31,7 +31,7 @@ public class InterviewDtoCreate
     {
         return new InterviewDtoCreate
         {
-            JobName = interview.JobName,
+            Title = interview.Title,
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
             Description = interview.Description,
