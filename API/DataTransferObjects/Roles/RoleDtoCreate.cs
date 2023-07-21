@@ -1,22 +1,26 @@
+using API.Models;
+
 namespace API.DataTransferObjects.Roles;
 
 public class RoleDtoCreate
 {
     public string Name { get; set; }
-
-    public static implicit operator Models.Role(RoleDtoCreate roleDtoCreate)
+    
+    // implicit operator
+    public static implicit operator Role(RoleDtoCreate roleDtoCreate)
     {
-        return new()
+        return new Role
         {
             Name = roleDtoCreate.Name
         };
     }
-
-    public static explicit operator RoleDtoCreate(Models.Role account)
+    
+    // explicit operator
+    public static explicit operator RoleDtoCreate(Role role)
     {
-        return new()
+        return new RoleDtoCreate
         {
-            Name = account.Name
+            Name = role.Name
         };
     }
 }
