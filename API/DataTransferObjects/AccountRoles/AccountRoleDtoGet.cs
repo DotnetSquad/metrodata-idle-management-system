@@ -1,4 +1,4 @@
-﻿namespace API.DataTransferObjects.AccountRole;
+﻿namespace API.DataTransferObjects.AccountRoles;
 
 public class AccountRoleDtoGet
 {
