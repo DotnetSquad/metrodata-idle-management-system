@@ -1,22 +1,26 @@
+using API.Models;
+
 namespace API.DataTransferObjects.Roles;
 
 public class RoleDtoUpdate
 {
     public Guid Guid { get; set; }
     public string Name { get; set; }
-
-    public static implicit operator Models.Role(RoleDtoUpdate roleDtoUpdate)
+    
+    // implicit operator
+    public static implicit operator Role(RoleDtoUpdate roleDtoUpdate)
     {
-        return new()
+        return new Role
         {
             Guid = roleDtoUpdate.Guid,
             Name = roleDtoUpdate.Name
         };
     }
-
-    public static explicit operator RoleDtoUpdate(Models.Role role)
+    
+    // explicit operator
+    public static explicit operator RoleDtoUpdate(Role role)
     {
-        return new()
+        return new RoleDtoUpdate
         {
             Guid = role.Guid,
             Name = role.Name
