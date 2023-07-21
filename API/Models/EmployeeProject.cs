@@ -2,7 +2,7 @@
 
 namespace API.Models;
 
-[Table("tb_m_employee_project")]
+[Table("tb_tr_employee_project")]
 public class EmployeeProject : BaseEntity
 {
     [Column("employee_guid")]
@@ -10,4 +10,9 @@ public class EmployeeProject : BaseEntity
 
     [Column("project_guid")]
     public Guid ProjectGuid { get; set; }
+
+    // Cardinality
+    public Employee? Employee { get; set; }
+
+    public Project? Project { get; set; }
 }

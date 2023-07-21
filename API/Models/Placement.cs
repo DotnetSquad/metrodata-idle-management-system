@@ -14,10 +14,11 @@ public class Placement : BaseEntity
     [Column("employee_guid")]
     public Guid EmployeeGuid { get; set; }
 
-    [Column("profile_guid")]
-    public Guid ProfileGuid { get; set; }
+    [Column("company_guid")]
+    public Guid CompanyGuid { get; set; }
 
     // Cardinality
-    /*public Employee? Employee { get; set; }
-    public Company? Company { get; set; }*/
+    public Company? Company { get; set; }
+    public Employee? Employee { get; set; }
+
 }

@@ -15,6 +15,6 @@ public class Job : BaseEntity
     public Guid CompanyGuid { get; set; }
 
     // Cardinality
-    /*public Company? Company { get; set; }
-    public ICollection<Interview>? Interviews { get; set; }*/
+    public Company? Company { get; set; }
+    public ICollection<Interview>? Interviews { get; set; }
 }
