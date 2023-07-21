@@ -14,4 +14,6 @@ public class EmployeeDtoUpdate
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public StatusEnum Status { get; set; }
+    public Guid? GradeGuid { get; set; }
+    public Guid? ProfileGuid { get; set; }
 }
