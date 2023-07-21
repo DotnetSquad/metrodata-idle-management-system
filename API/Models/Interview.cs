@@ -25,6 +25,6 @@ public class Interview : BaseEntity
     public Guid JobGuid { get; set; }
 
     // Cardinality
-    /*public Job? Job { get; set; }
-    public ICollection<EmployeeInterview>? EmployeeInterviews { get; set; }*/
+    public Job? Job { get; set; }
+    public ICollection<EmployeeInterview>? EmployeeInterviews { get; set; }
 }

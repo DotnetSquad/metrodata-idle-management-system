@@ -12,6 +12,6 @@ public class EmployeeInterview : BaseEntity
     public Guid InterviewGuid { get; set; }
 
     // Cardinality
-    /*public Employee? Employees { get; set; }
-    public Interview? Interviews { get; set; }*/
+    public Employee? Employee { get; set; }
+    public Interview? Interview { get; set; }
 }

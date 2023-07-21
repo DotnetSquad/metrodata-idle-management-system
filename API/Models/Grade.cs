@@ -25,5 +25,5 @@ public class Grade : BaseEntity
     public double TotalScore { get; set; }
 
     // Cardinality
-    // public Employee? Employee { get; set; }
+    public Employee? Employee { get; set; }
 }

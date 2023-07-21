@@ -15,6 +15,7 @@ public class Company : BaseEntity
     public string Address { get; set; }
 
     // Cardinality
-    /*public ICollection<Placement>? Placements { get; set; }
-    public ICollection<Job>? Jobs { get; set; }*/
+    public ICollection<Job>? Jobs { get; set; }
+    public ICollection<Placement>? Placements { get; set; }
+
 }
