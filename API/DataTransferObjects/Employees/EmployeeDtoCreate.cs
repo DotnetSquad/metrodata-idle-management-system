@@ -20,7 +20,7 @@ public class EmployeeDtoCreate
     // implicit operator
     public static implicit operator Employee(EmployeeDtoCreate employeeDtoCreate)
     {
-        return new Employee()
+        return new Employee
         {
             Nik = employeeDtoCreate.Nik,
             FirstName = employeeDtoCreate.FirstName,
@@ -39,7 +39,7 @@ public class EmployeeDtoCreate
     // explicit operator
     public static explicit operator EmployeeDtoCreate(Employee employee)
     {
-        return new EmployeeDtoCreate()
+        return new EmployeeDtoCreate
         {
             Nik = employee.Nik,
             FirstName = employee.FirstName,

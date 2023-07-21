@@ -10,7 +10,7 @@ public class EmployeeProjectCreate
     // implicit operator
     public static implicit operator EmployeeProject(EmployeeProjectCreate employeeProjectCreate)
     {
-        return new EmployeeProject()
+        return new EmployeeProject
         {
             EmployeeGuid = employeeProjectCreate.EmployeeGuid,
             ProjectGuid = employeeProjectCreate.ProjectGuid
@@ -20,7 +20,7 @@ public class EmployeeProjectCreate
     // explicit operator
     public static explicit operator EmployeeProjectCreate(EmployeeProject employeeProject)
     {
-        return new EmployeeProjectCreate()
+        return new EmployeeProjectCreate
         {
             EmployeeGuid = employeeProject.EmployeeGuid,
             ProjectGuid = employeeProject.ProjectGuid

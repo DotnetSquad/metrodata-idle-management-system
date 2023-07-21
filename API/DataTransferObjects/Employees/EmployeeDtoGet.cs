@@ -21,7 +21,7 @@ public class EmployeeDtoGet
     // implicit operator
     public static implicit operator Employee(EmployeeDtoGet employeeDtoGet)
     {
-        return new Employee()
+        return new Employee
         {
             Guid = employeeDtoGet.Guid,
             Nik = employeeDtoGet.Nik,
@@ -41,7 +41,7 @@ public class EmployeeDtoGet
     // explicit operator
     public static explicit operator EmployeeDtoGet(Employee employee)
     {
-        return new EmployeeDtoGet()
+        return new EmployeeDtoGet
         {
             Guid = employee.Guid,
             Nik = employee.Nik,
