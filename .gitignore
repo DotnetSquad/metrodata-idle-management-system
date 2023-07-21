@@ -404,3 +404,6 @@ API/bin/*
 API/obj/*
 Client/bin/*
 Client/bin/*
+
+# appsettings.json
+API/appsettings.json
