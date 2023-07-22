@@ -1,5 +1,6 @@
 using API.Contracts;
 using API.DataTransferObjects.Roles;
+
 namespace API.Services;
 
 public class RoleService
@@ -45,7 +46,7 @@ public class RoleService
     {
         var role = _roleRepository.GetByGuid(roleDtoUpdate.Guid);
         if (role is null) return -1;
-        
+
         var roleUpdated = _roleRepository.Update(roleDtoUpdate);
         return !roleUpdated ? 0 : 1;
     }
@@ -54,7 +55,7 @@ public class RoleService
     {
         var role = _roleRepository.GetByGuid(guid);
         if (role is null) return -1;
-        
+
         var roleDeleted = _roleRepository.Delete(role);
         return !roleDeleted ? 0 : 1;
     }

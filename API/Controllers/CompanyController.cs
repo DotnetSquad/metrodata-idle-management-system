@@ -1,5 +1,5 @@
 using System.Net;
-using API.DataTransferObjects.Roles;
+using API.DataTransferObjects.Companies;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -8,109 +8,109 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RoleController : ControllerBase
+public class CompanyController : ControllerBase
 {
-    private readonly RoleService _roleService;
+    private readonly CompanyService _companyService;
 
-    public RoleController(RoleService roleService)
+    public CompanyController(CompanyService companyService)
     {
-        _roleService = roleService;
+        _companyService = companyService;
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        var roles = _roleService.Get();
+        var companies = _companyService.Get();
 
-        if (!roles.Any())
+        if (!companies.Any())
         {
-            return NotFound(new ResponseHandler<RoleDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "No roles found",
+                Message = "No employees found",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<RoleDtoGet>>
+        return Ok(new ResponseHandler<IEnumerable<CompanyDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Roles found",
-            Data = roles
+            Message = "Employees found",
+            Data = companies
         });
     }
 
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
-        var role = _roleService.Get(guid);
+        var company = _companyService.Get(guid);
 
-        if (role is null)
+        if (company is null)
         {
-            return NotFound(new ResponseHandler<RoleDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Role not found",
+                Message = "Employee not found",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<RoleDtoGet>
+        return Ok(new ResponseHandler<CompanyDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Role found",
-            Data = role
+            Message = "Employee found",
+            Data = company
         });
     }
 
     [HttpPost]
-    public IActionResult Create(RoleDtoCreate roleDtoCreate)
+    public IActionResult Create(CompanyDtoCreate companyDtoCreate)
     {
-        var roleCreated = _roleService.Create(roleDtoCreate);
+        var companyCreated = _companyService.Create(companyDtoCreate);
 
-        if (roleCreated is null)
+        if (companyCreated is null)
         {
-            return BadRequest(new ResponseHandler<RoleDtoCreate>
+            return BadRequest(new ResponseHandler<CompanyDtoCreate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
-                Message = "Role not created",
+                Message = "Company not created",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<RoleDtoCreate>
+        return Ok(new ResponseHandler<CompanyDtoCreate>
         {
             Code = StatusCodes.Status201Created,
             Status = HttpStatusCode.Created.ToString(),
-            Message = "Role created",
-            Data = roleCreated
+            Message = "Company created",
+            Data = companyCreated
         });
     }
 
     [HttpPut]
-    public IActionResult Update(RoleDtoUpdate roleDtoUpdate)
+    public IActionResult Update(CompanyDtoUpdate companyDtoUpdate)
     {
-        var roleUpdated = _roleService.Update(roleDtoUpdate);
+        var companyUpdated = _companyService.Update(companyDtoUpdate);
 
-        if (roleUpdated == -1)
+        if (companyUpdated == -1)
         {
-            return NotFound(new ResponseHandler<RoleDtoUpdate>
+            return NotFound(new ResponseHandler<CompanyDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Role not found",
+                Message = "Company not found",
                 Data = null
             });
         }
 
-        if (roleUpdated == 0)
+        if (companyUpdated == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoUpdate>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<CompanyDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -119,47 +119,47 @@ public class RoleController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<RoleDtoUpdate>
+        return Ok(new ResponseHandler<CompanyDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Role updated",
-            Data = roleDtoUpdate
+            Message = "Company updated",
+            Data = companyDtoUpdate
         });
     }
 
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
-        var roleDeleted = _roleService.Delete(guid);
+        var companyDeleted = _companyService.Delete(guid);
 
-        if (roleDeleted == -1)
+        if (companyDeleted == -1)
         {
-            return NotFound(new ResponseHandler<RoleDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Role not found",
+                Message = "Company not found",
                 Data = null
             });
         }
 
-        if (roleDeleted == 0)
+        if (companyDeleted == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoGet>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Role not deleted",
+                Message = "Company not deleted",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<RoleDtoGet>
+        return Ok(new ResponseHandler<CompanyDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Role deleted",
+            Message = "Company deleted",
             Data = null
         });
     }
