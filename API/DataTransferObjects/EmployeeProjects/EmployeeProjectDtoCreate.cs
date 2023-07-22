@@ -13,7 +13,8 @@ public class EmployeeProjectDtoCreate
         return new EmployeeProject
         {
             EmployeeGuid = employeeProjectDtoCreate.EmployeeGuid,
-            ProjectGuid = employeeProjectDtoCreate.ProjectGuid
+            ProjectGuid = employeeProjectDtoCreate.ProjectGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

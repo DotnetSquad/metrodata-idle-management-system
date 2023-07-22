@@ -15,7 +15,8 @@ public class AccountRoleDtoUpdate
         {
             Guid = accountRoleDtoUpdate.Guid,
             AccountGuid = accountRoleDtoUpdate.AccountGuid,
-            RoleGuid = accountRoleDtoUpdate.RoleGuid
+            RoleGuid = accountRoleDtoUpdate.RoleGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

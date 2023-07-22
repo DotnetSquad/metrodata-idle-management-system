@@ -19,7 +19,8 @@ public class AccountDtoCreate
             IsDeleted = accountDtoCreate.IsDeleted,
             Otp = accountDtoCreate.Otp,
             IsUsed = accountDtoCreate.IsUsed,
-            ExpiredTime = accountDtoCreate.ExpiredTime
+            ExpiredTime = accountDtoCreate.ExpiredTime,
+            CreatedDate = DateTime.UtcNow
         };
     }
     

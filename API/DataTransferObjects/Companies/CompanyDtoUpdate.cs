@@ -17,7 +17,8 @@ public class CompanyDtoUpdate
             Guid = companyDtoUpdate.Guid,
             CompanyName = companyDtoUpdate.CompanyName,
             Description = companyDtoUpdate.Description,
-            Address = companyDtoUpdate.Address
+            Address = companyDtoUpdate.Address,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

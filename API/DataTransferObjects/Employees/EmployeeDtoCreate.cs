@@ -32,7 +32,8 @@ public class EmployeeDtoCreate
             PhoneNumber = employeeDtoCreate.PhoneNumber,
             Status = employeeDtoCreate.Status,
             GradeGuid = employeeDtoCreate.GradeGuid,
-            ProfileGuid = employeeDtoCreate.ProfileGuid
+            ProfileGuid = employeeDtoCreate.ProfileGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
     

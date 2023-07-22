@@ -34,7 +34,8 @@ public class EmployeeDtoUpdate
             PhoneNumber = employeeDtoUpdate.PhoneNumber,
             Status = employeeDtoUpdate.Status,
             GradeGuid = employeeDtoUpdate.GradeGuid,
-            ProfileGuid = employeeDtoUpdate.ProfileGuid
+            ProfileGuid = employeeDtoUpdate.ProfileGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

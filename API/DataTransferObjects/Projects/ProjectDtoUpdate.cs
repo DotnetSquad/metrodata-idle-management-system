@@ -17,7 +17,8 @@ public class ProjectDtoUpdate
             Guid = projectDtoUpdate.Guid,
             NameProject = projectDtoUpdate.NameProject,
             ProjectLead = projectDtoUpdate.ProjectLead,
-            Description = projectDtoUpdate.Description
+            Description = projectDtoUpdate.Description,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

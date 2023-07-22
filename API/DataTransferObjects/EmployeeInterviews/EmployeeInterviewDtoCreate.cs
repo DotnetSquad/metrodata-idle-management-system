@@ -13,7 +13,8 @@ public class EmployeeInterviewDtoCreate
         return new EmployeeInterview
         {
             EmployeeGuid = employeeInterviewDtoCreate.EmployeeGuid,
-            InterviewGuid = employeeInterviewDtoCreate.InterviewGuid
+            InterviewGuid = employeeInterviewDtoCreate.InterviewGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

@@ -17,7 +17,8 @@ public class JobDtoUpdate
             Guid = jobDtoUpdate.Guid,
             JobName = jobDtoUpdate.JobName,
             Description = jobDtoUpdate.Description,
-            CompanyGuid = jobDtoUpdate.CompanyGuid
+            CompanyGuid = jobDtoUpdate.CompanyGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

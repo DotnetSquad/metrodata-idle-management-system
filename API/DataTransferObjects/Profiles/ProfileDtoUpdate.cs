@@ -16,7 +16,8 @@ public class ProfileDtoUpdate
             Guid = profileDtoUpdate.Guid,
             Skills = profileDtoUpdate.Skills,
             Linkedin = profileDtoUpdate.Linkedin,
-            Resume = profileDtoUpdate.Resume
+            Resume = profileDtoUpdate.Resume,
+            ModifiedDate = DateTime.UtcNow
         };
     }
     

@@ -17,7 +17,8 @@ public class PlacementDtoCreate
             Title = placementDtoCreate.Title,
             Description = placementDtoCreate.Description,
             EmployeeGuid = placementDtoCreate.EmployeeGuid,
-            CompanyGuid = placementDtoCreate.CompanyGuid
+            CompanyGuid = placementDtoCreate.CompanyGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

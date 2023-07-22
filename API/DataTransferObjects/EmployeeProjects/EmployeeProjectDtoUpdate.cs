@@ -15,7 +15,8 @@ public class EmployeeProjectDtoUpdate
         {
             Guid = employeeProjectDtoUpdate.Guid,
             EmployeeGuid = employeeProjectDtoUpdate.EmployeeGuid,
-            ProjectGuid = employeeProjectDtoUpdate.ProjectGuid
+            ProjectGuid = employeeProjectDtoUpdate.ProjectGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

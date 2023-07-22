@@ -19,7 +19,8 @@ public class PlacementDtoUpdate
             Title = placementDtoUpdate.Title,
             Description = placementDtoUpdate.Description,
             EmployeeGuid = placementDtoUpdate.EmployeeGuid,
-            CompanyGuid = placementDtoUpdate.CompanyGuid
+            CompanyGuid = placementDtoUpdate.CompanyGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 
