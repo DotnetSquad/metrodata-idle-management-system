@@ -15,10 +15,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Add Repositories
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 // Add Services
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<RoleService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
