@@ -110,10 +110,10 @@ public class RoleController : ControllerBase
 
         if (roleUpdated == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoUpdate>
+            return BadRequest(new ResponseHandler<RoleDtoUpdate>
             {
-                Code = StatusCodes.Status500InternalServerError,
-                Status = HttpStatusCode.InternalServerError.ToString(),
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Role not updated",
                 Data = null
             });
