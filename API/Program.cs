@@ -19,7 +19,7 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeInterviewRepository, EmployeeInterviewRepository>();
 builder.Services.AddScoped<IPlacementRepository, PlacementRepository>();
-
+builder.Services.AddScoped<IEmployeeProjectRepository, EmployeeProjectRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
@@ -29,6 +29,7 @@ builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<EmployeeInterviewService>();
 builder.Services.AddScoped<PlacementService>();
+builder.Services.AddScoped<EmployeeProjectService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<RoleService>();
 
