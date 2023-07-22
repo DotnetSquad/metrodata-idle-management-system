@@ -110,11 +110,11 @@ public class CompanyController : ControllerBase
 
         if (companyUpdated == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<CompanyDtoUpdate>
+            return BadRequest(new ResponseHandler<CompanyDtoUpdate>
             {
-                Code = StatusCodes.Status500InternalServerError,
-                Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Role not updated",
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Company not updated",
                 Data = null
             });
         }
