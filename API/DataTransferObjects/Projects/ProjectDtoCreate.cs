@@ -15,7 +15,8 @@ public class ProjectDtoCreate
         {
             NameProject = projectDtoCreate.NameProject,
             ProjectLead = projectDtoCreate.ProjectLead,
-            Description = projectDtoCreate.Description
+            Description = projectDtoCreate.Description,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

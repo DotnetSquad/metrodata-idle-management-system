@@ -22,7 +22,8 @@ public class GradeDtoCreate
             ScoreSegment2 = gradeDtoCreate.ScoreSegment2,
             ScoreSegment3 = gradeDtoCreate.ScoreSegment3,
             ScoreSegment4 = gradeDtoCreate.ScoreSegment4,
-            TotalScore = gradeDtoCreate.TotalScore
+            TotalScore = gradeDtoCreate.TotalScore,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

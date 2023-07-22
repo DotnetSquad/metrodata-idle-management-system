@@ -13,7 +13,8 @@ public class AccountRoleDtoCreate
         return new AccountRole
         {
             AccountGuid = accountRoleDtoCreate.AccountGuid,
-            RoleGuid = accountRoleDtoCreate.RoleGuid
+            RoleGuid = accountRoleDtoCreate.RoleGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
 
@@ -23,7 +24,7 @@ public class AccountRoleDtoCreate
         return new AccountRoleDtoCreate
         {
             AccountGuid = accountRole.AccountGuid,
-            RoleGuid = accountRole.RoleGuid
+            RoleGuid = accountRole.RoleGuid,
         };
     }
 }

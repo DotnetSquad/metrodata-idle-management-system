@@ -24,7 +24,8 @@ public class GradeDtoUpdate
             ScoreSegment2 = gradeDtoUpdate.ScoreSegment2,
             ScoreSegment3 = gradeDtoUpdate.ScoreSegment3,
             ScoreSegment4 = gradeDtoUpdate.ScoreSegment4,
-            TotalScore = gradeDtoUpdate.TotalScore
+            TotalScore = gradeDtoUpdate.TotalScore,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

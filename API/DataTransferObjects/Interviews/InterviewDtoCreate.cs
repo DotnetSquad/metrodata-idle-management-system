@@ -22,7 +22,8 @@ public class InterviewDtoCreate
             InterviewDate = interviewDtoCreate.InterviewDate,
             Description = interviewDtoCreate.Description,
             StatusInterview = interviewDtoCreate.StatusInterview,
-            JobGuid = interviewDtoCreate.JobGuid
+            JobGuid = interviewDtoCreate.JobGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
     

@@ -15,7 +15,8 @@ public class EmployeeInterviewDtoUpdate
         {
             Guid = employeeInterviewDtoUpdate.Guid,
             EmployeeGuid = employeeInterviewDtoUpdate.EmployeeGuid,
-            InterviewGuid = employeeInterviewDtoUpdate.InterviewGuid
+            InterviewGuid = employeeInterviewDtoUpdate.InterviewGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

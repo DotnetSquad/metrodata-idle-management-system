@@ -15,7 +15,8 @@ public class ProfileDtoCreate
         {
             Skills = profileDtoCreate.Skills,
             Linkedin = profileDtoCreate.Linkedin,
-            Resume = profileDtoCreate.Resume
+            Resume = profileDtoCreate.Resume,
+            CreatedDate = DateTime.UtcNow
         };
     }
     

@@ -24,7 +24,8 @@ public class InterviewDtoUpdate
             InterviewDate = interviewDtoUpdate.InterviewDate,
             Description = interviewDtoUpdate.Description,
             StatusInterview = interviewDtoUpdate.StatusInterview,
-            JobGuid = interviewDtoUpdate.JobGuid
+            JobGuid = interviewDtoUpdate.JobGuid,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 

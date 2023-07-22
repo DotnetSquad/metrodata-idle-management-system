@@ -15,7 +15,8 @@ public class CompanyDtoCreate
         {
             CompanyName = companyDtoCreate.CompanyName,
             Description = companyDtoCreate.Description,
-            Address = companyDtoCreate.Address
+            Address = companyDtoCreate.Address,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

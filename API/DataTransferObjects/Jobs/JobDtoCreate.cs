@@ -15,7 +15,8 @@ public class JobDtoCreate
         {
             JobName = jobDtoCreate.JobName,
             Description = jobDtoCreate.Description,
-            CompanyGuid = jobDtoCreate.CompanyGuid
+            CompanyGuid = jobDtoCreate.CompanyGuid,
+            CreatedDate = DateTime.UtcNow
         };
     }
 

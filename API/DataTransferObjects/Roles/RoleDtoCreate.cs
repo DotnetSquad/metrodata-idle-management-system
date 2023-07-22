@@ -11,7 +11,8 @@ public class RoleDtoCreate
     {
         return new Role
         {
-            Name = roleDtoCreate.Name
+            Name = roleDtoCreate.Name,
+            CreatedDate = DateTime.UtcNow
         };
     }
     

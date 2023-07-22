@@ -21,7 +21,8 @@ public class AccountDtoUpdate
             IsDeleted = accountDtoUpdate.IsDeleted,
             Otp = accountDtoUpdate.Otp,
             IsUsed = accountDtoUpdate.IsUsed,
-            ExpiredTime = accountDtoUpdate.ExpiredTime
+            ExpiredTime = accountDtoUpdate.ExpiredTime,
+            ModifiedDate = DateTime.UtcNow
         };
     }
     
