@@ -1,5 +1,5 @@
 using System.Net;
-using API.DataTransferObjects.Employees;
+using API.DataTransferObjects.Companies;
 using API.Services;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -8,23 +8,23 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmployeeController : ControllerBase
+public class CompanyController : ControllerBase
 {
-    private readonly EmployeeService _employeeService;
+    private readonly CompanyService _companyService;
 
-    public EmployeeController(EmployeeService employeeService)
+    public CompanyController(CompanyService companyService)
     {
-        _employeeService = employeeService;
+        _companyService = companyService;
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        var employees = _employeeService.Get();
+        var companies = _companyService.Get();
 
-        if (!employees.Any())
+        if (!companies.Any())
         {
-            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -33,23 +33,23 @@ public class EmployeeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        return Ok(new ResponseHandler<IEnumerable<CompanyDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Employees found",
-            Data = employees
+            Data = companies
         });
     }
 
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
-        var employee = _employeeService.Get(guid);
+        var company = _companyService.Get(guid);
 
-        if (employee is null)
+        if (company is null)
         {
-            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -58,109 +58,108 @@ public class EmployeeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<EmployeeDtoGet>
+        return Ok(new ResponseHandler<CompanyDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Employee found",
-            Data = employee
+            Data = company
         });
     }
 
     [HttpPost]
-    public IActionResult Create(EmployeeDtoCreate employeeDtoCreate)
+    public IActionResult Create(CompanyDtoCreate companyDtoCreate)
     {
-        var employeeCreated = _employeeService.Create(employeeDtoCreate);
+        var companyCreated = _companyService.Create(companyDtoCreate);
 
-        if (employeeCreated is null)
+        if (companyCreated is null)
         {
-            return BadRequest(new ResponseHandler<EmployeeDtoCreate>
+            return BadRequest(new ResponseHandler<CompanyDtoCreate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
-                Message = "Employee not created",
+                Message = "Company not created",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<EmployeeDtoCreate>
+        return Ok(new ResponseHandler<CompanyDtoCreate>
         {
             Code = StatusCodes.Status201Created,
             Status = HttpStatusCode.Created.ToString(),
-            Message = "Employee created",
-            Data = employeeCreated
+            Message = "Company created",
+            Data = companyCreated
         });
     }
 
     [HttpPut]
-    public IActionResult Update(EmployeeDtoUpdate employeeDtoUpdate)
+    public IActionResult Update(CompanyDtoUpdate companyDtoUpdate)
     {
-        var employeeUpdated = _employeeService.Update(employeeDtoUpdate);
+        var companyUpdated = _companyService.Update(companyDtoUpdate);
 
-        if (employeeUpdated == -1)
+        if (companyUpdated == -1)
         {
-            return NotFound(new ResponseHandler<EmployeeDtoUpdate>
+            return NotFound(new ResponseHandler<CompanyDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Employee not found",
+                Message = "Company not found",
                 Data = null
             });
         }
 
-        if (employeeUpdated == 0)
+        if (companyUpdated == 0)
         {
-            return BadRequest(new ResponseHandler<EmployeeDtoUpdate>
+            return BadRequest(new ResponseHandler<CompanyDtoUpdate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
-                Message = "Employee not updated",
+                Message = "Company not updated",
                 Data = null
             });
         }
 
-
-        return Ok(new ResponseHandler<EmployeeDtoUpdate>
+        return Ok(new ResponseHandler<CompanyDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Employee updated",
-            Data = employeeDtoUpdate
+            Message = "Company updated",
+            Data = companyDtoUpdate
         });
     }
 
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
-        var employeeDeleted = _employeeService.Delete(guid);
+        var companyDeleted = _companyService.Delete(guid);
 
-        if (employeeDeleted == -1)
+        if (companyDeleted == -1)
         {
-            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            return NotFound(new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Employee not found",
+                Message = "Company not found",
                 Data = null
             });
         }
 
-        if (employeeDeleted == 0)
+        if (companyDeleted == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDtoGet>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<CompanyDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Employee not deleted",
+                Message = "Company not deleted",
                 Data = null
             });
         }
 
-        return Ok(new ResponseHandler<EmployeeDtoGet>
+        return Ok(new ResponseHandler<CompanyDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Employee deleted",
+            Message = "Company deleted",
             Data = null
         });
     }

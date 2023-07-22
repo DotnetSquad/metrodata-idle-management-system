@@ -11,12 +11,12 @@ namespace API.Controllers;
 public class RoleController : ControllerBase
 {
     private readonly RoleService _roleService;
-    
+
     public RoleController(RoleService roleService)
     {
         _roleService = roleService;
     }
-    
+
     [HttpGet]
     public IActionResult Get()
     {
@@ -32,7 +32,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<IEnumerable<RoleDtoGet>>
         {
             Code = StatusCodes.Status200OK,
@@ -41,7 +41,7 @@ public class RoleController : ControllerBase
             Data = roles
         });
     }
-    
+
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -57,7 +57,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<RoleDtoGet>
         {
             Code = StatusCodes.Status200OK,
@@ -66,7 +66,7 @@ public class RoleController : ControllerBase
             Data = role
         });
     }
-    
+
     [HttpPost]
     public IActionResult Create(RoleDtoCreate roleDtoCreate)
     {
@@ -82,7 +82,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<RoleDtoCreate>
         {
             Code = StatusCodes.Status201Created,
@@ -91,7 +91,7 @@ public class RoleController : ControllerBase
             Data = roleCreated
         });
     }
-    
+
     [HttpPut]
     public IActionResult Update(RoleDtoUpdate roleDtoUpdate)
     {
@@ -107,7 +107,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         if (roleUpdated == 0)
         {
             return BadRequest(new ResponseHandler<RoleDtoUpdate>
@@ -118,7 +118,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<RoleDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
@@ -127,7 +127,7 @@ public class RoleController : ControllerBase
             Data = roleDtoUpdate
         });
     }
-    
+
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
@@ -143,7 +143,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         if (roleDeleted == 0)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoGet>
@@ -154,7 +154,7 @@ public class RoleController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<RoleDtoGet>
         {
             Code = StatusCodes.Status200OK,
