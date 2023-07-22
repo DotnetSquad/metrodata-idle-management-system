@@ -11,12 +11,12 @@ namespace API.Controllers;
 public class EmployeeController : ControllerBase
 {
     private readonly EmployeeService _employeeService;
-    
+
     public EmployeeController(EmployeeService employeeService)
     {
         _employeeService = employeeService;
     }
-    
+
     [HttpGet]
     public IActionResult Get()
     {
@@ -32,7 +32,7 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
         {
             Code = StatusCodes.Status200OK,
@@ -41,7 +41,7 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
-    
+
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -57,7 +57,7 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<EmployeeDtoGet>
         {
             Code = StatusCodes.Status200OK,
@@ -66,7 +66,7 @@ public class EmployeeController : ControllerBase
             Data = employee
         });
     }
-    
+
     [HttpPost]
     public IActionResult Create(EmployeeDtoCreate employeeDtoCreate)
     {
@@ -82,7 +82,7 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<EmployeeDtoCreate>
         {
             Code = StatusCodes.Status201Created,
@@ -91,7 +91,7 @@ public class EmployeeController : ControllerBase
             Data = employeeCreated
         });
     }
-    
+
     [HttpPut]
     public IActionResult Update(EmployeeDtoUpdate employeeDtoUpdate)
     {
@@ -107,18 +107,19 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
-        
+
         if (employeeUpdated == 0)
         {
-            return BadRequest(new ResponseHandler<EmployeeDtoUpdate>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDtoUpdate>
             {
-                Code = StatusCodes.Status400BadRequest,
-                Status = HttpStatusCode.BadRequest.ToString(),
-                Message = "Employee not updated",
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Role not updated",
                 Data = null
             });
         }
-        
+
+
         return Ok(new ResponseHandler<EmployeeDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
@@ -127,7 +128,7 @@ public class EmployeeController : ControllerBase
             Data = employeeDtoUpdate
         });
     }
-    
+
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
@@ -143,18 +144,18 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
-        
+
         if (employeeDeleted == 0)
         {
-            return BadRequest(new ResponseHandler<EmployeeDtoGet>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDtoGet>
             {
-                Code = StatusCodes.Status400BadRequest,
-                Status = HttpStatusCode.BadRequest.ToString(),
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Employee not deleted",
                 Data = null
             });
         }
-        
+
         return Ok(new ResponseHandler<EmployeeDtoGet>
         {
             Code = StatusCodes.Status200OK,
