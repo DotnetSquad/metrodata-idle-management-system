@@ -110,10 +110,10 @@ public class ProjectController : ControllerBase
 
         if (projectUpdated == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<ProjectDtoUpdate>
+            return BadRequest(new ResponseHandler<ProjectDtoUpdate>
             {
-                Code = StatusCodes.Status500InternalServerError,
-                Status = HttpStatusCode.InternalServerError.ToString(),
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Project not updated",
                 Data = null
             });
