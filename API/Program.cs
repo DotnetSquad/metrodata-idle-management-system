@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Add Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeInterviewRepository, EmployeeInterviewRepository>();
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 // Add Services
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountRoleService>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<EmployeeInterviewService>();
