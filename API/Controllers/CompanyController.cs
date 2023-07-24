@@ -37,7 +37,7 @@ public class CompanyController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Company found",
+            Message = "Companies found",
             Data = companies
         });
     }
