@@ -28,7 +28,7 @@ public class CompanyController : ControllerBase
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "No employees found",
+                Message = "No companies found",
                 Data = null
             });
         }
@@ -37,7 +37,7 @@ public class CompanyController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Employees found",
+            Message = "Companies found",
             Data = companies
         });
     }
@@ -53,7 +53,7 @@ public class CompanyController : ControllerBase
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Employee not found",
+                Message = "Company not found",
                 Data = null
             });
         }
@@ -62,7 +62,7 @@ public class CompanyController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Employee found",
+            Message = "Company found",
             Data = company
         });
     }
