@@ -220,7 +220,7 @@ public class AccountController : ControllerBase
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Password has been changed successfully"
-         });
+        });
     }
 
     [HttpPost("login")]
@@ -293,6 +293,27 @@ public class AccountController : ControllerBase
             Status = HttpStatusCode.OK.ToString(),
             Message = "Otp has been sent to your email",
             Data = null
+        });
+    }
+
+    [HttpPost("register")]
+    public IActionResult Register(AccountDtoRegister accountDtoRegister)
+    {
+        var isCreated = _accountService.RegisterAccount(accountDtoRegister);
+        if (!isCreated)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoRegister>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Register failed"
+            });
+        }
+        return Ok(new ResponseHandler<AccountDtoRegister>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Register Success"
         });
     }
 }
