@@ -163,4 +163,42 @@ public class AccountController : ControllerBase
             Data = null
         });
     }
+
+    [HttpPost("login")]
+    public IActionResult Login(AccountDtoLogin accountDtoLogin)
+    {
+        var loginStatus = _accountService.Login(accountDtoLogin);
+        if (loginStatus == "0")
+            return NotFound(new ResponseHandler<AccountDtoGet> {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Account not found",
+                Data = null
+            });
+
+        if (loginStatus == "-1")
+            return BadRequest(new ResponseHandler<AccountDtoGet> {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Password is incorrect",
+                Data = null
+            });
+
+        if (loginStatus == "-2")
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet> {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving when creating token",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<string> {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Login Success",
+            Data = loginStatus
+        });
+    }
 }
