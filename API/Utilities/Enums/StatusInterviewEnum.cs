@@ -2,6 +2,7 @@
 
 public enum StatusInterviewEnum
 {
+    Pending,
     Accepted,
     Rejected
 }
