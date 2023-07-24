@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using API.Contracts;
 using API.DataTransferObjects.Accounts;
+using API.Models;
 using API.Utilities.Handlers;
 
 namespace API.Services;
@@ -9,15 +10,17 @@ public class AccountService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IEmailHandler _emailHandler;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly ITokenHandler _tokenHandler;
 
     public AccountService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
-        IEmployeeRepository employeeRepository, IRoleRepository roleRepository, ITokenHandler tokenHandler)
+        IEmailHandler emailHandler, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, ITokenHandler tokenHandler)
     {
         _accountRepository = accountRepository;
         _accountRoleRepository = accountRoleRepository;
+        _emailHandler = emailHandler;
         _employeeRepository = employeeRepository;
         _roleRepository = roleRepository;
         _tokenHandler = tokenHandler;
@@ -104,5 +107,37 @@ public class AccountService
             Console.WriteLine(e);
             return "-2";
         }
+    }
+    
+    public int ForgotPassword(AccountDtoForgotPassword accountDtoForgotPassword)
+    {
+        var employee = _employeeRepository.GetByEmail(accountDtoForgotPassword.Email);
+        if (employee is null)
+            return 0; // Email not found
+
+        var account = _accountRepository.GetByGuid(employee.Guid);
+        if (account is null)
+            return -1;
+
+        var otp = new Random().Next(111111, 999999);
+        var isUpdated = _accountRepository.Update(new Account {
+            Guid = account.Guid,
+            Password = account.Password,
+            IsDeleted = account.IsDeleted,
+            Otp = otp,
+            ExpiredTime = DateTime.Now.AddMinutes(5),
+            IsUsed = false,
+            CreatedDate = account.CreatedDate,
+            ModifiedDate = DateTime.Now
+        });
+
+        if (!isUpdated)
+            return -1;
+        
+        _emailHandler.SendEmail(accountDtoForgotPassword.Email, 
+            "Forgot Password", 
+            $"Your OTP is {otp}");
+
+        return 1;
     }
 }

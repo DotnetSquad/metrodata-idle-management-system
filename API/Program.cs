@@ -4,6 +4,7 @@ using API.Contracts;
 using API.Data;
 using API.Repositories;
 using API.Services;
+using API.Utilities.Handlers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,7 +54,14 @@ builder.Services.AddScoped<RoleService>();
 
 // Register Fluent validation
 builder.Services.AddFluentValidationAutoValidation()
-       .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+// Add SmtpClient
+builder.Services.AddTransient<IEmailHandler, EmailHandler>(_ => new EmailHandler(
+    builder.Configuration["EmailService:SmtpServer"],
+    int.Parse(builder.Configuration["EmailService:SmtpPort"]),
+    builder.Configuration["EmailService:FromEmailAddress"]
+));
 
 // Jwt Configuration
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -67,7 +75,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["JWTService:Issuer"],
             ValidateAudience = true,
             ValidAudience = builder.Configuration["JWTService:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTService:Key"])),
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTService:Key"])),
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
