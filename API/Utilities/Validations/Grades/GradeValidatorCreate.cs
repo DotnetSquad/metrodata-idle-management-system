@@ -32,10 +32,5 @@ public class GradeValidatorCreate : AbstractValidator<GradeDtoCreate>
             .NotEmpty()
             .InclusiveBetween(0, 100)
             .WithMessage("ScoreSegment4 must be between 0 and 100");
-
-        RuleFor(x => x.TotalScore)
-            .NotEmpty()
-            .InclusiveBetween(0, 400)
-            .WithMessage("TotalScore must be between 0 and 400");
     }
 }
