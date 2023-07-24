@@ -65,9 +65,9 @@ public class AccountService
         return !accountDeleted ? 0 : 1;
     }
 
-    public int ChangePassword(ChangePasswordDto changePasswordDto)
+    public int ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
     {
-        var employee = _employeeRepository.GetEmployeeByEmail(changePasswordDto.Email);
+        var employee = _employeeRepository.GetEmployeeByEmail(accountDtoChangePassword.Email);
         if (employee is null)
             return 0;
 
@@ -78,7 +78,7 @@ public class AccountService
         if (account.IsUsed)
             return -1;
 
-        if (account.Otp != changePasswordDto.Otp)
+        if (account.Otp != accountDtoChangePassword.Otp)
             return -2;
 
         if (account.ExpiredTime < DateTime.Now)
@@ -87,7 +87,7 @@ public class AccountService
         var isUpdated = _accountRepository.Update(new Account
         {
             Guid = account.Guid,
-            Password = HashingHandler.HashPassword(changePasswordDto.NewPassword),
+            Password = HashingHandler.HashPassword(accountDtoChangePassword.NewPassword),
             IsDeleted = account.IsDeleted,
             Otp = account.Otp,
             ExpiredTime = account.ExpiredTime,

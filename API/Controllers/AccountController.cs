@@ -165,9 +165,9 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("ChangePassword")]
-    public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+    public IActionResult ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
     {
-        var isUpdated = _accountService.ChangePassword(changePasswordDto);
+        var isUpdated = _accountService.ChangePassword(accountDtoChangePassword);
         if (isUpdated == 0)
             return NotFound(new ResponseHandler<AccountDtoUpdate>
             {

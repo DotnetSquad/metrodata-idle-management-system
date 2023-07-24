@@ -1,6 +1,6 @@
 ﻿namespace API.DataTransferObjects.Accounts;
 
-public class ChangePasswordDto
+public class AccountDtoChangePassword
 {
     public string Email { get; set; }
     public int Otp { get; set; }
