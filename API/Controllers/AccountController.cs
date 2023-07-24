@@ -228,7 +228,8 @@ public class AccountController : ControllerBase
     {
         var loginStatus = _accountService.Login(accountDtoLogin);
         if (loginStatus == "0")
-            return NotFound(new ResponseHandler<AccountDtoGet> {
+            return NotFound(new ResponseHandler<AccountDtoGet>
+            {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Account not found",
@@ -236,7 +237,8 @@ public class AccountController : ControllerBase
             });
 
         if (loginStatus == "-1")
-            return BadRequest(new ResponseHandler<AccountDtoGet> {
+            return BadRequest(new ResponseHandler<AccountDtoGet>
+            {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Password is incorrect",
@@ -245,7 +247,8 @@ public class AccountController : ControllerBase
 
         if (loginStatus == "-2")
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet> {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet>
+            {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving when creating token",
@@ -253,11 +256,43 @@ public class AccountController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<string> {
+        return Ok(new ResponseHandler<string>
+        {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Login Success",
             Data = loginStatus
+        });
+    }
+
+    [HttpPost("ForgotPassword")]
+    public IActionResult ForgotPassword(AccountDtoForgotPassword accountDtoForgotPassword)
+    {
+        var isUpdated = _accountService.ForgotPassword(accountDtoForgotPassword);
+        if (isUpdated == 0)
+            return NotFound(new ResponseHandler<AccountDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Email not found",
+                Data = null
+            });
+
+        if (isUpdated is -1)
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving data from the database",
+                Data = null
+            });
+
+        return Ok(new ResponseHandler<AccountDtoGet>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Otp has been sent to your email",
+            Data = null
         });
     }
 }
