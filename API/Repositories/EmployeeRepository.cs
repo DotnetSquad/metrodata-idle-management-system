@@ -16,7 +16,7 @@ public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
         return Context.Set<Employee>().FirstOrDefault(e => e.Email.Contains(value) || e.PhoneNumber.Contains(value)) is null;
     }
 
-    public Employee? GetEmployeeByEmail(string email)
+    public Employee? GetByEmail(string email)
     {
         return Context.Set<Employee>().FirstOrDefault(e => e.Email == email);
     }

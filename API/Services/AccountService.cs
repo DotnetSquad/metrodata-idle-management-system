@@ -1,4 +1,5 @@
-﻿using API.Contracts;
+﻿using System.Security.Claims;
+using API.Contracts;
 using API.DataTransferObjects.Accounts;
 using API.Models;
 using API.Utilities.Handlers;
@@ -9,12 +10,19 @@ public class AccountService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IRoleRepository _roleRepository;
+    private readonly ITokenHandler _tokenHandler;
 
-    public AccountService(IAccountRepository accountRepository,
-                          IEmployeeRepository employeeRepository)
+    public AccountService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
+        IEmployeeRepository employeeRepository, IRoleRepository roleRepository, ITokenHandler tokenHandler)
     {
         _accountRepository = accountRepository;
+        _accountRoleRepository = accountRoleRepository;
         _employeeRepository = employeeRepository;
+        _roleRepository = roleRepository;
+        _tokenHandler = tokenHandler;
     }
 
     public IEnumerable<AccountDtoGet> Get()
@@ -65,6 +73,7 @@ public class AccountService
         return !accountDeleted ? 0 : 1;
     }
 
+
     public int ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
     {
         var employee = _employeeRepository.GetEmployeeByEmail(accountDtoChangePassword.Email);
@@ -97,5 +106,40 @@ public class AccountService
         });
 
         return isUpdated ? 1 : -4;
+    }
+  
+    public string Login(AccountDtoLogin accountDtoLogin)
+    {
+        var employee = _employeeRepository.GetByEmail(accountDtoLogin.Email);
+        if (employee is null) return "0";
+
+        var account = _accountRepository.GetByGuid(employee.Guid);
+        if (account is null) return "0";
+
+
+        if (!HashingHandler.ValidatePassword(accountDtoLogin.Password, account!.Password)) return "-1";
+
+        try
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim("NIK", employee.Nik),
+                new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
+                new Claim("EmailAddress", accountDtoLogin.Email)
+            };
+
+            var accountRoles = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);
+            var getRolesNameByAccountRole = from accountRole in accountRoles
+                join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
+                select role.Name;
+
+            var token = _tokenHandler.GenerateToken(claims);
+            return token;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return "-2";
+        }
     }
 }
