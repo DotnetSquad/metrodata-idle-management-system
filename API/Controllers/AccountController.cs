@@ -164,6 +164,65 @@ public class AccountController : ControllerBase
         });
     }
 
+
+    [HttpPost("ChangePassword")]
+    public IActionResult ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
+    {
+        var isUpdated = _accountService.ChangePassword(accountDtoChangePassword);
+        if (isUpdated == 0)
+            return NotFound(new ResponseHandler<AccountDtoUpdate>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Email not found"
+            });
+
+        if (isUpdated == -1)
+        {
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is already used"
+            });
+        }
+
+        if (isUpdated == -2)
+        {
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is incorrect"
+            });
+        }
+
+        if (isUpdated == -3)
+        {
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is expired"
+            });
+        }
+
+        if (isUpdated is -4)
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoUpdate>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving data from the database"
+            });
+
+        return Ok(new ResponseHandler<AccountDtoUpdate>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Password has been changed successfully"
+         });
+    }
+
     [HttpPost("login")]
     public IActionResult Login(AccountDtoLogin accountDtoLogin)
     {

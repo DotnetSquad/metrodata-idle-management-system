@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using API.Contracts;
 using API.DataTransferObjects.Accounts;
+using API.Models;
 using API.Utilities.Handlers;
 
 namespace API.Services;
@@ -8,6 +9,7 @@ namespace API.Services;
 public class AccountService
 {
     private readonly IAccountRepository _accountRepository;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IRoleRepository _roleRepository;
@@ -71,6 +73,41 @@ public class AccountService
         return !accountDeleted ? 0 : 1;
     }
 
+
+    public int ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
+    {
+        var employee = _employeeRepository.GetEmployeeByEmail(accountDtoChangePassword.Email);
+        if (employee is null)
+            return 0;
+
+        var account = _accountRepository.GetByGuid(employee.Guid);
+        if (account is null)
+            return 0;
+
+        if (account.IsUsed)
+            return -1;
+
+        if (account.Otp != accountDtoChangePassword.Otp)
+            return -2;
+
+        if (account.ExpiredTime < DateTime.Now)
+            return -3;
+
+        var isUpdated = _accountRepository.Update(new Account
+        {
+            Guid = account.Guid,
+            Password = HashingHandler.HashPassword(accountDtoChangePassword.NewPassword),
+            IsDeleted = account.IsDeleted,
+            Otp = account.Otp,
+            ExpiredTime = account.ExpiredTime,
+            IsUsed = true,
+            CreatedDate = account.CreatedDate,
+            ModifiedDate = DateTime.Now
+        });
+
+        return isUpdated ? 1 : -4;
+    }
+  
     public string Login(AccountDtoLogin accountDtoLogin)
     {
         var employee = _employeeRepository.GetByEmail(accountDtoLogin.Email);
