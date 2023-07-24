@@ -18,7 +18,8 @@ public class AccountService
     private readonly ITokenHandler _tokenHandler;
 
     public AccountService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
-        IEmailHandler emailHandler, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, ITokenHandler tokenHandler, ApplicationDbContext context)
+        IEmailHandler emailHandler, IEmployeeRepository employeeRepository, IRoleRepository roleRepository,
+        ITokenHandler tokenHandler, ApplicationDbContext context)
     {
         _accountRepository = accountRepository;
         _accountRoleRepository = accountRoleRepository;
@@ -134,8 +135,9 @@ public class AccountService
 
             var accountRoles = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);
             var getRolesNameByAccountRole = from accountRole in accountRoles
-                                            join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
-                                            select role.Name;
+                join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
+                select role.Name;
+            claims.AddRange(getRolesNameByAccountRole.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = _tokenHandler.GenerateToken(claims);
             return token;
