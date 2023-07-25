@@ -20,19 +20,6 @@ public class CompanyController : Controller
         return View();
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        var result = await _companyRepository.Get();
-        var ListCompany = new List<CompanyDtoGet>();
-
-        if (result.Data != null)
-        {
-            ListCompany = result.Data.ToList();
-        }
-        return View(ListCompany);
-    }
-
     [HttpPost]
     public async Task<IActionResult> Create(CompanyDtoGet companyDtoPost)
     {

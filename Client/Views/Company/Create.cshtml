@@ -30,7 +30,7 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/company/create" method="post" class="row g-3 needs-validation" novalidate>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Company Name</label>
                                 <input asp-for="CompanyName" type="text" class="form-control" id="validationCustom01" required>
                                 <div class="valid-feedback">
@@ -40,9 +40,9 @@
                                     Please enter company name!
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <label for="validationCustom02" class="form-label">Description</label>
-                                <input asp-for="Description" type="text" class="form-control" id="validationCustom02" required>
+                                <textarea asp-for="Description" class="form-control" id="validationCustom02" required rows="5" cols="10"></textarea>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -50,9 +50,9 @@
                                     Please enter description!
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <label for="validationCustom03" class="form-label">Address</label>
-                                <input asp-for="Address" type="text" class="form-control" id="validationCustom03" required>
+                                <textarea asp-for="Address" class="form-control" id="validationCustom03" required rows="5" cols="10"></textarea>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
