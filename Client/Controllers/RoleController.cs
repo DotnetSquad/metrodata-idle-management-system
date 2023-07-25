@@ -27,7 +27,6 @@ public class RoleController : Controller
         return View(ListRole);
     }
 
-    // create 
     [HttpGet]
     public IActionResult Create()
     {
