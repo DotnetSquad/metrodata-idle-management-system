@@ -13,6 +13,13 @@ public class CompanyController : Controller
         _companyRepository = companyRepository;
     }
 
+    // create 
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -24,5 +31,22 @@ public class CompanyController : Controller
             ListCompany = result.Data.ToList();
         }
         return View(ListCompany);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CompanyDtoGet companyDtoPost)
+    {
+        var result = await _companyRepository.Post(companyDtoPost);
+        if (result.Status == "200")
+        {
+            TempData["Success"] = "Data success created";
+            return RedirectToAction(nameof(Index));
+        }
+        else if (result.Status == "409")
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            return View();
+        }
+        return RedirectToAction(nameof(Index));
     }
 }
