@@ -13,6 +13,19 @@ public class CompanyController : Controller
         _companyRepository = companyRepository;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var result = await _companyRepository.Get();
+        var ListCompany = new List<CompanyDtoGet>();
+
+        if (result.Data != null)
+        {
+            ListCompany = result.Data.ToList();
+        }
+        return View(ListCompany);
+    }
+
     // create 
     [HttpGet]
     public IActionResult Create()
