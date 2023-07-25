@@ -16,12 +16,13 @@ public class EmployeeDtoCreate
     public StatusEnum Status { get; set; }
     public Guid? GradeGuid { get; set; }
     public Guid? ProfileGuid { get; set; }
-    
+
     // implicit operator
     public static implicit operator Employee(EmployeeDtoCreate employeeDtoCreate)
     {
         return new Employee
         {
+            Guid = new Guid(),
             Nik = employeeDtoCreate.Nik,
             FirstName = employeeDtoCreate.FirstName,
             LastName = employeeDtoCreate.LastName,
@@ -36,7 +37,7 @@ public class EmployeeDtoCreate
             CreatedDate = DateTime.UtcNow
         };
     }
-    
+
     // explicit operator
     public static explicit operator EmployeeDtoCreate(Employee employee)
     {

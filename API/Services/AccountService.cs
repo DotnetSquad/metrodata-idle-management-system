@@ -1,6 +1,8 @@
 ﻿using API.Contracts;
 using API.Data;
+using API.DataTransferObjects.AccountRoles;
 using API.DataTransferObjects.Accounts;
+using API.DataTransferObjects.Employees;
 using API.Models;
 using API.Utilities.Handlers;
 using System.Security.Claims;
@@ -135,8 +137,8 @@ public class AccountService
 
             var accountRoles = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);
             var getRolesNameByAccountRole = from accountRole in accountRoles
-                join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
-                select role.Name;
+                                            join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
+                                            select role.Name;
             claims.AddRange(getRolesNameByAccountRole.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = _tokenHandler.GenerateToken(claims);
@@ -187,9 +189,9 @@ public class AccountService
         using var transaction = _context.Database.BeginTransaction();
         try
         {
-            var employee = new Employee
+            var employeeData = new EmployeeDtoCreate
             {
-                Guid = new Guid(),
+                /*Guid = new Guid(),*/
                 FirstName = accountDtoRegister.FirstName,
                 LastName = accountDtoRegister.LastName ?? "",
                 BirthDate = accountDtoRegister.BirthDate,
@@ -197,27 +199,27 @@ public class AccountService
                 HiringDate = accountDtoRegister.HiringDate,
                 Email = accountDtoRegister.Email,
                 PhoneNumber = accountDtoRegister.PhoneNumber,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
+                /*CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,*/
             };
-            employee.Nik = GenerateHandler.GenerateNik(_employeeRepository.GetLastEmployeeNik());
-            _employeeRepository.Create(employee);
+            employeeData.Nik = GenerateHandler.GenerateNik(_employeeRepository.GetLastEmployeeNik());
+            var employee = _employeeRepository.Create(employeeData);
 
-            var account = new Account
+            var account = new AccountDtoCreate
             {
                 Guid = employee.Guid,
                 Password = HashingHandler.HashPassword(accountDtoRegister.Password),
                 IsDeleted = false,
                 IsUsed = false,
                 Otp = 0,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
+                /* CreatedDate = DateTime.Now,
+                 ModifiedDate = DateTime.Now,*/
                 ExpiredTime = DateTime.Now.AddMinutes(10)
             };
             _accountRepository.Create(account);
 
             var roleEmployee = _roleRepository.GetByName("Employee");
-            _accountRoleRepository.Create(new AccountRole
+            _accountRoleRepository.Create(new AccountRoleDtoCreate
             {
                 AccountGuid = account.Guid,
                 RoleGuid = roleEmployee.Guid
