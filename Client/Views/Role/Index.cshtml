@@ -32,40 +32,41 @@
                         <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table datatable table-hover table-responsive">
+                            <caption>List of roles</caption>
                             <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayName("No")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Name)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Action")
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th scope="col">
+                                    @Html.DisplayName("No")
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayName("Action")
+                                </th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    var i = 1;
-                                }
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @i
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-primary">Edit</button>
-                                            <button class="btn btn-danger" type="submit" onclick="return true">Delete</button>
-                                        </td>
-                                    </tr>
-                                    i++;
-                                }
+                            @{
+                                var i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                        <button class="btn btn-danger" type="submit" onclick="return true">Delete</button>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
@@ -77,7 +78,3 @@
     </section>
 
 </main><!-- End #main -->
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
