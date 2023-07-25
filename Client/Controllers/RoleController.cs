@@ -23,6 +23,31 @@ public class RoleController : Controller
         {
             ListRole = result.Data.ToList();
         }
+
         return View(ListRole);
+    }
+
+    // create 
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(RoleDtoGet roleDtoPost)
+    {
+        var result = await _repository.Post(roleDtoPost);
+        if (result.Status == "200")
+        {
+            TempData["Success"] = "Data success created";
+            return RedirectToAction(nameof(Index));
+        }
+        else if (result.Status == "409")
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            return View();
+        }
+        return RedirectToAction(nameof(Index));
     }
 }
