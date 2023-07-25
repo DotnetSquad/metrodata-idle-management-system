@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Client.DataTransferObjects.Grades.GradeDtoGet>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutDashboard";
+}
+
+<h1>Index</h1>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Data Tables</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Tables</li>
+                <li class="breadcrumb-item active">Data</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Datatables</h5>
+                        <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
+
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable table-hover table-responsive">
+                            <caption>List of roles</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        @Html.DisplayName("No")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.GradeLevel)
+                                    </th>
+                                     <th scope="col">
+                                        @Html.DisplayNameFor(model => model.ScoreSegment1)
+                                    </th> 
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.ScoreSegment2)
+                                    </th> 
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.ScoreSegment3)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.ScoreSegment4)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.TotalScore)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Action")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.GradeLevel)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ScoreSegment1)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ScoreSegment2)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ScoreSegment3)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ScoreSegment4)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalScore)
+                                        </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <form>
+                                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                                    </form>
+                                                </div>
+                                                <div class="col-6">
+                                                    <form>
+                                                        <button class="btn btn-danger" type="submit" onclick="return true">Delete</button>
+                                                    </form>
+                  
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
