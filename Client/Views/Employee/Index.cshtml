@@ -28,47 +28,47 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables</h5>
+                        <h5 class="card-title">Datatables Employee</h5>
                         <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
 
                         <!-- Table with stripped rows -->
                         <table class="table datatable table-hover table-responsive">
                             <thead>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayName("No")
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.Nik)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayName("Full Name")
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.BirthDate)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.Gender)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.HiringDate)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.Email)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.PhoneNumber)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.Status)
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayName("Grade")
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayName("Profile")
                                     </th>
-                                    <th>
+                                    <th scope="col">
                                         @Html.DisplayName("Action")
                                     </th>
                                 </tr>
@@ -127,8 +127,18 @@
                                             @Html.DisplayName("Profile")
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn btn-primary">Edit</button>
-                                            <button class="btn btn-danger" type="submit" onclick="return true">Delete</button>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <form>
+                                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                                    </form>
+                                                </div>
+                                                <div class="col-6">
+                                                    <form>
+                                                        <button class="btn btn-danger" type="submit" onclick="return true">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     i++;
