@@ -77,4 +77,57 @@ public class InterviewController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+    
+    // update
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid guid)
+    {
+        var result = await _repository.Get(guid);
+        var interviewDtoGet = new InterviewDtoGet();
+        if (result.Data?.Guid is null)
+        {
+            return View(interviewDtoGet);
+        }
+        else
+        {
+            interviewDtoGet.Guid = result.Data.Guid;
+            interviewDtoGet.Title = result.Data.Title;
+            interviewDtoGet.Link = result.Data.Link;
+            interviewDtoGet.InterviewDate = result.Data.InterviewDate;
+            interviewDtoGet.Description = result.Data.Description;
+            interviewDtoGet.StatusInterview = result.Data.StatusInterview;
+            interviewDtoGet.JobGuid = result.Data.JobGuid;
+        }
+        
+        // get job
+        var resultJob = await _jobRepository.Get();
+        var listJobDtoGets = new List<JobDtoGet>();
+        
+        if (resultJob.Data != null)
+        {
+            listJobDtoGets = resultJob.Data.ToList();
+        }
+        
+        // add to view data
+        ViewData["Jobs"] = listJobDtoGets;
+
+        return View(interviewDtoGet);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Update(InterviewDtoGet interviewDtoGet)
+    {
+        var result = await _repository.Put(interviewDtoGet.Guid, interviewDtoGet);
+        if (result.Status == "200")
+        {
+            TempData["Success"] = "Data success updated";
+            return RedirectToAction(nameof(Index));
+        }
+        else if (result.Status == "409")
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            return View();
+        }
+        return RedirectToAction(nameof(Index));
+    }
 }
