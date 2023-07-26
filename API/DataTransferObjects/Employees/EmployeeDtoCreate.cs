@@ -5,7 +5,6 @@ namespace API.DataTransferObjects.Employees;
 
 public class EmployeeDtoCreate
 {
-    public string Nik { get; set; }
     public string FirstName { get; set; }
     public string? LastName { get; set; }
     public DateTime BirthDate { get; set; }
@@ -16,13 +15,12 @@ public class EmployeeDtoCreate
     public StatusEnum Status { get; set; }
     public Guid? GradeGuid { get; set; }
     public Guid? ProfileGuid { get; set; }
-    
+
     // implicit operator
     public static implicit operator Employee(EmployeeDtoCreate employeeDtoCreate)
     {
         return new Employee
         {
-            Nik = employeeDtoCreate.Nik,
             FirstName = employeeDtoCreate.FirstName,
             LastName = employeeDtoCreate.LastName,
             BirthDate = employeeDtoCreate.BirthDate,
@@ -36,13 +34,12 @@ public class EmployeeDtoCreate
             CreatedDate = DateTime.UtcNow
         };
     }
-    
+
     // explicit operator
     public static explicit operator EmployeeDtoCreate(Employee employee)
     {
         return new EmployeeDtoCreate
         {
-            Nik = employee.Nik,
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             BirthDate = employee.BirthDate,

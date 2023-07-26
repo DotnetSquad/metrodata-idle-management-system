@@ -4,7 +4,6 @@ namespace Client.DataTransferObjects.Employees;
 
 public class EmployeeDtoCreate
 {
-    public string Nik { get; set; }
     public string FirstName { get; set; }
     public string? LastName { get; set; }
     public DateTime BirthDate { get; set; }
