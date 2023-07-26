@@ -1,0 +1,76 @@
+﻿@model Client.DataTransferObjects.Projects.ProjectDtoGet
+@using Client.DataTransferObjects.Employees
+
+@{
+    Layout = "_LayoutDashboard";
+}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Form Validation</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Forms</li>
+                <li class="breadcrumb-item active">Validation</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Custom Styled Validation</h5>
+                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+
+                        <!-- Custom Styled Validation -->
+                        <form action="/project/create" method="post" class="row g-3 needs-validation" novalidate>
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">Name Project</label>
+                                <input asp-for="NameProject" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom02" class="form-label">Project Lead</label>
+                                <select asp-for="ProjectLead" class="form-select" id="validationCustom02" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    @{
+                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                        {
+                                            <option value="@item.FirstName @item.LastName">@item.FirstName @item.LastName</option>
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid state.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="validationCustom03" class="form-label">Description</label>
+                                <textarea asp-for="Description" class="form-control" id="validationCustom03" required></textarea>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" type="submit">Submit form</button>
+                            </div>
+                        </form><!-- End Custom Styled Validation -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
