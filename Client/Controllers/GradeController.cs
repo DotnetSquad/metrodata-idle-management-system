@@ -25,10 +25,10 @@ public class GradeController : Controller
         {
             ListGrade = result.Data.ToList();
         }
+
         return View(ListGrade);
     }
 
-    // create 
     [HttpGet]
     public IActionResult Create()
     {
@@ -49,6 +49,7 @@ public class GradeController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -94,6 +95,7 @@ public class GradeController : Controller
                 return View();
             }
         }
+
         return View();
     }
 }

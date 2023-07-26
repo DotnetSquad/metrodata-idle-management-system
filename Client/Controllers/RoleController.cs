@@ -49,7 +49,7 @@ public class RoleController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {

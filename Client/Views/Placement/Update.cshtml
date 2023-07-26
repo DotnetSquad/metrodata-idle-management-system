@@ -1,7 +1,7 @@
 @using Client.DataTransferObjects.Employees
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Client.DataTransferObjects.Companies
-@model Client.DataTransferObjects.Placements.PlacementDtoCreate
+@model Client.DataTransferObjects.Placements.PlacementDtoGet
 
 @{
     Layout = "_LayoutDashboard";
@@ -32,7 +32,14 @@
                         <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
 
                         <!-- Custom Styled Validation -->
-                        <form action="/placement/create" method="post" class="row g-3 needs-validation" novalidate>
+                        <form action="/placement/update" method="post" class="row g-3 needs-validation" novalidate>
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom01" class="form-label">Guid</label>
+                                <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Title</label>
                                 <input asp-for="Title" type="text" class="form-control" id="validationCustom01" required>
@@ -50,12 +57,20 @@
                             <div class="col-md-6">
                                 <label for="validationCustom04" class="form-label">Employee</label>
                                 <select asp-for="EmployeeGuid" class="form-select" id="validationCustom04" required>
-                                    <option selected disabled value="">Choose...</option>
+                                    <option disabled value="">Choose...</option>
                                     @* foreach view bag employee *@
                                     @{
-                                        foreach(var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
                                         {
-                                            <option value="@item.Guid">@item.FirstName @item.LastName</option>
+                                            if (item.Guid == Model.EmployeeGuid)
+                                            {
+                                                <option selected value="@item.Guid">@item.FirstName @item.LastName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Guid">@item.FirstName @item.LastName</option>
+                                            }
+
                                         }
                                     }
                                 </select>
@@ -66,12 +81,19 @@
                             <div class="col-md-6">
                                 <label for="validationCustom04" class="form-label">Company</label>
                                 <select asp-for="CompanyGuid" class="form-select" id="validationCustom04" required>
-                                    <option selected disabled value="">Choose...</option>
+                                    <option disabled value="">Choose...</option>
                                     @* foreach view bag companies *@
                                     @{
-                                        foreach(var item in (IEnumerable<CompanyDtoGet>)ViewData["Companies"])
+                                        foreach (var company in (IEnumerable<CompanyDtoGet>)ViewData["Companies"])
                                         {
-                                            <option value="@item.Guid">@item.CompanyName</option>
+                                            if (company.Guid == Model.CompanyGuid)
+                                            {
+                                                <option selected value="@company.Guid">@company.CompanyName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@company.Guid">@company.CompanyName</option>
+                                            }
                                         }
                                     }
                                 </select>
@@ -81,6 +103,7 @@
                             </div>
                             <div class="col-12">
                                 <button class="btn btn-primary" type="submit">Submit form</button>
+                                <a class="btn btn-info" asp-action="Index">Back to List</a>
                             </div>
                         </form><!-- End Custom Styled Validation -->
 
