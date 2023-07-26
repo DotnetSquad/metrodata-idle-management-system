@@ -1,0 +1,103 @@
+@using Client.DataTransferObjects.Jobs
+@model Client.DataTransferObjects.Interviews.InterviewDtoGet
+
+@{
+    Layout = "_LayoutDashboard";
+}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Form Validation</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Forms</li>
+                <li class="breadcrumb-item active">Validation</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Custom Styled Validation</h5>
+                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+
+                        <!-- Custom Styled Validation -->
+                        <form action="/interview/create" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">Title</label>
+                                <input asp-for="Title" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">Link</label>
+                                <input asp-for="Link" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom05" class="form-label">Hiring Date</label>
+                                <input asp-for="InterviewDate" type="datetime-local" class="form-control" id="validationCustom05" required>
+                                <div class="invalid-feedback">
+                                    Please enter your hiring date!
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="validationCustom01" class="form-label">Description</label>
+                                <textarea asp-for="Description" class="form-control" style="height: 100px" id="validationCustom01"></textarea>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom08" class="form-label">Status</label>
+                                <select asp-for="StatusInterview" class="form-control" id="validationCustom08" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="0">Pending</option>
+                                    <option value="1">Accepted</option>
+                                    <option value="2">Rejected</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select your status!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom04" class="form-label">Company</label>
+                                <select asp-for="JobGuid" class="form-select" id="validationCustom04" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    @* foreach view bag companies *@
+                                    @{
+                                        foreach (var item in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
+                                        {
+                                            <option value="@item.Guid">@item.JobName</option>
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid state.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" type="submit">Submit form</button>
+                            </div>
+                        </form><!-- End Custom Styled Validation -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
