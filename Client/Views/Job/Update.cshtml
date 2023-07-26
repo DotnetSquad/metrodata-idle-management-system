@@ -1,6 +1,7 @@
 ﻿@model Client.DataTransferObjects.Jobs.JobDtoGet
 @using Client.DataTransferObjects.Companies
 
+
 @{
     Layout = "_LayoutDashboard";
 }
@@ -30,7 +31,15 @@
                         <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
 
                         <!-- Custom Styled Validation -->
-                        <form action="/job/create" method="post" class="row g-3 needs-validation" novalidate>
+                        <form action="/job/update" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom01" class="form-label">Guid</label>
+                                <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Job Name</label>
                                 <input asp-for="JobName" type="text" class="form-control" id="validationCustom01" required>
@@ -73,4 +82,3 @@
     </section>
 
 </main><!-- End #main -->
-
