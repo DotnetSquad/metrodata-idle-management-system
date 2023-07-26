@@ -7,13 +7,10 @@ namespace API.Utilities.Validations.Employees;
 public class EmployeeValidatorCreate : AbstractValidator<EmployeeDtoCreate>
 {
     private readonly IEmployeeRepository _employeeRepository;
-    
+
     public EmployeeValidatorCreate(IEmployeeRepository employeeRepository)
     {
         _employeeRepository = employeeRepository;
-
-        RuleFor(x => x.Nik)
-            .NotEmpty();
 
         RuleFor(x => x.FirstName)
             .NotEmpty();
@@ -41,7 +38,7 @@ public class EmployeeValidatorCreate : AbstractValidator<EmployeeDtoCreate>
         RuleFor(x => x.Status)
             .IsInEnum();
     }
-    
+
     private bool BeUniqueProperty(string property)
     {
         return _employeeRepository.IsDuplicateValue(property);

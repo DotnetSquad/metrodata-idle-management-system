@@ -1,5 +1,7 @@
 using API.Contracts;
 using API.DataTransferObjects.Employees;
+using API.Models;
+using API.Utilities.Handlers;
 
 namespace API.Services;
 
@@ -36,7 +38,10 @@ public class EmployeeService
 
     public EmployeeDtoCreate? Create(EmployeeDtoCreate employeeDtoCreate)
     {
-        var employeeCreated = _employeeRepository.Create(employeeDtoCreate);
+        Employee employee = employeeDtoCreate;
+        employee.Nik = GenerateHandler.GenerateNik(_employeeRepository.GetLastEmployeeNik());
+
+        var employeeCreated = _employeeRepository.Create(employee);
         if (employeeCreated is null) return null!;
 
         return (EmployeeDtoCreate)employeeCreated;
