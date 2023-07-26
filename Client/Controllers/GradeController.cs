@@ -83,7 +83,7 @@ public class GradeController : Controller
         if (ModelState.IsValid)
         {
             var result = await _repository.Put(grade.Guid, grade);
-            if (result.Status == "200")
+            if (result.Code == 200)
             {
                 return RedirectToAction(nameof(Index));
             }

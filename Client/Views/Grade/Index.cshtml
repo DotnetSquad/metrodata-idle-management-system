@@ -94,7 +94,7 @@
                                             @Html.DisplayFor(modelItem => item.TotalScore)
                                         </td>
                                         <td>
-                                            <form action="/grade/edit" method="get" onsubmit="return confirm('Are you sure you want to edit this employee?');">
+                                            <form action="/grade/edit" method="get">
                                                 <input type="hidden" value="@item.Guid" name="guid" />
                                                 <button type="submit" class="btn btn-primary"><i class="ri-edit-box-fill"></i></button>
                                             </form>
