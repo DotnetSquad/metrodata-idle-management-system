@@ -1,13 +1,17 @@
 using Client.Contracts;
+using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
 using Client.DataTransferObjects.Roles;
+using Client.Repositories;
 using Microsoft.AspNetCore.Mvc;public class ProjectController : Controller
 {
     private readonly IProjectRepository _repository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public ProjectController(IProjectRepository repository)
+    public ProjectController(IProjectRepository repository, IEmployeeRepository employeeRepository)
     {
         _repository = repository;
+        _employeeRepository = employeeRepository;
     }
 
     [HttpGet]
@@ -24,8 +28,20 @@ using Microsoft.AspNetCore.Mvc;public class ProjectController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        // get employees
+        var result = await _employeeRepository.Get();
+        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+
+        if (result.Data != null)
+        {
+            listEmployeeDtoGets = result.Data.ToList();
+        }
+
+        // add to view data
+        ViewData["Employees"] = listEmployeeDtoGets;
+
         return View();
     }
 

@@ -1,4 +1,5 @@
 ﻿@model Client.DataTransferObjects.Projects.ProjectDtoGet
+@using Client.DataTransferObjects.Employees
 
 @{
     Layout = "_LayoutDashboard";
@@ -30,21 +31,29 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/project/create" method="post" class="row g-3 needs-validation" novalidate>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Name Project</label>
                                 <input asp-for="NameProject" type="text" class="form-control" id="validationCustom01" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="validationCustom02" class="form-label">Project Lead</label>
-                                <input asp-for="ProjectLead" type="text" class="form-control" id="validationCustom02" required>
-                                <div class="valid-feedback">
-                                    Looks good!
+                                <select asp-for="ProjectLead" class="form-select" id="validationCustom02" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    @{
+                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                        {
+                                            <option value="@item.FirstName @item.LastName">@item.FirstName @item.LastName</option>
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid state.
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label for="validationCustom03" class="form-label">Description</label>
                                 <textarea asp-for="Description" class="form-control" id="validationCustom03" required></textarea>
                                 <div class="valid-feedback">
