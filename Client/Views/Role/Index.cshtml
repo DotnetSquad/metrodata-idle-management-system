@@ -64,9 +64,12 @@
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </td>
                                     <td>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="ri-edit-box-fill"></i>
-                                        </button>
+                                        <form action="/role/Update" method="get">
+                                            <input type="hidden" name="guid" value="@item.Guid"/>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="ri-edit-box-fill"></i>
+                                            </button>
+                                        </form>
                                         <button type="submit" class="btn btn-danger">
                                             <i class="bi bi-trash"></i>
                                         </button>

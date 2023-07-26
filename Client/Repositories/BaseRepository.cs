@@ -61,7 +61,7 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
     {
         ResponseHandler<TEntity> entityDto = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.PutAsync(_request + "?guid=" + id, content).Result)
+        using (var response = _httpClient.PutAsync(_request, content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityDto = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
