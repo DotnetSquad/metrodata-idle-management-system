@@ -46,11 +46,11 @@
                                         @Html.DisplayNameFor(model => model.CompanyName)
                                     </th>
                                     <th scope="col">
-                                        @Html.DisplayNameFor(model => model.Description)
-                                    </th>
-                                    <th scope="col">
                                         @Html.DisplayNameFor(model => model.Address)
                                     </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th> 
                                     <th scope="col">
                                         @Html.DisplayName("Action")
                                     </th>
@@ -70,13 +70,18 @@
                                             @Html.DisplayFor(modelItem => item.CompanyName)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-                                        <td>
                                             @Html.DisplayFor(modelItem => item.Address)
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn btn-primary"><i class="ri-edit-box-fill"></i></button>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>           
+                                        <td>
+                                            <form action="/company/update" method="get">
+                                                <input type="hidden" name="guid" value="@item.Guid" />
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="ri-edit-box-fill"></i>
+                                                </button>
+                                            </form>
                                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
