@@ -26,7 +26,6 @@ public class ProfileController : Controller
         return View(ListProfile);
     }
 
-    // create 
     [HttpGet]
     public IActionResult Create()
     {
