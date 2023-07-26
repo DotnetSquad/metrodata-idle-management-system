@@ -30,6 +30,7 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/company/update" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
                             <div class="col-md-8" hidden>
                                 <label for="validationCustom01" class="form-label">Guid</label>
                                 <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>

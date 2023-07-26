@@ -71,6 +71,7 @@ public class CompanyController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(Guid id, CompanyDtoGet companyDtoGet)
     {
         if (ModelState.IsValid)
