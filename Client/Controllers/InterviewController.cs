@@ -26,22 +26,22 @@ public class InterviewController : Controller
         {
             listInterviewDtoGets = result.Data.ToList();
         }
-        
+
         // get job
         var resultJob = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
-        
+
         if (resultJob.Data != null)
         {
             listJobDtoGets = resultJob.Data.ToList();
         }
-        
+
         // add to view data
         ViewData["Jobs"] = listJobDtoGets;
-        
+
         return View(listInterviewDtoGets);
     }
-    
+
     // create
     [HttpGet]
     public async Task<IActionResult> Create()
@@ -49,18 +49,18 @@ public class InterviewController : Controller
         // get job
         var resultJob = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
-        
+
         if (resultJob.Data != null)
         {
             listJobDtoGets = resultJob.Data.ToList();
         }
-        
+
         // add to view data
         ViewData["Jobs"] = listJobDtoGets;
-        
+
         return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Create(InterviewDtoGet interviewDtoGet)
     {
@@ -75,10 +75,10 @@ public class InterviewController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
-    
-    // update
+
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -98,36 +98,37 @@ public class InterviewController : Controller
             interviewDtoGet.StatusInterview = result.Data.StatusInterview;
             interviewDtoGet.JobGuid = result.Data.JobGuid;
         }
-        
+
         // get job
         var resultJob = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
-        
+
         if (resultJob.Data != null)
         {
             listJobDtoGets = resultJob.Data.ToList();
         }
-        
+
         // add to view data
         ViewData["Jobs"] = listJobDtoGets;
 
         return View(interviewDtoGet);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Update(InterviewDtoGet interviewDtoGet)
     {
         var result = await _repository.Put(interviewDtoGet.Guid, interviewDtoGet);
-        if (result.Status == "200")
+        if (result.Code == 200)
         {
             TempData["Success"] = "Data success updated";
             return RedirectToAction(nameof(Index));
         }
-        else if (result.Status == "409")
+        else if (result.Code == 409)
         {
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 }
