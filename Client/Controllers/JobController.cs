@@ -62,4 +62,57 @@ public class JobController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid guid)
+    {
+        // get companies
+        var resultCompany = await _companyRepository.Get();
+        var listCompanyDtoGets = new List<CompanyDtoGet>();
+
+        if (resultCompany.Data != null)
+        {
+            listCompanyDtoGets = resultCompany.Data.ToList();
+        }
+
+        // add to view data
+        ViewData["Companies"] = listCompanyDtoGets;
+
+        var value = await _repository.Get(guid);
+        var job = new JobDtoGet();
+        if (value.Data?.Guid is null)
+        {
+            return View(job);
+        }
+        else
+        {
+            job.Guid = value.Data.Guid;
+            job.JobName = value.Data.JobName;
+            job.Description = value.Data.Description;
+            job.CompanyGuid = value.Data.CompanyGuid;
+        }
+
+        return View(job);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(JobDtoGet job)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _repository.Put(job.Guid, job);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Status == "409")
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
+        return View();
+    }
 }
