@@ -17,14 +17,14 @@ public class RoleController : Controller
     public async Task<IActionResult> Index()
     {
         var result = await _repository.Get();
-        var ListRole = new List<RoleDtoGet>();
+        var listRole = new List<RoleDtoGet>();
 
         if (result.Data != null)
         {
-            ListRole = result.Data.ToList();
+            listRole = result.Data.ToList();
         }
 
-        return View(ListRole);
+        return View(listRole);
     }
 
     [HttpGet]
@@ -48,5 +48,42 @@ public class RoleController : Controller
             return View();
         }
         return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid guid)
+    {
+        var result = await _repository.Get(guid);
+        var role = new RoleDtoGet();
+        if (result.Data?.Guid is null)
+        {
+            return View(role);
+        }
+        else
+        {
+            role.Guid = result.Data.Guid;
+            role.Name = result.Data.Name;
+        }
+
+        return View(role);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Update(Guid id, RoleDtoGet roleDtoGet)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _repository.Put(roleDtoGet.Guid, roleDtoGet);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Status == "409")
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
+        return View();
     }
 }
