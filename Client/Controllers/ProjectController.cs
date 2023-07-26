@@ -3,7 +3,11 @@ using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
 using Client.DataTransferObjects.Roles;
 using Client.Repositories;
-using Microsoft.AspNetCore.Mvc;public class ProjectController : Controller
+using Microsoft.AspNetCore.Mvc;
+
+namespace Client.Controllers;
+
+public class ProjectController : Controller
 {
     private readonly IProjectRepository _repository;
     private readonly IEmployeeRepository _employeeRepository;
@@ -60,5 +64,58 @@ using Microsoft.AspNetCore.Mvc;public class ProjectController : Controller
             return View();
         }
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid guid)
+    {
+        // get employees
+        var result = await _employeeRepository.Get();
+        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+
+        if (result.Data != null)
+        {
+            listEmployeeDtoGets = result.Data.ToList();
+        }
+
+        // add to view data
+        ViewData["Employees"] = listEmployeeDtoGets;
+
+        var value = await _repository.Get(guid);
+        var project = new ProjectDtoGet();
+        if (value.Data?.Guid is null)
+        {
+            return View(project);
+        }
+        else
+        {
+            project.Guid = value.Data.Guid;
+            project.NameProject = value.Data.NameProject;
+            project.ProjectLead = value.Data.ProjectLead;
+            project.Description = value.Data.Description;
+        }
+
+        return View(project);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(ProjectDtoGet project)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _repository.Put(project.Guid, project);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Status == "409")
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
+        return View();
     }
 }
