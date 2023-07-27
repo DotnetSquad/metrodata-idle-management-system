@@ -29,7 +29,8 @@ public class AccountRepository : BaseRepository<AccountDtoGet, Guid>, IAccountRe
     public async Task<ResponseHandler<AccountDtoRegister>> Register(AccountDtoRegister entity)
     {
         ResponseHandler<AccountDtoRegister> entityVM = null;
-        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        StringContent content =
+            new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
         using (var response = HttpClient.PostAsync(Request + "register", content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
@@ -37,5 +38,33 @@ public class AccountRepository : BaseRepository<AccountDtoGet, Guid>, IAccountRe
         }
 
         return entityVM;
+    }
+
+    public async Task<ResponseHandler<AccountDtoForgotPassword>> ForgotPassword(AccountDtoForgotPassword entity)
+    {
+        ResponseHandler<AccountDtoForgotPassword> entityDto = null!;
+        StringContent content =
+            new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = HttpClient.PostAsync(Request + "ForgotPassword", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityDto = JsonConvert.DeserializeObject<ResponseHandler<AccountDtoForgotPassword>>(apiResponse);
+        }
+
+        return entityDto;
+    }
+
+    public async Task<ResponseHandler<AccountDtoChangePassword>> ChangePassword(AccountDtoChangePassword entity)
+    {
+        ResponseHandler<AccountDtoChangePassword> entityDto = null!;
+        StringContent content =
+            new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = HttpClient.PostAsync(Request + "ChangePassword", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityDto = JsonConvert.DeserializeObject<ResponseHandler<AccountDtoChangePassword>>(apiResponse);
+        }
+
+        return entityDto;
     }
 }
