@@ -7,5 +7,5 @@ namespace Client.Contracts;
 public interface IAccountRepository : IBaseRepository<AccountDtoGet, Guid>
 {
     public Task<ResponseHandler<string>> Login(AccountDtoLogin accountDtoLogin);
-    Task<ResponseHandler<AccountRepository>> Register(AccountDtoRegister entity);
+    public Task<ResponseHandler<AccountDtoRegister>> Register(AccountDtoRegister entity);
 }

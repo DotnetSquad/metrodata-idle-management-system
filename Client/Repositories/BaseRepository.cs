@@ -9,25 +9,25 @@ namespace Client.Repositories;
 public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
     where TEntity : class
 {
-    private protected string _request;
-    private protected HttpClient _httpClient;
-    private readonly IHttpContextAccessor contextAccessor;
+    protected readonly string Request;
+    protected readonly HttpClient HttpClient;
+    private readonly IHttpContextAccessor _contextAccessor;
 
     public BaseRepository(string request)
     {
-        _request = request;
-        contextAccessor = new HttpContextAccessor();
-        _httpClient = new HttpClient()
+        Request = request;
+        _contextAccessor = new HttpContextAccessor();
+        HttpClient = new HttpClient()
         {
             BaseAddress = new Uri("https://localhost:7009/api/")
         };
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWTToken"));
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", _contextAccessor.HttpContext?.Session.GetString("JWTToken"));
     }
 
     public async Task<ResponseHandler<IEnumerable<TEntity>>> Get()
     {
         ResponseHandler<IEnumerable<TEntity>> entity = null;
-        using (var response = await _httpClient.GetAsync(_request))
+        using (var response = await HttpClient.GetAsync(Request))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<TEntity>>>(apiResponse);
@@ -37,8 +37,8 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
 
     public async Task<ResponseHandler<TEntity>> Get(TId id)
     {
-        ResponseHandler<TEntity> entity = null;
-        using (var response = await _httpClient.GetAsync(_request + id))
+        ResponseHandler<TEntity> entity = null!;
+        using (var response = await HttpClient.GetAsync(Request + id))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entity = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
@@ -48,9 +48,9 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
 
     public async Task<ResponseHandler<TEntity>> Post(TEntity entity)
     {
-        ResponseHandler<TEntity> entityDto = null;
+        ResponseHandler<TEntity> entityDto = null!;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.PostAsync(_request, content).Result)
+        using (var response = HttpClient.PostAsync(Request, content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityDto = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
@@ -60,9 +60,9 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
 
     public async Task<ResponseHandler<TEntity>> Put(TId id, TEntity entity)
     {
-        ResponseHandler<TEntity> entityDto = null;
+        ResponseHandler<TEntity> entityDto = null!;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.PutAsync(_request, content).Result)
+        using (var response = HttpClient.PutAsync(Request, content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityDto = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
@@ -72,9 +72,9 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
 
     public async Task<ResponseHandler<TEntity>> Delete(TId id)
     {
-        ResponseHandler<TEntity> entityDto = null;
+        ResponseHandler<TEntity> entityDto = null!;
         StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.DeleteAsync(_request + id).Result)
+        using (var response = HttpClient.DeleteAsync(Request + id).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityDto = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
