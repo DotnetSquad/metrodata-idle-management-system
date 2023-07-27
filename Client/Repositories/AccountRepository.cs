@@ -31,5 +31,16 @@ public class AccountRepository : BaseRepository<AccountDtoRegister, string>, IAc
         }
         return entityVM;
     }
-
+    
+    public async Task<ResponseHandler<AccountRepository>> Register(AccountDtoRegister entity)
+    {
+        ResponseHandler<AccountRepository> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = _httpClient.PostAsync(_request + "register", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseHandler<AccountRepository>>(apiResponse);
+        }
+        return entityVM;
+    }
 }

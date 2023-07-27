@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Client.DataTransferObjects.Accounts.AccountDtoRegister
+@{
     Layout = "_LayoutRegister";
 }
 
@@ -9,13 +10,6 @@
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-                    <div class="d-flex justify-content-center py-4">
-                        <a href="index.html" class="logo d-flex align-items-center w-auto">
-                            <img src="~/NiceAdmin/assets/img/logo.png" alt="">
-                            <span class="d-none d-lg-block">NiceAdmin</span>
-                        </a>
-                    </div><!-- End Logo -->
-
                     <div class="card mb-3">
 
                         <div class="card-body">
@@ -25,69 +19,87 @@
                                 <p class="text-center small">Enter your personal details to create account</p>
                             </div>
 
-                            <form class="row g-3 needs-validation" novalidate>
-                                <div class="col-12">
-                                    <label for="yourFirstName" class="form-label">First Name</label>
-                                    <input type="text" name="name" class="form-control" id="yourFirstName" required>
-                                    <div class="invalid-feedback">Please, enter your first name!</div>
+                            <form action="/account/register" method="post" class="row g-3 needs-validation" novalidate>
+                                @Html.AntiForgeryToken()
+                                <div class="col-md-12">
+                                    <label for="validationCustom01" class="form-label">First Name</label>
+                                    <input asp-for="FirstName" type="text" class="form-control" id="validationCustom01" required>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourLastName" class="form-label">Last Name</label>
-                                    <input type="text" name="name" class="form-control" id="yourLastName">
+                                <div class="col-md-12">
+                                    <label for="validationCustom02" class="form-label">Last Name</label>
+                                    <input asp-for="LastName" type="text" class="form-control" id="validationCustom02">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourBirthDate" class="form-label">Birth Date</label>
-                                    <input type="datetime-local" name="birthdate" class="form-control" id="yourBirthDate" required>
-                                    <div class="invalid-feedback">Please enter your birth date!</div>
+                                <div class="col-md-12">
+                                    <label for="validationCustom03" class="form-label">Birth Date</label>
+                                    <input asp-for="BirthDate" type="datetime-local" class="form-control" id="validationCustom03" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your birth date!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourGender" class="form-label">Gender</label>
-                                    <select name="birthdate" class="form-control" id="yourGender" required>
+                                <div class="col-md-12">
+                                    <label for="validationCustom04" class="form-label">Gender</label>
+                                    <select asp-for="Gender" class="form-control" id="validationCustom04" required>
+                                        <option selected disabled value="">Choose...</option>
                                         <option value="1">Male</option>
                                         <option value="0">Female</option>
                                     </select>
-                                    <div class="invalid-feedback">Please select your gender!</div>
+                                    <div class="invalid-feedback">
+                                        Please select your gender!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourHiringDate" class="form-label">Hiring Date</label>
-                                    <input type="datetime-local" name="hiringdate" class="form-control" id="yourHiringDate" required>
-                                    <div class="invalid-feedback">Please enter your hiring date!</div>
+                                <div class="col-md-12">
+                                    <label for="validationCustom05" class="form-label">Hiring Date</label>
+                                    <input asp-for="HiringDate" type="datetime-local" class="form-control" id="validationCustom05" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your hiring date!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourEmail" class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" id="yourEmail" required>
-                                    <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                <div class="col-md-12">
+                                    <label for="validationCustom06" class="form-label">Email</label>
+                                    <input asp-for="Email" type="email" class="form-control" id="validationCustom06" required>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid Email adddress!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourPhoneNumber" class="form-label">Phone Number</label>
-                                    <input type="text" name="phonenumber" class="form-control" id="yourPhoneNumber" required>
-                                    <div class="invalid-feedback">Please enter your phone number!</div>
+                                <div class="col-md-12">
+                                    <label for="validationCustom07" class="form-label">Phone Number</label>
+                                    <input asp-for="PhoneNumber" type="text" class="form-control" id="validationCustom07" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your phone number!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="yourPassword" class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                    <div class="invalid-feedback">Please enter your password!</div>
+                                <div class="col-md-12">
+                                    <label for="validationCustom08" class="form-label">Password</label>
+                                    <input asp-for="Password" type="password" class="form-control" id="validationCustom08" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your password!
+                                    </div>
                                 </div>
-
-                                <div class="col-12">
+                                <div class="col-md-12">
+                                    <label for="validationCustom09" class="form-label">Confirm Password</label>
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control" id="validationCustom09" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your confirm password!
+                                    </div>
+                                </div>
+                                @*<div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
                                         <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
                                         <div class="invalid-feedback">You must agree before submitting.</div>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Create Account</button>
                                 </div>
                                 <div class="col-12">
-                                    <p class="small mb-0">Already have an account? <a href="Login">Log in</a></p>
+                                    <p class="small mb-0">Already have an account? <a href="account/login">Log in</a></p>
                                 </div>
                             </form>
 

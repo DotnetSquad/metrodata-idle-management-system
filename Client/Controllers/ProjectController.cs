@@ -118,4 +118,15 @@ public class ProjectController : Controller
         }
         return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _repository.Delete(guid);
+        if (result.Code == 200)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
+    }
 }
