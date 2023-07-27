@@ -30,7 +30,6 @@ public class EmployeeController : Controller
         return View(ListEmployee);
     }
 
-    // create 
     [HttpGet]
     public IActionResult Create()
     {
@@ -76,4 +75,64 @@ public class EmployeeController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid guid)
+    {
+        var result = await _repository.Get(guid);
+
+        var employee = new EmployeeDtoGet();
+        if (result.Data?.Guid is null)
+        {
+            return View(employee);
+        }
+        else
+        {
+            employee.Guid = result.Data.Guid;
+            employee.Nik = result.Data.Nik;
+            employee.FirstName = result.Data.FirstName;
+            employee.LastName = result.Data.LastName;
+            employee.BirthDate = result.Data.BirthDate;
+            employee.Gender = result.Data.Gender;
+            employee.HiringDate = result.Data.HiringDate;
+            employee.Email = result.Data.Email;
+            employee.PhoneNumber = result.Data.PhoneNumber;
+            employee.Status = result.Data.Status;
+            employee.GradeGuid = result.Data.GradeGuid;
+            employee.ProfileGuid = result.Data.ProfileGuid;
+        }
+
+        return View(employee);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(EmployeeDtoGet employeeDtoGet)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _repository.Put(employeeDtoGet.Guid, employeeDtoGet);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Status == "409")
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+        }
+        return View();
+    }
+
+    /*  [HttpPost]
+      public async Task<IActionResult> Delete(Guid guid)
+      {
+          var result = await _repository.Delete(guid);
+          if (result.Code == 200)
+          {
+              return RedirectToAction(nameof(Index));
+          }
+          return RedirectToAction(nameof(Index));
+      }*/
 }

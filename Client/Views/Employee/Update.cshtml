@@ -1,0 +1,158 @@
+﻿@model Client.DataTransferObjects.Employees.EmployeeDtoGet
+@using Client.DataTransferObjects.Profiles;
+@using Client.DataTransferObjects.Grades;
+
+@{
+    Layout = "_LayoutDashboard";
+}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Form Validation</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Forms</li>
+                <li class="breadcrumb-item active">Validation</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Custom Styled Validation</h5>
+                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+
+                        <!-- Custom Styled Validation -->
+                        <form action="/employee/update" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">First Name</label>
+                                <input asp-for="FirstName" type="text" class="form-control" id="validationCustom01" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom02" class="form-label">Last Name</label>
+                                <input asp-for="LastName" type="text" class="form-control" id="validationCustom02">
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom03" class="form-label">Birth Date</label>
+                                <input asp-for="BirthDate" type="datetime-local" class="form-control" id="validationCustom03" required>
+                                <div class="invalid-feedback">
+                                    Please enter your birth date!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom04" class="form-label">Gender</label>
+                                <select asp-for="Gender" class="form-control" id="validationCustom04" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select your gender!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom05" class="form-label">Hiring Date</label>
+                                <input asp-for="HiringDate" type="datetime-local" class="form-control" id="validationCustom05" required>
+                                <div class="invalid-feedback">
+                                    Please enter your hiring date!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom06" class="form-label">Email</label>
+                                <input asp-for="Email" type="email" class="form-control" id="validationCustom06" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid Email adddress!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom07" class="form-label">Phone Number</label>
+                                <input asp-for="PhoneNumber" type="text" class="form-control" id="validationCustom07" required>
+                                <div class="invalid-feedback">
+                                    Please enter your phone number!
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom08" class="form-label">Status</label>
+                                <select asp-for="Status" class="form-control" id="validationCustom08" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="1">Working</option>
+                                    <option value="0">Idle</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select your status!
+                                </div>
+                            </div>
+                            <div class="col-md-8" hidden>
+                                <label for="validationCustom09" class="form-label">Guid</label>
+                                <input asp-for="Guid" type="text" class="form-control" id="validationCustom09" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-8" hidden>
+                                <label for="validationCustom10" class="form-label">Nik</label>
+                                <input asp-for="Nik" type="text" class="form-control" id="validationCustom10" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom09" class="form-label">Grade</label>
+                                <select asp-for="GradeGuid" class="form-select" id="validationCustom11">
+                                    @* foreach view bag grade *@
+                                    @{
+                                        if (Model != null)
+                                        {
+                                            var item = Model;
+                                            <option value="@item.GradeGuid"></option>
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid Grade.
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom10" class="form-label">Profile</label>
+                                <select asp-for="ProfileGuid" class="form-select" id="validationCustom12">
+                                    @* foreach view bag profile *@
+                                    @{
+                                        if (Model != null)
+                                        {
+                                            var item = Model;
+                                            <option value="@item.ProfileGuid"></option>
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid Profile.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" type="submit">Submit form</button>
+                            </div>
+                        </form><!-- End Custom Styled Validation -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
