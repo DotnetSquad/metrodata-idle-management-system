@@ -38,6 +38,7 @@ public class AccountController : Controller
             HttpContext.Session.SetString("JWTToken", result.Data);
             return RedirectToAction("Index", "Dashboard");
         }
+
         return View();
     }
 
@@ -50,7 +51,6 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(AccountDtoRegister register)
     {
-
         var result = await _accountRepository.Register(register);
         if (result is null)
         {
@@ -67,11 +67,71 @@ public class AccountController : Controller
             TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
             return RedirectToAction("Login", "Account");
         }
+
         return View();
     }
 
     public IActionResult Index()
     {
+        return View();
+    }
+
+    // forgot password feature
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(AccountDtoForgotPassword accountDtoForgotPassword)
+    {
+        var result = await _accountRepository.ForgotPassword(accountDtoForgotPassword);
+
+        if (result is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        else if (result.Code == 400)
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+            return View();
+        }
+        else if (result.Code == 200)
+        {
+            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+            return RedirectToAction("ChangePassword", "Account");
+        }
+
+        return View();
+    }
+
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
+    {
+        var result = await _accountRepository.ChangePassword(accountDtoChangePassword);
+
+        if (result is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        else if (result.Code == 400)
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+            return View();
+        }
+        else if (result.Code == 200)
+        {
+            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+            return RedirectToAction("Login", "Account");
+        }
+
         return View();
     }
 }
