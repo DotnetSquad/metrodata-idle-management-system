@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.Utilities.Handlers;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Client.Repositories;
@@ -20,7 +21,7 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
         {
             BaseAddress = new Uri("https://localhost:7009/api/")
         };
-        /*_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));*/
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWTToken"));
     }
 
     public async Task<ResponseHandler<IEnumerable<TEntity>>> Get()
