@@ -97,25 +97,25 @@ public class PlacementController : Controller
             placement.EmployeeGuid = result.Data.EmployeeGuid;
             placement.CompanyGuid = result.Data.CompanyGuid;
         }
-        
+
         // get employees
         var resultEmployee = await employeeRepository.Get();
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
-        
+
         if (resultEmployee.Data != null)
         {
             listEmployeeDtoGets = resultEmployee.Data.ToList();
         }
-        
+
         // get companies
         var resultCompany = await companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
-        
+
         if (resultCompany.Data != null)
         {
             listCompanyDtoGets = resultCompany.Data.ToList();
         }
-        
+
         // add to view data
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
@@ -143,5 +143,16 @@ public class PlacementController : Controller
         }
 
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _repository.Delete(guid);
+        if (result.Code == 200)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
     }
 }
