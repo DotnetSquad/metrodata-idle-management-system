@@ -1,6 +1,8 @@
 ﻿using API.DataTransferObjects.Interviews;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]*/
 public class InterviewController : ControllerBase
 {
     private readonly InterviewService _interviewService;
@@ -17,6 +20,7 @@ public class InterviewController : ControllerBase
         _interviewService = interviewService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class InterviewController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class InterviewController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPost]
     public IActionResult Create(InterviewDtoCreate interviewDtoCreate)
     {
@@ -92,6 +98,7 @@ public class InterviewController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPut]
     public IActionResult Update(InterviewDtoUpdate interviewDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class InterviewController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

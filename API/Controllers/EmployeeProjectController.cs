@@ -1,22 +1,26 @@
-using System.Net;
 using API.DataTransferObjects.EmployeeProjects;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]*/
 public class EmployeeProjectController : ControllerBase
 {
     private readonly EmployeeProjectService _employeeProjectService;
-    
+
     public EmployeeProjectController(EmployeeProjectService employeeProjectService)
     {
         _employeeProjectService = employeeProjectService;
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -41,7 +45,8 @@ public class EmployeeProjectController : ControllerBase
             Data = employeeProjects
         });
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -66,7 +71,8 @@ public class EmployeeProjectController : ControllerBase
             Data = employeeProject
         });
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpPost]
     public IActionResult Create(EmployeeProjectDtoCreate employeeProjectDtoCreate)
     {
@@ -91,7 +97,8 @@ public class EmployeeProjectController : ControllerBase
             Data = employeeProjectCreated
         });
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpPut]
     public IActionResult Update(EmployeeProjectDtoUpdate employeeProjectDtoUpdate)
     {
@@ -127,7 +134,8 @@ public class EmployeeProjectController : ControllerBase
             Data = employeeProjectDtoUpdate
         });
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
