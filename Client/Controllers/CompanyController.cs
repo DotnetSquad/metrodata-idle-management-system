@@ -89,4 +89,15 @@ public class CompanyController : Controller
         }
         return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _companyRepository.Delete(guid);
+        if (result.Code == 200)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
+    }
 }
