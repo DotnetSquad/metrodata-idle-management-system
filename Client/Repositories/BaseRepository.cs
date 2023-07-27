@@ -8,8 +8,8 @@ namespace Client.Repositories;
 public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
     where TEntity : class
 {
-    private readonly string _request;
-    private readonly HttpClient _httpClient;
+    private protected string _request;
+    private protected HttpClient _httpClient;
     private readonly IHttpContextAccessor contextAccessor;
 
     public BaseRepository(string request)
