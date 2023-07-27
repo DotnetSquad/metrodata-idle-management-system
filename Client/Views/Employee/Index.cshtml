@@ -131,8 +131,21 @@
                                             @Html.DisplayName("Profile")
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn btn-primary"><i class="ri-edit-box-fill"></i></button>
-                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                            @*<a href="/employee/edit">
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="ri-edit-box-fill"></i>
+                                                </button>
+                                            </a>*@
+                                            <form action="/employee/update" method="GET">
+                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="ri-edit-box-fill"></i>
+                                                </button>
+                                            </form>
+                                            <form action="/employee/delete" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <button type="submit" class="btn btn-danger" onclick="return true"><i class="bi bi-trash"></i></button>
+                                            </form>
                                         </td>
                                     </tr>
                                     i++;
