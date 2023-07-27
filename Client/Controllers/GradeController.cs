@@ -54,7 +54,7 @@ public class GradeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid guid)
+    public async Task<IActionResult> Update(Guid guid)
     {
         var result = await _repository.Get(guid);
         var grade = new GradeDtoGet();
@@ -79,7 +79,7 @@ public class GradeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(GradeDtoGet grade)
+    public async Task<IActionResult> Update(GradeDtoGet grade)
     {
         if (ModelState.IsValid)
         {
@@ -97,5 +97,16 @@ public class GradeController : Controller
         }
 
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _repository.Delete(guid);
+        if (result.Code == 200)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
     }
 }

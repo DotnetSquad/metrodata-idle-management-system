@@ -94,12 +94,13 @@
                                             @Html.DisplayFor(modelItem => item.TotalScore)
                                         </td>
                                         <td>
-                                            <form action="/grade/edit" method="get">
+                                            <form action="/grade/update" method="get">
                                                 <input type="hidden" value="@item.Guid" name="guid" />
                                                 <button type="submit" class="btn btn-primary"><i class="ri-edit-box-fill"></i></button>
                                             </form>
-                                            <form>
-                                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                            <form action="/grade/delete" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <button type="submit" class="btn btn-danger" onclick="return true"><i class="bi bi-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
