@@ -1,6 +1,8 @@
 ﻿using API.DataTransferObjects.Projects;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]*/
 public class ProjectController : ControllerBase
 {
     private readonly ProjectService _projectService;
@@ -17,6 +20,7 @@ public class ProjectController : ControllerBase
         _projectService = projectService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class ProjectController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class ProjectController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpPost]
     public IActionResult Create(ProjectDtoCreate projectDtoCreate)
     {
@@ -92,6 +98,7 @@ public class ProjectController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpPut]
     public IActionResult Update(ProjectDtoUpdate projectDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class ProjectController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

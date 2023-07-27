@@ -1,22 +1,25 @@
-using System.Net;
 using API.DataTransferObjects.EmployeeInterviews;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
 public class EmployeeInterviewController : ControllerBase
 {
     private readonly EmployeeInterviewService _employeeInterviewService;
-    
+
     public EmployeeInterviewController(EmployeeInterviewService employeeInterviewService)
     {
         _employeeInterviewService = employeeInterviewService;
     }
-    
+
     [HttpGet]
     public IActionResult Get()
     {
@@ -35,7 +38,7 @@ public class EmployeeInterviewController : ControllerBase
 
         return Ok(employeeInterviews);
     }
-    
+
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -54,7 +57,7 @@ public class EmployeeInterviewController : ControllerBase
 
         return Ok(employeeInterview);
     }
-    
+
     [HttpPost]
     public IActionResult Create(EmployeeInterviewDtoCreate employeeInterviewDtoCreate)
     {
@@ -79,7 +82,7 @@ public class EmployeeInterviewController : ControllerBase
             Data = employeeInterviewCreated
         });
     }
-    
+
     [HttpPut]
     public IActionResult Update(EmployeeInterviewDtoUpdate employeeInterviewDtoUpdate)
     {
@@ -115,7 +118,7 @@ public class EmployeeInterviewController : ControllerBase
             Data = employeeInterviewDtoUpdate
         });
     }
-    
+
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

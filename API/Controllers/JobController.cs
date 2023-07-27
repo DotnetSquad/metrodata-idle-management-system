@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using API.DataTransferObjects.Jobs;
+﻿using API.DataTransferObjects.Jobs;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]*/
 public class JobController : ControllerBase
 {
     private readonly JobService _jobService;
@@ -17,6 +20,7 @@ public class JobController : ControllerBase
         _jobService = jobService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class JobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class JobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPost]
     public IActionResult Create(JobDtoCreate jobDtoCreate)
     {
@@ -92,6 +98,7 @@ public class JobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPut]
     public IActionResult Update(JobDtoUpdate jobDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class JobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

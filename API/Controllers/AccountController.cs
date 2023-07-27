@@ -1,6 +1,8 @@
 ﻿using API.DataTransferObjects.Accounts;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _accountService;
@@ -164,7 +167,8 @@ public class AccountController : ControllerBase
         });
     }
 
-
+    /*[Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]*/
+    [AllowAnonymous]
     [HttpPost("ChangePassword")]
     public IActionResult ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
     {
@@ -223,6 +227,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public IActionResult Login(AccountDtoLogin accountDtoLogin)
     {
@@ -265,6 +270,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("ForgotPassword")]
     public IActionResult ForgotPassword(AccountDtoForgotPassword accountDtoForgotPassword)
     {
@@ -296,6 +302,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public IActionResult Register(AccountDtoRegister accountDtoRegister)
     {

@@ -1,13 +1,16 @@
-using System.Net;
 using API.DataTransferObjects.Employees;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]*/
 public class EmployeeController : ControllerBase
 {
     private readonly EmployeeService _employeeService;
@@ -17,6 +20,7 @@ public class EmployeeController : ControllerBase
         _employeeService = employeeService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpPost]
     public IActionResult Create(EmployeeDtoCreate employeeDtoCreate)
     {
@@ -92,6 +98,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpPut]
     public IActionResult Update(EmployeeDtoUpdate employeeDtoUpdate)
     {
@@ -129,6 +136,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

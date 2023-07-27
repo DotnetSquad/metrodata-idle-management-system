@@ -1,6 +1,8 @@
 ﻿using API.DataTransferObjects.Placements;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]*/
 public class PlacementController : ControllerBase
 {
     private readonly PlacementService _placementService;
@@ -17,6 +20,7 @@ public class PlacementController : ControllerBase
         _placementService = placementService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class PlacementController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class PlacementController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPost]
     public IActionResult Create(PlacementDtoCreate placementDtoCreate)
     {
@@ -92,6 +98,7 @@ public class PlacementController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPut]
     public IActionResult Update(PlacementDtoUpdate placementDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class PlacementController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

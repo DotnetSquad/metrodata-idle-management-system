@@ -1,22 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using API.DataTransferObjects.Profiles;
+﻿using API.DataTransferObjects.Profiles;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]*/
 public class ProfileController : ControllerBase
 {
-    private readonly ProfileService _profileService; 
+    private readonly ProfileService _profileService;
 
     public ProfileController(ProfileService profileService)
     {
         _profileService = profileService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class ProfileController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class ProfileController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpPost]
     public IActionResult Create(ProfileDtoCreate profileDtoCreate)
     {
@@ -92,6 +98,7 @@ public class ProfileController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpPut]
     public IActionResult Update(ProfileDtoUpdate profileDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class ProfileController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

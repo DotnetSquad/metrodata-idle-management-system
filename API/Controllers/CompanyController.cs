@@ -1,13 +1,16 @@
-using System.Net;
 using API.DataTransferObjects.Companies;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
 public class CompanyController : ControllerBase
 {
     private readonly CompanyService _companyService;
@@ -17,6 +20,7 @@ public class CompanyController : ControllerBase
         _companyService = companyService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class CompanyController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class CompanyController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPost]
     public IActionResult Create(CompanyDtoCreate companyDtoCreate)
     {
@@ -92,6 +98,7 @@ public class CompanyController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpPut]
     public IActionResult Update(CompanyDtoUpdate companyDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class CompanyController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

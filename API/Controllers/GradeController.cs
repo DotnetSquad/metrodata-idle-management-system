@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using API.DataTransferObjects.Grades;
+﻿using API.DataTransferObjects.Grades;
 using API.Services;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/*[Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]*/
 public class GradeController : ControllerBase
 {
     private readonly GradeService _gradeService;
@@ -17,6 +20,7 @@ public class GradeController : ControllerBase
         _gradeService = gradeService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -42,6 +46,7 @@ public class GradeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -67,6 +72,7 @@ public class GradeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
     [HttpPost]
     public IActionResult Create(GradeDtoCreate gradeDtoCreate)
     {
@@ -92,6 +98,7 @@ public class GradeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
     [HttpPut]
     public IActionResult Update(GradeDtoUpdate gradeDtoUpdate)
     {
@@ -128,6 +135,7 @@ public class GradeController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
