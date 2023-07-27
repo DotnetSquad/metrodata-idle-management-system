@@ -47,6 +47,7 @@ public class RoleController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -67,7 +68,7 @@ public class RoleController : Controller
 
         return View(role);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Update(Guid id, RoleDtoGet roleDtoGet)
     {
@@ -84,6 +85,19 @@ public class RoleController : Controller
                 return View();
             }
         }
+
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid guid)
+    {
+        var result = await _repository.Delete(guid);
+        if (result.Code == 200)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 }
