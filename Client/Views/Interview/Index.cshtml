@@ -115,12 +115,9 @@
                                                 <i class="ri-edit-box-fill"></i>
                                             </button>
                                         </form>
-                                        <form action="/interview/delete" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                            <input type="hidden" name="guid" value="@item.Guid"/>
-                                            <button type="submit" class="btn btn-danger" onclick="return true">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="submit" class="btn btn-danger" onclick="return true">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 i++;
