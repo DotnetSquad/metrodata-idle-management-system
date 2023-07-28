@@ -1,5 +1,7 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.Employees;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -17,6 +19,7 @@ public class EmployeeController : Controller
         _profileRepository = profileRepository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -30,6 +33,7 @@ public class EmployeeController : Controller
         return View(ListEmployee);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -76,6 +80,7 @@ public class EmployeeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -125,6 +130,7 @@ public class EmployeeController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

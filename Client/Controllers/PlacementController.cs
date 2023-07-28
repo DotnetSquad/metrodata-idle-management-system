@@ -2,6 +2,8 @@ using Client.Contracts;
 using Client.DataTransferObjects.Companies;
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Placements;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -20,6 +22,7 @@ public class PlacementController : Controller
         _repository = repository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -34,6 +37,7 @@ public class PlacementController : Controller
         return View(listRolePlacementDtoGets);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -80,6 +84,7 @@ public class PlacementController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -123,7 +128,6 @@ public class PlacementController : Controller
         return View(placement);
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Update(PlacementDtoGet placementDtoGet)
     {
@@ -135,7 +139,7 @@ public class PlacementController : Controller
             {
                 return RedirectToAction(nameof(Index));
             }
-            else if (result.Status == "409")
+            else if (result.Code == 409)
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
@@ -145,6 +149,7 @@ public class PlacementController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

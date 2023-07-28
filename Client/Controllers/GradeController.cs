@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
 
-[Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
 public class GradeController : Controller
 {
     private readonly IGradeRepository _repository;
@@ -16,6 +15,7 @@ public class GradeController : Controller
         _repository = repository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -31,6 +31,7 @@ public class GradeController : Controller
         return View(ListGrade);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -55,6 +56,7 @@ public class GradeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -78,7 +80,6 @@ public class GradeController : Controller
         return View(grade);
     }
 
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(GradeDtoGet grade)
@@ -101,6 +102,7 @@ public class GradeController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

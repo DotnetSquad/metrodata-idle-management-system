@@ -10,7 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+/*[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]*/
 public class CompanyController : ControllerBase
 {
     private readonly CompanyService _companyService;

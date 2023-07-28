@@ -1,6 +1,8 @@
 using Client.Contracts;
 using Client.DataTransferObjects.Interviews;
 using Client.DataTransferObjects.Jobs;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -16,6 +18,7 @@ public class InterviewController : Controller
         _jobRepository = jobRepository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -42,6 +45,7 @@ public class InterviewController : Controller
         return View(listInterviewDtoGets);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     // create
     [HttpGet]
     public async Task<IActionResult> Create()
@@ -79,6 +83,7 @@ public class InterviewController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -132,6 +137,7 @@ public class InterviewController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
