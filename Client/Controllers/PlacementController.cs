@@ -22,7 +22,8 @@ public class PlacementController : Controller
         _repository = repository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -37,7 +38,7 @@ public class PlacementController : Controller
         return View(listRolePlacementDtoGets);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -84,7 +85,7 @@ public class PlacementController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -149,7 +150,7 @@ public class PlacementController : Controller
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

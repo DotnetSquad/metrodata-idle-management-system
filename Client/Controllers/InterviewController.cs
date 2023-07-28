@@ -18,7 +18,8 @@ public class InterviewController : Controller
         _jobRepository = jobRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -45,7 +46,7 @@ public class InterviewController : Controller
         return View(listInterviewDtoGets);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     // create
     [HttpGet]
     public async Task<IActionResult> Create()
@@ -83,7 +84,7 @@ public class InterviewController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -137,7 +138,7 @@ public class InterviewController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

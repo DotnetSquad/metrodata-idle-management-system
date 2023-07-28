@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
 
-[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
 public class RoleController : Controller
 {
     private readonly IRoleRepository _repository;

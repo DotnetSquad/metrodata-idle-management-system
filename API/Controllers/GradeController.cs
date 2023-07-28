@@ -20,7 +20,8 @@ public class GradeController : ControllerBase
         _gradeService = gradeService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +47,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +73,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public IActionResult Create(GradeDtoCreate gradeDtoCreate)
     {
@@ -98,7 +99,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPut]
     public IActionResult Update(GradeDtoUpdate gradeDtoUpdate)
     {
@@ -135,7 +136,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
@@ -172,7 +173,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost("CreateGenerate")]
     public IActionResult CreateGenerate(GradeDtoGenerateScore gradeDtoGenerateScore)
     {
@@ -198,7 +199,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPut("UpdateGenerate")]
     public IActionResult UpdateGenerate(GradeDtoUpdateGenerateScore gradeDtoUpdateGenerateScore)
     {
