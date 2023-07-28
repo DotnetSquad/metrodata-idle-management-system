@@ -20,7 +20,7 @@ public class JobController : ControllerBase
         _jobService = jobService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class JobController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class JobController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public IActionResult Create(JobDtoCreate jobDtoCreate)
     {
@@ -98,7 +98,7 @@ public class JobController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPut]
     public IActionResult Update(JobDtoUpdate jobDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class JobController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

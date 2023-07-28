@@ -1,4 +1,6 @@
-﻿namespace API.Utilities.Handlers;
+﻿using API.Utilities.Enums;
+
+namespace API.Utilities.Handlers;
 
 public class GenerateHandler
 {
@@ -12,5 +14,17 @@ public class GenerateHandler
         var generateNik = Convert.ToInt32(lastNik) + 1;
 
         return generateNik.ToString();
+    }
+
+    public static double GenerateTotalScore(int scoreSegment1, int scoreSegment2, int scoreSegment3, int scoreSegment4)
+    {
+        var totalScore = (((double)(scoreSegment1 + scoreSegment2 + scoreSegment3) / 3) / 2) + ((double)scoreSegment4 / 2);
+        return totalScore;
+    }
+
+    public static GradeEnum GenerateGradeLevel(int scoreSegment1, int scoreSegment2, int scoreSegment3, int scoreSegment4)
+    {
+        var grade = GenerateTotalScore(scoreSegment1, scoreSegment2, scoreSegment3, scoreSegment4);
+        return grade < 80 ? GradeEnum.B : GradeEnum.A;
     }
 }

@@ -20,7 +20,7 @@ public class GradeController : ControllerBase
         _gradeService = gradeService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpPost]
     public IActionResult Create(GradeDtoCreate gradeDtoCreate)
     {
@@ -98,7 +98,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpPut]
     public IActionResult Update(GradeDtoUpdate gradeDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class GradeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
@@ -169,6 +169,69 @@ public class GradeController : ControllerBase
             Status = HttpStatusCode.OK.ToString(),
             Message = "Grade deleted",
             Data = null
+        });
+    }
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [HttpPost("CreateGenerate")]
+    public IActionResult CreateGenerate(GradeDtoGenerateScore gradeDtoGenerateScore)
+    {
+        var gradeCreated = _gradeService.CreateGenerateScore(gradeDtoGenerateScore);
+
+        if (gradeCreated is null)
+        {
+            return BadRequest(new ResponseHandler<GradeDtoCreate>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Grade not created",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<GradeDtoCreate>
+        {
+            Code = StatusCodes.Status201Created,
+            Status = HttpStatusCode.Created.ToString(),
+            Message = "Grade created",
+            Data = gradeCreated
+        });
+    }
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [HttpPut("UpdateGenerate")]
+    public IActionResult UpdateGenerate(GradeDtoUpdateGenerateScore gradeDtoUpdateGenerateScore)
+    {
+        var gradeUpdated = _gradeService.UpdateGenerateScore(gradeDtoUpdateGenerateScore);
+
+        if (gradeUpdated == -1)
+        {
+            return NotFound(new ResponseHandler<GradeDtoUpdateGenerateScore>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Grade not found",
+                Data = null
+            });
+        }
+
+        if (gradeUpdated == 0)
+        {
+            return BadRequest(new ResponseHandler<GradeDtoUpdateGenerateScore>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Grade not updated",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<GradeDtoUpdateGenerateScore>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Grade updated",
+            Data = gradeDtoUpdateGenerateScore
         });
     }
 }

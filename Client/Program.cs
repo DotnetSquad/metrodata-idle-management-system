@@ -21,7 +21,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IAccountRepository,  AccountRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -67,6 +67,10 @@ app.UseStatusCodePages(async context =>
     if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized))
     {
         response.Redirect("/Home/Error401");
+    }
+    if (response.StatusCode.Equals((int)HttpStatusCode.Forbidden))
+    {
+        response.Redirect("/Home/Error403");
     }
 });
 

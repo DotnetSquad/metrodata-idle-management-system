@@ -1,11 +1,12 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.Grades;
-using Client.DataTransferObjects.Roles;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 
 namespace Client.Controllers;
 
+[Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
 public class GradeController : Controller
 {
     private readonly IGradeRepository _repository;
@@ -23,6 +24,7 @@ public class GradeController : Controller
 
         if (result.Data != null)
         {
+            result.Data.ToList().ForEach(x => x.TotalScore = (int)x.TotalScore);
             ListGrade = result.Data.ToList();
         }
 
@@ -36,9 +38,9 @@ public class GradeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(GradeDtoGet gradeDtoPost)
+    public async Task<IActionResult> Create(GradeDtoGenerateScore gradeDtoPost)
     {
-        var result = await _repository.Post(gradeDtoPost);
+        var result = await _repository.PostGenerate(gradeDtoPost);
         if (result.Status == "200")
         {
             TempData["Success"] = "Data success created";
@@ -83,7 +85,7 @@ public class GradeController : Controller
     {
         if (ModelState.IsValid)
         {
-            var result = await _repository.Put(grade.Guid, grade);
+            var result = await _repository.PutGenerate(grade.Guid, grade);
             if (result.Code == 200)
 
             {

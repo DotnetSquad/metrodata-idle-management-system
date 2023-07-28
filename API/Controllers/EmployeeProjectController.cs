@@ -20,7 +20,7 @@ public class EmployeeProjectController : ControllerBase
         _employeeProjectService = employeeProjectService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpPost]
     public IActionResult Create(EmployeeProjectDtoCreate employeeProjectDtoCreate)
     {
@@ -98,7 +98,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpPut]
     public IActionResult Update(EmployeeProjectDtoUpdate employeeProjectDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

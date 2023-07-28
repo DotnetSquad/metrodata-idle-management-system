@@ -20,7 +20,7 @@ public class InterviewController : ControllerBase
         _interviewService = interviewService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public IActionResult Create(InterviewDtoCreate interviewDtoCreate)
     {
@@ -98,7 +98,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPut]
     public IActionResult Update(InterviewDtoUpdate interviewDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

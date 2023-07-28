@@ -1,6 +1,6 @@
 ﻿namespace API.Utilities.Enums;
 
-public enum RoleLevel
+public enum RoleLevelEnum
 {
     HR,
     Manager,

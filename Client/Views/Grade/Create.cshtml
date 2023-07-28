@@ -1,4 +1,4 @@
-﻿@model Client.DataTransferObjects.Grades.GradeDtoGet
+﻿@model Client.DataTransferObjects.Grades.GradeDtoGenerateScore
 
 @{
     Layout = "_LayoutDashboard";
@@ -31,49 +31,43 @@
                         <!-- Custom Styled Validation -->
                         <form action="/grade/create" method="post" class="row g-3 needs-validation" novalidate>
                             <div class="form-group">
-                                <label for="validationCustom01" class="form-label">Grade Level</label>
-                                <select asp-for="GradeLevel" class="form-select" id="validationCustom01" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="0">A</option>
-                                    <option value="1">B</option>
-                                </select>
+                                <label for="validationCustom02" class="form-label">Score Segment 1</label>
+                                <input asp-for="ScoreSegment1" type="number" min="0" max="100" class="form-control" id="validationCustom02" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
                                 <div class="invalid-feedback">
-                                    Please select a valid grade level.
+                                    Please enter score segment 1 between 0 - 100!
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="validationCustom02" class="form-label">Score Segment1</label>
-                                <input asp-for="ScoreSegment1" type="number" class="form-control" id="validationCustom02" required>
+                                <label for="validationCustom03" class="form-label">Score Segment 2</label>
+                                <input asp-for="ScoreSegment2" type="number" min="0" max="100" class="form-control" id="validationCustom03" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="validationCustom03" class="form-label">Score Segment2</label>
-                                <input asp-for="ScoreSegment2" type="number" class="form-control" id="validationCustom03" required>
-                                <div class="valid-feedback">
-                                    Looks good!
+                                <div class="invalid-feedback">
+                                    Please enter score segment 2 between 0 - 100!
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="validationCustom04" class="form-label">Score Segment3</label>
-                                <input asp-for="ScoreSegment3" type="number" class="form-control" id="validationCustom04" required>
+                                <label for="validationCustom04" class="form-label">Score Segment 3</label>
+                                <input asp-for="ScoreSegment3" type="number" min="0" max="100" class="form-control" id="validationCustom04" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="validationCustom05" class="form-label">Score Segment4</label>
-                                <input asp-for="ScoreSegment4" type="number" class="form-control" id="validationCustom05" required>
-                                <div class="valid-feedback">
-                                    Looks good!
+                                <div class="invalid-feedback">
+                                    Please enter score segment 3 between 0 - 100!
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="validationCustom06" class="form-label">Total Score</label>
-                                <input asp-for="TotalScore" type="number" class="form-control" id="validationCustom06" required>
+                                <label for="validationCustom05" class="form-label">Score Segment 4</label>
+                                <input asp-for="ScoreSegment4" type="number" min="0" max="100" class="form-control" id="validationCustom05" required>
                                 <div class="valid-feedback">
                                     Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please enter score segment 4 between 0 - 100!
                                 </div>
                             </div>
                             <div class="form-group">
