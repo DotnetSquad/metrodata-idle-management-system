@@ -66,13 +66,13 @@
                                     <td>
                                         <form action="/role/Update" method="get">
                                             <input type="hidden" name="guid" value="@item.Guid"/>
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
                                                 <i class="ri-edit-box-fill"></i>
                                             </button>
                                         </form>
                                         <form action="/role/delete" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                             <input type="hidden" value="@item.Guid" name="guid"/>
-                                            <button type="submit" class="btn btn-danger" onclick="return true">
+                                            <button type="submit" class="btn btn-danger" onclick="return true" style="margin: 2px">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
