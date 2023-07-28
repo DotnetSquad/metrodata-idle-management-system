@@ -1,5 +1,7 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.Companies;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -13,6 +15,7 @@ public class CompanyController : Controller
         _companyRepository = companyRepository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -26,7 +29,7 @@ public class CompanyController : Controller
         return View(ListCompany);
     }
 
-    // create 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -50,6 +53,7 @@ public class CompanyController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -90,6 +94,7 @@ public class CompanyController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

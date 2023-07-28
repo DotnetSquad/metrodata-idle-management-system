@@ -1,9 +1,12 @@
 using Client.Contracts;
 using Client.DataTransferObjects.Roles;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
 
+[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
 public class RoleController : Controller
 {
     private readonly IRoleRepository _repository;

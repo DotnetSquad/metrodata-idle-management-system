@@ -1,6 +1,8 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.Companies;
 using Client.DataTransferObjects.Jobs;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -15,6 +17,7 @@ public class JobController : Controller
         _companyRepository = companyRepository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -28,6 +31,7 @@ public class JobController : Controller
         return View(ListJob);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -63,6 +67,7 @@ public class JobController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -95,7 +100,6 @@ public class JobController : Controller
         return View(job);
     }
 
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(JobDtoGet job)
@@ -116,6 +120,7 @@ public class JobController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {

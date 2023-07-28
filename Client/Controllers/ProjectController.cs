@@ -1,8 +1,8 @@
 using Client.Contracts;
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
-using Client.DataTransferObjects.Roles;
-using Client.Repositories;
+using Client.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
@@ -18,6 +18,7 @@ public class ProjectController : Controller
         _employeeRepository = employeeRepository;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -31,6 +32,7 @@ public class ProjectController : Controller
         return View(ListProject);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -66,6 +68,7 @@ public class ProjectController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -98,7 +101,6 @@ public class ProjectController : Controller
         return View(project);
     }
 
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(ProjectDtoGet project)
@@ -119,6 +121,7 @@ public class ProjectController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
