@@ -15,7 +15,8 @@ public class GradeController : Controller
         _repository = repository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -31,7 +32,7 @@ public class GradeController : Controller
         return View(ListGrade);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -56,7 +57,7 @@ public class GradeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -102,7 +103,7 @@ public class GradeController : Controller
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
@@ -111,6 +112,7 @@ public class GradeController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
         return RedirectToAction(nameof(Index));
     }
 }

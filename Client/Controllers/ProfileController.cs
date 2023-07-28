@@ -15,7 +15,8 @@ public class ProfileController : Controller
         _repository = repository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -26,10 +27,11 @@ public class ProfileController : Controller
         {
             ListProfile = result.Data.ToList();
         }
+
         return View(ListProfile);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -50,10 +52,11 @@ public class ProfileController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -91,10 +94,11 @@ public class ProfileController : Controller
                 return View();
             }
         }
+
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
@@ -103,6 +107,7 @@ public class ProfileController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
         return RedirectToAction(nameof(Index));
     }
 }

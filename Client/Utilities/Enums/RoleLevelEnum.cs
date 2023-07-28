@@ -5,5 +5,6 @@ public enum RoleLevelEnum
     HR,
     Manager,
     Trainer,
-    Employee
+    Employee,
+    Admin
 }

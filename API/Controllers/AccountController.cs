@@ -167,7 +167,6 @@ public class AccountController : ControllerBase
         });
     }
 
-    /*[Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]*/
     [AllowAnonymous]
     [HttpPost("ChangePassword")]
     public IActionResult ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
@@ -316,6 +315,7 @@ public class AccountController : ControllerBase
                 Message = "Register failed"
             });
         }
+
         return Ok(new ResponseHandler<AccountDtoRegister>
         {
             Code = StatusCodes.Status200OK,

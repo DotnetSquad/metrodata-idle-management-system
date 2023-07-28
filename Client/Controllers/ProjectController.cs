@@ -18,7 +18,8 @@ public class ProjectController : Controller
         _employeeRepository = employeeRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -29,10 +30,11 @@ public class ProjectController : Controller
         {
             ListProject = result.Data.ToList();
         }
+
         return View(ListProject);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -65,10 +67,11 @@ public class ProjectController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -118,10 +121,11 @@ public class ProjectController : Controller
                 return View();
             }
         }
+
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
@@ -130,6 +134,7 @@ public class ProjectController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
         return RedirectToAction(nameof(Index));
     }
 }

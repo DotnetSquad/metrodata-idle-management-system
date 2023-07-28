@@ -12,14 +12,16 @@ public class EmployeeController : Controller
     private readonly IGradeRepository _gradeRepository;
     private readonly IProfileRepository _profileRepository;
 
-    public EmployeeController(IEmployeeRepository repository, IGradeRepository gradeRepository, IProfileRepository profileRepository)
+    public EmployeeController(IEmployeeRepository repository, IGradeRepository gradeRepository,
+        IProfileRepository profileRepository)
     {
         _repository = repository;
         _gradeRepository = gradeRepository;
         _profileRepository = profileRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -30,10 +32,11 @@ public class EmployeeController : Controller
         {
             ListEmployee = result.Data.ToList();
         }
+
         return View(ListEmployee);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -77,10 +80,11 @@ public class EmployeeController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -127,10 +131,11 @@ public class EmployeeController : Controller
                 return View();
             }
         }
+
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
@@ -139,6 +144,7 @@ public class EmployeeController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
         return RedirectToAction(nameof(Index));
     }
 }

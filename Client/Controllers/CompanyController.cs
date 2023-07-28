@@ -15,7 +15,7 @@ public class CompanyController : Controller
         _companyRepository = companyRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -26,16 +26,18 @@ public class CompanyController : Controller
         {
             ListCompany = result.Data.ToList();
         }
+
         return View(ListCompany);
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Create(CompanyDtoGet companyDtoPost)
     {
@@ -50,10 +52,11 @@ public class CompanyController : Controller
             ModelState.AddModelError(string.Empty, result.Message);
             return View();
         }
+
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
@@ -74,6 +77,7 @@ public class CompanyController : Controller
         return View(company);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(Guid id, CompanyDtoGet companyDtoGet)
@@ -91,10 +95,11 @@ public class CompanyController : Controller
                 return View();
             }
         }
+
         return View();
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
@@ -103,6 +108,7 @@ public class CompanyController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
         return RedirectToAction(nameof(Index));
     }
 }
