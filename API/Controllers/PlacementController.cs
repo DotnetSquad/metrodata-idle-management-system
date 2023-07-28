@@ -20,7 +20,7 @@ public class PlacementController : ControllerBase
         _placementService = placementService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}, {nameof(RoleLevel.Manager)}, {nameof(RoleLevel.Trainer)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class PlacementController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class PlacementController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public IActionResult Create(PlacementDtoCreate placementDtoCreate)
     {
@@ -98,7 +98,7 @@ public class PlacementController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPut]
     public IActionResult Update(PlacementDtoUpdate placementDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class PlacementController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

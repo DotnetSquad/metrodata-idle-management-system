@@ -10,7 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
 public class CompanyController : ControllerBase
 {
     private readonly CompanyService _companyService;
@@ -20,7 +20,7 @@ public class CompanyController : ControllerBase
         _companyService = companyService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -46,7 +46,7 @@ public class CompanyController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.Employee)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -72,7 +72,7 @@ public class CompanyController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPost]
     public IActionResult Create(CompanyDtoCreate companyDtoCreate)
     {
@@ -98,7 +98,7 @@ public class CompanyController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpPut]
     public IActionResult Update(CompanyDtoUpdate companyDtoUpdate)
     {
@@ -135,7 +135,7 @@ public class CompanyController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevel.HR)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
