@@ -3,35 +3,6 @@
 
 // Write your JavaScript code.
 new DataTable('#data-table');
-
-document.addEventListener('DOMContentLoaded', function () {
-    const createButton = document.querySelector('.create-button');
-    createButton.addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to create the project?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, create it!',
-            cancelButtonText: 'No, cancel',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If the user confirms, submit the form
-                const form = event.target.closest('form');
-                form.submit();
-            } else {
-                Swal.fire(
-                    'Cancelled',
-                    'Project creation has been cancelled.',
-                    'info'
-                );
-            }
-        });
-    });
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     const deleteButtons = document.querySelectorAll('.delete-button');
     deleteButtons.forEach(button => {
