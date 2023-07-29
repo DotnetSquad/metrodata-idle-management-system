@@ -134,4 +134,10 @@ public class AccountController : Controller
 
         return View();
     }
+    
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index", "Home");
+    }
 }
