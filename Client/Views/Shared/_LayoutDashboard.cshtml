@@ -1,3 +1,4 @@
+@using Client.Utilities.Enums;
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +16,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="~/NiceAdmin/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -30,18 +30,18 @@
 
     <!-- Template Main CSS File -->
     <link href="~/NiceAdmin/assets/css/style.css" rel="stylesheet">
-    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
 
     <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: May 30 2023 with Bootstrap v5.3.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    * Template Name: NiceAdmin
+    * Updated: May 30 2023 with Bootstrap v5.3.0
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
 </head>
 
 <body>
@@ -274,87 +274,113 @@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
-
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Dashboard/Index">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link " href="index.html">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
+                <!-- End Dashboard Nav -->
 
-            <li class="nav-heading">Pages</li>
+                <li class="nav-heading">Pages</li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Company/Index">
-                    <i class="ri-community-line"></i>
-                    <span>Company</span>
-                </a>
-            </li><!-- End Company Page Nav -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="~/Company/Index">
+                        <i class="ri-community-line"></i>
+                        <span>Company</span>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Employee/Index">
-                    <i class="ri-team-line"></i>
-                    <span>Employee</span>
-                </a>
-            </li><!-- End Employee Page Nav -->
+                <!-- End Company Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Grade/Index">
-                    <i class="ri-medal-line"></i>
-                    <span>Grade</span>
-                </a>
-            </li><!-- End Grade Page Nav -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="~/Job/Index">
+                        <i class="ri-archive-2-line"></i>
+                        <span>Job</span>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Interview/Index">
-                    <i class="ri-presentation-line"></i>
-                    <span>Interview</span>
-                </a>
-            </li><!-- End Interview Page Nav -->
+                <!-- End Job Page Nav -->
+                @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Employee/Index">
+                            <i class="ri-team-line"></i>
+                            <span>Employee</span>
+                        </a>
+                    </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Job/Index">
-                    <i class="ri-archive-2-line"></i>
-                    <span>Job</span>
-                </a>
-            </li><!-- End Job Page Nav -->
+                    <!-- End Employee Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Placement/Index">
-                    <i class="ri-honour-line"></i>
-                    <span>Placement</span>
-                </a>
-            </li><!-- End Placement Page Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Interview/Index">
+                            <i class="ri-presentation-line"></i>
+                            <span>Interview</span>
+                        </a>
+                    </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Profile/Index">
-                    <i class="ri-user-3-line"></i>
-                    <span>Profile</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
+                    <!-- End Interview Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Project/Index">
-                    <i class="ri-git-repository-commits-line"></i>
-                    <span>Project</span>
-                </a>
-            </li><!-- End Project Page Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Placement/Index">
+                            <i class="ri-honour-line"></i>
+                            <span>Placement</span>
+                        </a>
+                    </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="~/Role/Index">
-                    <i class="ri-ruler-2-line"></i>
-                    <span>Role</span>
-                </a>
-            </li><!-- End Role Page Nav -->
+                    <!-- End Placement Page Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Profile/Index">
+                            <i class="ri-user-3-line"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+
+                    <!-- End Profile Page Nav -->
+                }
+                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Project/Index">
+                            <i class="ri-git-repository-commits-line"></i>
+                            <span>Project</span>
+                        </a>
+                    </li>
+
+                    <!-- End Project Page Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Grade/Index">
+                            <i class="ri-medal-line"></i>
+                            <span>Grade</span>
+                        </a>
+                    </li>
+
+                    <!-- End Grade Page Nav -->
+                }
+                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/Role/Index">
+                            <i class="ri-ruler-2-line"></i>
+                            <span>Role</span>
+                        </a>
+                    </li>
+
+                    <!-- End Role Page Nav -->
+                }
+            }
         </ul>
 
     </aside><!-- End Sidebar-->
-
     @RenderBody()
 
     <!-- ======= Footer ======= -->
