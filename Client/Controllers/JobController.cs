@@ -30,6 +30,17 @@ public class JobController : Controller
             ListJob = result.Data.ToList();
         }
 
+        // get companies
+        var resultCompany = await _companyRepository.Get();
+        var listCompanyDtoGets = new List<CompanyDtoGet>();
+
+        if (resultCompany.Data != null)
+        {
+            listCompanyDtoGets = resultCompany.Data.ToList();
+        }
+
+        // add to view data
+        ViewData["Companies"] = listCompanyDtoGets;
         return View(ListJob);
     }
 

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Client.DataTransferObjects.Jobs.JobDtoGet>
+﻿@using Client.DataTransferObjects.Companies;
+@model IEnumerable<Client.DataTransferObjects.Jobs.JobDtoGet>
 
 @{
     ViewData["Title"] = "Index";
@@ -75,7 +76,15 @@
                                             @Html.DisplayFor(modelItem => item.Description)
                                         </td>
                                         <td>
-                                            @Html.DisplayName("Company")
+                                            @{
+                                                foreach (var company in (IEnumerable<CompanyDtoGet>)ViewData["Companies"])
+                                                {
+                                                    if (item.CompanyGuid == company.Guid)
+                                                    {
+                                                        @company.CompanyName
+                                                    }
+                                                }
+                                            }
                                         </td>
                                         <td>
                                             <form action="/job/update" method="get">
