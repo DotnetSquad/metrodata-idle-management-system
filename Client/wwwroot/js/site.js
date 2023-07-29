@@ -3,6 +3,8 @@
 
 // Write your JavaScript code.
 new DataTable('#data-table');
+
+// Show a confirmation dialog before deleting a record - See https://sweetalert2.github.io/
 document.addEventListener('DOMContentLoaded', function () {
     const deleteButtons = document.querySelectorAll('.delete-button');
     deleteButtons.forEach(button => {
