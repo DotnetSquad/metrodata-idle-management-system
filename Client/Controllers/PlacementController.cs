@@ -35,6 +35,28 @@ public class PlacementController : Controller
             listRolePlacementDtoGets = result.Data.ToList();
         }
 
+        // get employees
+        var resultEmployee = await employeeRepository.Get();
+        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+
+        if (resultEmployee.Data != null)
+        {
+            listEmployeeDtoGets = resultEmployee.Data.ToList();
+        }
+
+        // get companies
+        var resultCompany = await companyRepository.Get();
+        var listCompanyDtoGets = new List<CompanyDtoGet>();
+
+        if (resultCompany.Data != null)
+        {
+            listCompanyDtoGets = resultCompany.Data.ToList();
+        }
+
+        // add to view data
+        ViewData["Employees"] = listEmployeeDtoGets;
+        ViewData["Companies"] = listCompanyDtoGets;
+
         return View(listRolePlacementDtoGets);
     }
 
