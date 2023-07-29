@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Utilities.Handlers;
 
 namespace API.DataTransferObjects.Accounts;
 
@@ -17,7 +18,7 @@ public class AccountDtoUpdate
         return new Account
         {
             Guid = accountDtoUpdate.Guid,
-            Password = accountDtoUpdate.Password,
+            Password = HashingHandler.HashPassword(accountDtoUpdate.Password),
             IsDeleted = accountDtoUpdate.IsDeleted,
             Otp = accountDtoUpdate.Otp,
             IsUsed = accountDtoUpdate.IsUsed,
