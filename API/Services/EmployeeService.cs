@@ -75,7 +75,13 @@ public class EmployeeService
         employee.ProfileGuid = profileCreated.Guid;
 
         var employeeCreated = _employeeRepository.Create(employee);
-        if (employeeCreated is null) return null!;
+        if (employeeCreated is null)
+        {
+            // delete when employee is null
+            _gradeRepository.Delete(gradeCreated);
+            _profileRepository.Delete(profileCreated);
+            return null!;
+        }
 
         return (EmployeeDtoCreate)employeeCreated;
     }
