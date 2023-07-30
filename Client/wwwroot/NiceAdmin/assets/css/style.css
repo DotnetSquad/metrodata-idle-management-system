@@ -53,6 +53,11 @@ h6 {
   }
 }
 
+.float-right {
+    float: right!important;
+    margin-bottom: 0rem;
+}
+
 /*--------------------------------------------------------------
 # Page Title
 --------------------------------------------------------------*/
@@ -365,7 +370,7 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
+  max-height: 60px;
   margin-right: 6px;
 }
 
