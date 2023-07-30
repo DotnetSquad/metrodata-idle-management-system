@@ -10,16 +10,16 @@ namespace Client.Controllers;
 
 public class PlacementController : Controller
 {
-    private readonly ICompanyRepository companyRepository;
-    private readonly IEmployeeRepository employeeRepository;
-    private readonly IPlacementRepository _repository;
+    private readonly ICompanyRepository _companyRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPlacementRepository _placementRepository;
 
     public PlacementController(IEmployeeRepository employeeRepository, ICompanyRepository companyRepository,
-        IPlacementRepository repository)
+        IPlacementRepository placementRepository)
     {
-        this.employeeRepository = employeeRepository;
-        this.companyRepository = companyRepository;
-        _repository = repository;
+        _companyRepository = companyRepository;
+        _employeeRepository = employeeRepository;
+        _placementRepository = placementRepository;
     }
 
     [Authorize(Roles =
@@ -27,33 +27,30 @@ public class PlacementController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
+        var placements = await _placementRepository.Get();
         var listRolePlacementDtoGets = new List<PlacementDtoGet>();
 
-        if (result.Data != null)
+        if (placements.Data is not null)
         {
-            listRolePlacementDtoGets = result.Data.ToList();
+            listRolePlacementDtoGets = placements.Data.ToList();
         }
 
-        // get employees
-        var resultEmployee = await employeeRepository.Get();
+        var employees = await _employeeRepository.Get();
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
 
-        if (resultEmployee.Data != null)
+        if (employees.Data is not null)
         {
-            listEmployeeDtoGets = resultEmployee.Data.ToList();
+            listEmployeeDtoGets = employees.Data.ToList();
         }
 
-        // get companies
-        var resultCompany = await companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is not null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
-        // add to view data
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 
@@ -64,25 +61,22 @@ public class PlacementController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        // get employees
-        var result = await employeeRepository.Get();
+        var employees = await _employeeRepository.Get();
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
 
-        if (result.Data != null)
+        if (employees.Data is not null)
         {
-            listEmployeeDtoGets = result.Data.ToList();
+            listEmployeeDtoGets = employees.Data.ToList();
         }
 
-        // get companies
-        var resultCompany = await companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is not null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
-        // add to view data
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 
@@ -92,96 +86,107 @@ public class PlacementController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(PlacementDtoGet placementDtoGet)
     {
-        var result = await _repository.Post(placementDtoGet);
-        if (result.Code == 201)
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Code == 409)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var placement = await _placementRepository.Post(placementDtoGet);
 
-        return RedirectToAction(nameof(Index));
+        switch (placement.Code)
+        {
+            case 201:
+                TempData["Success"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
-        var placement = new PlacementDtoGet();
-        if (result.Data?.Guid is null)
+        var placement = await _placementRepository.Get(guid);
+        var placementDtoGet = new PlacementDtoGet();
+
+        if (placement.Data is null)
         {
-            return View(placement);
+            TempData["Error"] = placement.Message;
+            return RedirectToAction(nameof(Index));
         }
         else
         {
-            placement.Guid = result.Data.Guid;
-            placement.Title = result.Data.Title;
-            placement.Description = result.Data.Description;
-            placement.EmployeeGuid = result.Data.EmployeeGuid;
-            placement.CompanyGuid = result.Data.CompanyGuid;
+            placementDtoGet.Guid = placement.Data!.Guid;
+            placementDtoGet.Title = placement.Data!.Title;
+            placementDtoGet.Description = placement.Data!.Description;
+            placementDtoGet.EmployeeGuid = placement.Data!.EmployeeGuid;
+            placementDtoGet.CompanyGuid = placement.Data!.CompanyGuid;
         }
 
-        // get employees
-        var resultEmployee = await employeeRepository.Get();
+        var employees = await _employeeRepository.Get();
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
 
-        if (resultEmployee.Data != null)
+        if (employees.Data is not null)
         {
-            listEmployeeDtoGets = resultEmployee.Data.ToList();
+            listEmployeeDtoGets = employees.Data.ToList();
         }
 
-        // get companies
-        var resultCompany = await companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is not null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
-        // add to view data
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 
-        return View(placement);
+        return View(placementDtoGet);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(PlacementDtoGet placementDtoGet)
     {
-        if (ModelState.IsValid)
+        var result = await _placementRepository.Put(placementDtoGet.Guid, placementDtoGet);
+
+        switch (result.Code)
         {
-            var result = await _repository.Put(placementDtoGet.Guid, placementDtoGet);
-            if (result.Code == 200)
-
-            {
+            case 200:
+                TempData["Success"] = result.Message;
                 return RedirectToAction(nameof(Index));
-            }
-            else if (result.Code == 409)
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
+            case 400:
+                TempData["Error"] = result.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = result.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = result.Message;
+                return RedirectToAction(nameof(Index));
         }
-
-        return View();
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var placement = await _placementRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (placement.Code)
+        {
+            case 200:
+                TempData["Success"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = placement.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
