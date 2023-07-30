@@ -1,4 +1,8 @@
 @using Client.Utilities.Enums;
+@{
+    var successMessage = TempData["Success"] as string;
+    var failMessage = TempData["Error"] as string;
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -383,6 +387,37 @@
         </ul>
 
     </aside><!-- End Sidebar-->
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "closeButton": true,
+                    "progressBar": true,
+                    "timeOut": 3000
+                };
+
+                toastr.success('@successMessage');
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(failMessage))
+    {
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "closeButton": true,
+                    "progressBar": true,
+                    "timeOut": 3000
+                };
+
+                toastr.error('@failMessage');
+            });
+        </script>
+    }
     @RenderBody()
 
     <!-- ======= Footer ======= -->
