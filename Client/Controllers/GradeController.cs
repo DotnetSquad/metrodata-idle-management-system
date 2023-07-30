@@ -46,7 +46,7 @@ public class GradeController : Controller
 
         switch (grade.Code)
         {
-            case 200:
+            case 201:
                 TempData["Success"] = grade.Message;
                 return RedirectToAction(nameof(Index));
             case 400:
