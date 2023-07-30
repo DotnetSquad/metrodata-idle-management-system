@@ -4,6 +4,7 @@ using API.DataTransferObjects.Accounts;
 using API.Models;
 using API.Utilities.Handlers;
 using System.Security.Claims;
+using API.Utilities.Enums;
 
 namespace API.Services;
 
@@ -11,20 +12,26 @@ public class AccountService
 {
     private readonly ApplicationDbContext _context;
     private readonly IAccountRepository _accountRepository;
-    private readonly IEmployeeRepository _employeeRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
     private readonly IEmailHandler _emailHandler;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IGradeRepository _gradeRepository;
+    private readonly IProfileRepository _profileRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly ITokenHandler _tokenHandler;
 
     public AccountService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
-        IEmailHandler emailHandler, IEmployeeRepository employeeRepository, IRoleRepository roleRepository,
+        IEmailHandler emailHandler, IEmployeeRepository employeeRepository, IGradeRepository gradeRepository,
+        IProfileRepository profileRepository,
+        IRoleRepository roleRepository,
         ITokenHandler tokenHandler, ApplicationDbContext context)
     {
         _accountRepository = accountRepository;
         _accountRoleRepository = accountRoleRepository;
         _emailHandler = emailHandler;
         _employeeRepository = employeeRepository;
+        _gradeRepository = gradeRepository;
+        _profileRepository = profileRepository;
         _roleRepository = roleRepository;
         _tokenHandler = tokenHandler;
         _context = context;
@@ -183,11 +190,35 @@ public class AccountService
         return 1;
     }
 
-    public bool RegisterAccount(AccountDtoRegister accountDtoRegister)
+    public bool Register(AccountDtoRegister accountDtoRegister)
     {
         using var transaction = _context.Database.BeginTransaction();
         try
         {
+            var grade = new Grade
+            {
+                Guid = Guid.NewGuid(),
+                GradeLevel = GradeEnum.B,
+                ScoreSegment1 = 0,
+                ScoreSegment2 = 0,
+                ScoreSegment3 = 0,
+                ScoreSegment4 = 0,
+                TotalScore = 0,
+                CreatedDate = DateTime.Now
+            };
+            var gradeCreated = _gradeRepository.Create(grade);
+
+            var profile = new Profile
+            {
+                Guid = Guid.NewGuid(),
+                Skills = "",
+                Linkedin = "",
+                Resume = "",
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
+            };
+            var profileCreated = _profileRepository.Create(profile);
+
             var employee = new Employee
             {
                 Guid = new Guid(),
@@ -198,6 +229,8 @@ public class AccountService
                 HiringDate = accountDtoRegister.HiringDate,
                 Email = accountDtoRegister.Email,
                 PhoneNumber = accountDtoRegister.PhoneNumber,
+                ProfileGuid = profileCreated.Guid,
+                GradeGuid = gradeCreated.Guid,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
             };

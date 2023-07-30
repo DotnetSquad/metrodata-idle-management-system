@@ -305,7 +305,7 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(AccountDtoRegister accountDtoRegister)
     {
-        var isCreated = _accountService.RegisterAccount(accountDtoRegister);
+        var isCreated = _accountService.Register(accountDtoRegister);
         if (!isCreated)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoRegister>
