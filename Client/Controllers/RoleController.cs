@@ -9,25 +9,22 @@ namespace Client.Controllers;
 [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
 public class RoleController : Controller
 {
-    private readonly IRoleRepository _repository;
+    private readonly IRoleRepository _roleRepository;
 
-    public RoleController(IRoleRepository repository)
+    public RoleController(IRoleRepository roleRepository)
     {
-        _repository = repository;
+        _roleRepository = roleRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
-        var listRole = new List<RoleDtoGet>();
+        var roles = await _roleRepository.Get();
+        var listRoles = new List<RoleDtoGet>();
 
-        if (result.Data != null)
-        {
-            listRole = result.Data.ToList();
-        }
+        if (roles.Data is not null) listRoles = roles.Data.ToList();
 
-        return View(listRole);
+        return View(listRoles);
     }
 
     [HttpGet]
@@ -39,68 +36,84 @@ public class RoleController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(RoleDtoGet roleDtoPost)
     {
-        var result = await _repository.Post(roleDtoPost);
-        if (result.Status == "200")
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var role = await _roleRepository.Post(roleDtoPost);
 
-        return RedirectToAction(nameof(Index));
+        switch (role.Code)
+        {
+            case 200:
+                TempData["Success"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
-        var role = new RoleDtoGet();
-        if (result.Data?.Guid is null)
-        {
-            return View(role);
-        }
-        else
-        {
-            role.Guid = result.Data.Guid;
-            role.Name = result.Data.Name;
-        }
+        var role = await _roleRepository.Get(guid);
+        var roleDtoGet = new RoleDtoGet();
 
-        return View(role);
+        switch (role.Code)
+        {
+            case 200:
+                roleDtoGet.Guid = role.Data!.Guid;
+                roleDtoGet.Name = role.Data!.Name;
+                return View(roleDtoGet);
+            case 400:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(Guid id, RoleDtoGet roleDtoGet)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _repository.Put(roleDtoGet.Guid, roleDtoGet);
-            if (result.Code == 200)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (result.Status == "409")
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
-        }
+        var role = await _roleRepository.Put(roleDtoGet.Guid, roleDtoGet);
 
-        return View();
+        switch (role.Code)
+        {
+            case 200:
+                TempData["Success"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var role = await _roleRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (role.Code)
+        {
+            case 200:
+                TempData["Success"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = role.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
