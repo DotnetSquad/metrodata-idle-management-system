@@ -9,12 +9,12 @@ namespace Client.Controllers;
 
 public class JobController : Controller
 {
-    private readonly IJobRepository _repository;
+    private readonly IJobRepository _jobRepository;
     private readonly ICompanyRepository _companyRepository;
 
-    public JobController(IJobRepository repository, ICompanyRepository companyRepository)
+    public JobController(IJobRepository jobRepository, ICompanyRepository companyRepository)
     {
-        _repository = repository;
+        _jobRepository = jobRepository;
         _companyRepository = companyRepository;
     }
 
@@ -22,26 +22,27 @@ public class JobController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
-        var ListJob = new List<JobDtoGet>();
+        var jobs = await _jobRepository.Get();
+        var listJobDtoGets = new List<JobDtoGet>();
 
-        if (result.Data != null)
+        if (jobs.Data is not null)
         {
-            ListJob = result.Data.ToList();
+            listJobDtoGets = jobs.Data.ToList();
         }
 
         // get companies
-        var resultCompany = await _companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is not null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
         // add to view data
         ViewData["Companies"] = listCompanyDtoGets;
-        return View(ListJob);
+
+        return View(listJobDtoGets);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -49,12 +50,12 @@ public class JobController : Controller
     public async Task<IActionResult> Create()
     {
         // get companies
-        var resultCompany = await _companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
         // add to view data
@@ -66,19 +67,20 @@ public class JobController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(JobDtoGet jobDtoPost)
     {
-        var result = await _repository.Post(jobDtoPost);
-        if (result.Status == "200")
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var job = await _jobRepository.Post(jobDtoPost);
 
-        return RedirectToAction(nameof(Index));
+        switch (job.Code)
+        {
+            case 201:
+                TempData["Success"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -86,65 +88,79 @@ public class JobController : Controller
     public async Task<IActionResult> Update(Guid guid)
     {
         // get companies
-        var resultCompany = await _companyRepository.Get();
+        var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (resultCompany.Data != null)
+        if (companies.Data is not null)
         {
-            listCompanyDtoGets = resultCompany.Data.ToList();
+            listCompanyDtoGets = companies.Data.ToList();
         }
 
         // add to view data
         ViewData["Companies"] = listCompanyDtoGets;
 
-        var value = await _repository.Get(guid);
-        var job = new JobDtoGet();
-        if (value.Data?.Guid is null)
+        var job = await _jobRepository.Get(guid);
+        var jobDtoGet = new JobDtoGet();
+
+        if (job.Data is null)
         {
-            return View(job);
+            TempData["Error"] = job.Message;
+            return RedirectToAction(nameof(Index));
         }
         else
         {
-            job.Guid = value.Data.Guid;
-            job.JobName = value.Data.JobName;
-            job.Description = value.Data.Description;
-            job.CompanyGuid = value.Data.CompanyGuid;
+            jobDtoGet.Guid = job.Data.Guid;
+            jobDtoGet.JobName = job.Data.JobName;
+            jobDtoGet.Description = job.Data.Description;
+            jobDtoGet.CompanyGuid = job.Data.CompanyGuid;
         }
 
-        return View(job);
+        return View(jobDtoGet);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(JobDtoGet job)
+    public async Task<IActionResult> Update(JobDtoGet jobDtoGet)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _repository.Put(job.Guid, job);
-            if (result.Code == 200)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (result.Status == "409")
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
-        }
+        var job = await _jobRepository.Put(jobDtoGet.Guid, jobDtoGet);
 
-        return View();
+        switch (job.Code)
+        {
+            case 200:
+                TempData["Success"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var job = await _jobRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (job.Code)
+        {
+            case 200:
+                TempData["Success"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = job.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
