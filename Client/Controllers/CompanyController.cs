@@ -19,15 +19,15 @@ public class CompanyController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _companyRepository.Get();
-        var ListCompany = new List<CompanyDtoGet>();
+        var companies = await _companyRepository.Get();
+        var ListCompanies = new List<CompanyDtoGet>();
 
-        if (result.Data != null)
+        if (companies.Data is not null)
         {
-            ListCompany = result.Data.ToList();
+            ListCompanies = companies.Data.ToList();
         }
 
-        return View(ListCompany);
+        return View(ListCompanies);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -41,40 +41,44 @@ public class CompanyController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CompanyDtoGet companyDtoPost)
     {
-        var result = await _companyRepository.Post(companyDtoPost);
-        if (result.Status == "200")
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var company = await _companyRepository.Post(companyDtoPost);
 
-        return RedirectToAction(nameof(Index));
+        switch (company.Code)
+        {
+            case 201:
+                TempData["Success"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _companyRepository.Get(guid);
-        var company = new CompanyDtoGet();
-        if (result.Data?.Guid is null)
-        {
-            return View(company);
-        }
-        else
-        {
-            company.Guid = result.Data.Guid;
-            company.CompanyName = result.Data.CompanyName;
-            company.Description = result.Data.Description;
-            company.Address = result.Data.Address;
-        }
+        var company = await _companyRepository.Get(guid);
+        var companyDtoGet = new CompanyDtoGet();
 
-        return View(company);
+        switch (company.Code)
+        {
+            case 200:
+                companyDtoGet.Guid = company.Data!.Guid;
+                companyDtoGet.CompanyName = company.Data!.CompanyName;
+                companyDtoGet.Description = company.Data!.Description;
+                companyDtoGet.Address = company.Data!.Address;
+                return View(companyDtoGet);
+            case 400:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -82,33 +86,45 @@ public class CompanyController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(Guid id, CompanyDtoGet companyDtoGet)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _companyRepository.Put(companyDtoGet.Guid, companyDtoGet);
-            if (result.Code == 200)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (result.Code == 409)
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
-        }
+        var company = await _companyRepository.Put(companyDtoGet.Guid, companyDtoGet);
 
-        return View();
+        switch (company.Code)
+        {
+            case 200:
+                TempData["Success"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _companyRepository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var company = await _companyRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (company.Code)
+        {
+            case 200:
+                TempData["Success"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = company.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
