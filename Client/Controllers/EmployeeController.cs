@@ -8,14 +8,14 @@ namespace Client.Controllers;
 
 public class EmployeeController : Controller
 {
-    private readonly IEmployeeRepository _repository;
+    private readonly IEmployeeRepository _employeerepository;
     private readonly IGradeRepository _gradeRepository;
     private readonly IProfileRepository _profileRepository;
 
-    public EmployeeController(IEmployeeRepository repository, IGradeRepository gradeRepository,
+    public EmployeeController(IEmployeeRepository employeerepository, IGradeRepository gradeRepository,
         IProfileRepository profileRepository)
     {
-        _repository = repository;
+        _employeerepository = employeerepository;
         _gradeRepository = gradeRepository;
         _profileRepository = profileRepository;
     }
@@ -25,15 +25,15 @@ public class EmployeeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
-        var ListEmployee = new List<EmployeeDtoGet>();
+        var emplooyees = await _employeerepository.Get();
+        var ListEmployees = new List<EmployeeDtoGet>();
 
-        if (result.Data != null)
+        if (emplooyees.Data != null)
         {
-            ListEmployee = result.Data.ToList();
+            ListEmployees = emplooyees.Data.ToList();
         }
 
-        return View(ListEmployee);
+        return View(ListEmployees);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -69,82 +69,96 @@ public class EmployeeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EmployeeDtoGet employeeDtoPost)
     {
-        var result = await _repository.Post(employeeDtoPost);
-        if (result.Status == "201")
+        var employee = await _employeerepository.Post(employeeDtoPost);
+        switch (employee.Code)
         {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
+            case 201:
+                TempData["Success"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
         }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
-
-        return RedirectToAction(nameof(Index));
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
+        var employee = await _employeerepository.Get(guid);
+        var employeeDtoGet = new EmployeeDtoGet();
 
-        var employee = new EmployeeDtoGet();
-        if (result.Data?.Guid is null)
+        switch (employee.Code)
         {
-            return View(employee);
+            case 200:
+                employeeDtoGet.Guid = employee.Data!.Guid;
+                employeeDtoGet.Nik = employee.Data!.Nik;
+                employeeDtoGet.FirstName = employee.Data!.FirstName;
+                employeeDtoGet.LastName = employee.Data.LastName;
+                employeeDtoGet.BirthDate = employee.Data!.BirthDate;
+                employeeDtoGet.Gender = employee.Data!.Gender;
+                employeeDtoGet.HiringDate = employee.Data!.HiringDate;
+                employeeDtoGet.Email = employee.Data!.Email;
+                employeeDtoGet.PhoneNumber = employee.Data!.PhoneNumber;
+                employeeDtoGet.Status = employee.Data!.Status;
+                employeeDtoGet.GradeGuid = employee.Data.GradeGuid;
+                employeeDtoGet.ProfileGuid = employee.Data.ProfileGuid;
+                return View(employeeDtoGet);
+            case 400:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            employee.Guid = result.Data.Guid;
-            employee.Nik = result.Data.Nik;
-            employee.FirstName = result.Data.FirstName;
-            employee.LastName = result.Data.LastName;
-            employee.BirthDate = result.Data.BirthDate;
-            employee.Gender = result.Data.Gender;
-            employee.HiringDate = result.Data.HiringDate;
-            employee.Email = result.Data.Email;
-            employee.PhoneNumber = result.Data.PhoneNumber;
-            employee.Status = result.Data.Status;
-            employee.GradeGuid = result.Data.GradeGuid;
-            employee.ProfileGuid = result.Data.ProfileGuid;
-        }
-
-        return View(employee);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(EmployeeDtoGet employeeDtoGet)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _repository.Put(employeeDtoGet.Guid, employeeDtoGet);
-            if (result.Code == 200)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (result.Status == "409")
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
-        }
+        var employee = await _employeerepository.Put(employeeDtoGet.Guid, employeeDtoGet);
 
-        return View();
+        switch (employee.Code)
+        {
+            case 200:
+                TempData["Success"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var employee = await _employeerepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (employee.Code)
+        {
+            case 200:
+                TempData["Success"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employee.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
