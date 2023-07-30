@@ -9,12 +9,12 @@ namespace Client.Controllers;
 
 public class InterviewController : Controller
 {
-    private readonly IInterviewRepository _repository;
+    private readonly IInterviewRepository _interviewRepository;
     private readonly IJobRepository _jobRepository;
 
-    public InterviewController(IInterviewRepository repository, IJobRepository jobRepository)
+    public InterviewController(IInterviewRepository interviewRepository, IJobRepository jobRepository)
     {
-        _repository = repository;
+        _interviewRepository = interviewRepository;
         _jobRepository = jobRepository;
     }
 
@@ -23,131 +23,125 @@ public class InterviewController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
+        var interviews = await _interviewRepository.Get();
         var listInterviewDtoGets = new List<InterviewDtoGet>();
 
-        if (result.Data != null)
-        {
-            listInterviewDtoGets = result.Data.ToList();
-        }
+        if (interviews.Data is not null) listInterviewDtoGets = interviews.Data.ToList();
 
-        // get job
-        var resultJob = await _jobRepository.Get();
+        var jobs = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
 
-        if (resultJob.Data != null)
-        {
-            listJobDtoGets = resultJob.Data.ToList();
-        }
+        if (jobs.Data != null) listJobDtoGets = jobs.Data.ToList();
 
-        // add to view data
         ViewData["Jobs"] = listJobDtoGets;
-
         return View(listInterviewDtoGets);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
-    // create
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        // get job
-        var resultJob = await _jobRepository.Get();
+        var jobs = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
 
-        if (resultJob.Data != null)
-        {
-            listJobDtoGets = resultJob.Data.ToList();
-        }
+        if (jobs.Data is not null) listJobDtoGets = jobs.Data.ToList();
 
-        // add to view data
         ViewData["Jobs"] = listJobDtoGets;
-
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(InterviewDtoGet interviewDtoGet)
     {
-        var result = await _repository.Post(interviewDtoGet);
-        if (result.Status == "200")
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var interview = await _interviewRepository.Post(interviewDtoGet);
 
-        return RedirectToAction(nameof(Index));
+        switch (interview.Code)
+        {
+            case 201:
+                TempData["Success"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
+        var interview = await _interviewRepository.Get(guid);
         var interviewDtoGet = new InterviewDtoGet();
-        if (result.Data?.Guid is null)
+        if (interview.Data is null)
         {
-            return View(interviewDtoGet);
+            TempData["Error"] = interview.Message;
+            return RedirectToAction(nameof(Index));
         }
         else
         {
-            interviewDtoGet.Guid = result.Data.Guid;
-            interviewDtoGet.Title = result.Data.Title;
-            interviewDtoGet.Link = result.Data.Link;
-            interviewDtoGet.InterviewDate = result.Data.InterviewDate;
-            interviewDtoGet.Description = result.Data.Description;
-            interviewDtoGet.StatusInterview = result.Data.StatusInterview;
-            interviewDtoGet.JobGuid = result.Data.JobGuid;
+            interviewDtoGet.Guid = interview.Data.Guid;
+            interviewDtoGet.Title = interview.Data.Title;
+            interviewDtoGet.Link = interview.Data.Link;
+            interviewDtoGet.InterviewDate = interview.Data.InterviewDate;
+            interviewDtoGet.Description = interview.Data.Description;
+            interviewDtoGet.StatusInterview = interview.Data.StatusInterview;
+            interviewDtoGet.JobGuid = interview.Data.JobGuid;
         }
 
-        // get job
-        var resultJob = await _jobRepository.Get();
+        var jobs = await _jobRepository.Get();
         var listJobDtoGets = new List<JobDtoGet>();
 
-        if (resultJob.Data != null)
-        {
-            listJobDtoGets = resultJob.Data.ToList();
-        }
+        if (jobs.Data is not null) listJobDtoGets = jobs.Data.ToList();
 
-        // add to view data
         ViewData["Jobs"] = listJobDtoGets;
-
         return View(interviewDtoGet);
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(InterviewDtoGet interviewDtoGet)
     {
-        var result = await _repository.Put(interviewDtoGet.Guid, interviewDtoGet);
-        if (result.Code == 200)
-        {
-            TempData["Success"] = "Data success updated";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Code == 409)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var interview = await _interviewRepository.Put(interviewDtoGet.Guid, interviewDtoGet);
 
-        return RedirectToAction(nameof(Index));
+        switch (interview.Code)
+        {
+            case 200:
+                TempData["Success"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var interview = await _interviewRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (interview.Code)
+        {
+            case 200:
+                TempData["Success"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = interview.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
