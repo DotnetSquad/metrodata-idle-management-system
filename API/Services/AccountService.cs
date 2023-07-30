@@ -128,6 +128,7 @@ public class AccountService
         {
             var claims = new List<Claim>()
             {
+                new Claim(ClaimTypes.NameIdentifier, employee.Guid.ToString()),
                 new Claim("NIK", employee.Nik),
                 new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
                 new Claim("EmailAddress", accountDtoLogin.Email)
