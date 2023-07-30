@@ -1,6 +1,7 @@
 using API.Contracts;
 using API.DataTransferObjects.Employees;
 using API.Models;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
 
 namespace API.Services;
@@ -8,10 +9,15 @@ namespace API.Services;
 public class EmployeeService
 {
     private IEmployeeRepository _employeeRepository;
+    private IGradeRepository _gradeRepository;
+    private IProfileRepository _profileRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository)
+    public EmployeeService(IEmployeeRepository employeeRepository, IGradeRepository gradeRepository,
+        IProfileRepository profileRepository)
     {
         _employeeRepository = employeeRepository;
+        _gradeRepository = gradeRepository;
+        _profileRepository = profileRepository;
     }
 
     public IEnumerable<EmployeeDtoGet> Get()
@@ -40,6 +46,33 @@ public class EmployeeService
     {
         Employee employee = employeeDtoCreate;
         employee.Nik = GenerateHandler.GenerateNik(_employeeRepository.GetLastEmployeeNik());
+
+        var grade = new Grade
+        {
+            Guid = Guid.NewGuid(),
+            GradeLevel = GradeEnum.B,
+            ScoreSegment1 = 0,
+            ScoreSegment2 = 0,
+            ScoreSegment3 = 0,
+            ScoreSegment4 = 0,
+            TotalScore = 0,
+            CreatedDate = DateTime.Now
+        };
+
+        var gradeCreated = _gradeRepository.Create(grade);
+        employee.GradeGuid = gradeCreated.Guid;
+
+        var profile = new Profile
+        {
+            Guid = Guid.NewGuid(),
+            Skills = "",
+            Linkedin = "",
+            CreatedDate = DateTime.Now,
+            ModifiedDate = DateTime.Now
+        };
+
+        var profileCreated = _profileRepository.Create(profile);
+        employee.ProfileGuid = profileCreated.Guid;
 
         var employeeCreated = _employeeRepository.Create(employee);
         if (employeeCreated is null) return null!;
