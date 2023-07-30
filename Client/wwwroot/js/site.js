@@ -2,7 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-new DataTable('#data-table');
+new DataTable('#data-table', {
+    scrollX: true
+});
 
 // Show a confirmation dialog before deleting a record - See https://sweetalert2.github.io/
 document.addEventListener('DOMContentLoaded', function () {
