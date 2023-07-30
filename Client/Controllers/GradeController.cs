@@ -8,11 +8,11 @@ namespace Client.Controllers;
 
 public class GradeController : Controller
 {
-    private readonly IGradeRepository _repository;
+    private readonly IGradeRepository _gradeRepository;
 
-    public GradeController(IGradeRepository repository)
+    public GradeController(IGradeRepository gradeRepository)
     {
-        _repository = repository;
+        _gradeRepository = gradeRepository;
     }
 
     [Authorize(Roles =
@@ -20,16 +20,16 @@ public class GradeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
-        var ListGrade = new List<GradeDtoGet>();
+        var grades = await _gradeRepository.Get();
+        var ListGrades = new List<GradeDtoGet>();
 
-        if (result.Data != null)
+        if (grades.Data != null)
         {
-            result.Data.ToList().ForEach(x => x.TotalScore = (int)x.TotalScore);
-            ListGrade = result.Data.ToList();
+            grades.Data.ToList().ForEach(x => x.TotalScore = (int)x.TotalScore);
+            ListGrades = grades.Data.ToList();
         }
 
-        return View(ListGrade);
+        return View(ListGrades);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -42,77 +42,94 @@ public class GradeController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(GradeDtoGenerateScore gradeDtoPost)
     {
-        var result = await _repository.PostGenerate(gradeDtoPost);
-        if (result.Status == "200")
-        {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
-        }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
+        var grade = await _gradeRepository.PostGenerate(gradeDtoPost);
 
-        return RedirectToAction(nameof(Index));
+        switch (grade.Code)
+        {
+            case 200:
+                TempData["Success"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
-        var grade = new GradeDtoGet();
-        if (result.Data?.Guid is null)
-        {
-            return View(grade);
-        }
-        else
-        {
-            grade.Guid = result.Data.Guid;
-            grade.GradeLevel = result.Data.GradeLevel;
-            grade.ScoreSegment1 = result.Data.ScoreSegment1;
-            grade.ScoreSegment2 = result.Data.ScoreSegment2;
-            grade.ScoreSegment3 = result.Data.ScoreSegment3;
-            grade.ScoreSegment4 = result.Data.ScoreSegment4;
-            grade.TotalScore = result.Data.TotalScore;
-        }
+        var grade = await _gradeRepository.Get(guid);
+        var gradeDtoGet = new GradeDtoGet();
 
-        return View(grade);
+        switch (grade.Code)
+        {
+            case 200:
+                gradeDtoGet.Guid = grade.Data.Guid;
+                gradeDtoGet.GradeLevel = grade.Data.GradeLevel;
+                gradeDtoGet.ScoreSegment1 = grade.Data.ScoreSegment1;
+                gradeDtoGet.ScoreSegment2 = grade.Data.ScoreSegment2;
+                gradeDtoGet.ScoreSegment3 = grade.Data.ScoreSegment3;
+                gradeDtoGet.ScoreSegment4 = grade.Data.ScoreSegment4;
+                gradeDtoGet.TotalScore = grade.Data.TotalScore;
+                return View(gradeDtoGet);
+            case 400:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(GradeDtoGet grade)
+    public async Task<IActionResult> Update(Guid id, GradeDtoGet gradeDtoGet)
     {
-        if (ModelState.IsValid)
+        var grade = await _gradeRepository.PutGenerate(gradeDtoGet.Guid, gradeDtoGet);
+
+        switch (grade.Code)
         {
-            var result = await _repository.PutGenerate(grade.Guid, grade);
-            if (result.Code == 200)
-
-            {
+            case 200:
+                TempData["Success"] = grade.Message;
                 return RedirectToAction(nameof(Index));
-            }
-            else if (result.Status == "409")
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
+            case 400:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
         }
-
-        return View();
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        var grade = await _gradeRepository.Delete(guid);
 
-        return RedirectToAction(nameof(Index));
+        switch (grade.Code)
+        {
+            case 200:
+                TempData["Success"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = grade.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
+
+
