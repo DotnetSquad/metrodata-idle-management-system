@@ -8,11 +8,11 @@ namespace Client.Controllers;
 
 public class ProfileController : Controller
 {
-    private readonly IProfileRepository _repository;
+    private readonly IProfileRepository _profileRepository;
 
-    public ProfileController(IProfileRepository repository)
+    public ProfileController(IProfileRepository profileRepository)
     {
-        _repository = repository;
+        _profileRepository = profileRepository;
     }
 
     [Authorize(Roles =
@@ -20,15 +20,15 @@ public class ProfileController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var result = await _repository.Get();
-        var ListProfile = new List<ProfileDtoGet>();
+        var profiles = await _profileRepository.Get();
+        var ListProfiles = new List<ProfileDtoGet>();
 
-        if (result.Data != null)
+        if (profiles.Data is not null)
         {
-            ListProfile = result.Data.ToList();
+            ListProfiles = profiles.Data.ToList();
         }
 
-        return View(ListProfile);
+        return View(ListProfiles);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -41,73 +41,86 @@ public class ProfileController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(ProfileDtoGet profileDtoPost)
     {
-        var result = await _repository.Post(profileDtoPost);
-        if (result.Status == "200")
+        var profile = await _profileRepository.Post(profileDtoPost);
+        switch (profile.Code)
         {
-            TempData["Success"] = "Data success created";
-            return RedirectToAction(nameof(Index));
+            case 201:
+                TempData["Success"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
         }
-        else if (result.Status == "409")
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
-
-        return RedirectToAction(nameof(Index));
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        var result = await _repository.Get(guid);
-        var profile = new ProfileDtoGet();
-        if (result.Data?.Guid is null)
+        var profile = await _profileRepository.Get(guid);
+        var profileDtoGet = new ProfileDtoGet();
+        switch (profile.Code)
         {
-            return View(profile);
+            case 200:
+                profileDtoGet.Guid = profile.Data!.Guid;
+                profileDtoGet.Skills = profile.Data!.Skills;
+                profileDtoGet.Linkedin = profile.Data!.Linkedin;
+                profileDtoGet.Resume = profile.Data!.Resume;
+                return View(profileDtoGet);
+            case 400:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            profile.Guid = result.Data.Guid;
-            profile.Skills = result.Data.Skills;
-            profile.Linkedin = result.Data.Linkedin;
-            profile.Resume = result.Data.Resume;
-        }
-
-        return View(profile);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(Guid id, ProfileDtoGet profileDtoGet)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _repository.Put(profileDtoGet.Guid, profileDtoGet);
-            if (result.Code == 200)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if (result.Code == 409)
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View();
-            }
-        }
 
-        return View();
+        var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
+        switch (profile.Code)
+        {
+            case 200:
+                TempData["Success"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _repository.Delete(guid);
-        if (result.Code == 200)
+        var profile = await _profileRepository.Delete(guid);
+        switch (profile.Code)
         {
-            return RedirectToAction(nameof(Index));
+            case 200:
+                TempData["Success"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            case 500:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
         }
-
-        return RedirectToAction(nameof(Index));
     }
 }
