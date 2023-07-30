@@ -3,6 +3,40 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "_LayoutDashboard";
+    var successMessage = TempData["Success"] as string;
+    var failMessage = TempData["Error"] as string;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "closeButton": true,
+                "progressBar": true,
+                "timeOut": 3000
+            };
+
+            toastr.success('@successMessage');
+        });
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(failMessage))
+{
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "closeButton": true,
+                "progressBar": true,
+                "timeOut": 3000
+            };
+
+            toastr.error('@failMessage');
+        });
+    </script>
 }
 
 <h1>Index</h1>
