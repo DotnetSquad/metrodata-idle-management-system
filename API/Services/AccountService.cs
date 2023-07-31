@@ -138,7 +138,9 @@ public class AccountService
                 new Claim(ClaimTypes.NameIdentifier, employee.Guid.ToString()),
                 new Claim("NIK", employee.Nik),
                 new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
-                new Claim("EmailAddress", accountDtoLogin.Email)
+                new Claim("EmailAddress", accountDtoLogin.Email),
+                new Claim("GradeGuid", employee.GradeGuid.ToString() ?? Guid.Empty.ToString()),
+                new Claim("ProfileGuid", employee.ProfileGuid.ToString() ?? Guid.Empty.ToString()),
             };
 
             var accountRoles = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);

@@ -123,4 +123,26 @@ public class ProfileController : Controller
                 return RedirectToAction(nameof(Index));
         }
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid guid)
+    {
+        var profile = await _profileRepository.Get(guid);
+        var profileDtoGet = new ProfileDtoGet();
+        switch (profile.Code)
+        {
+            case 200:
+                profileDtoGet.Guid = profile.Data!.Guid;
+                profileDtoGet.Skills = profile.Data!.Skills;
+                profileDtoGet.Linkedin = profile.Data!.Linkedin;
+                profileDtoGet.Resume = profile.Data!.Resume;
+                return View(profileDtoGet);
+            case 400:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction(nameof(Index));
+        }
+    }
 }
