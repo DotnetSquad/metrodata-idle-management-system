@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Profiles;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -9,10 +10,12 @@ namespace Client.Controllers;
 public class ProfileController : Controller
 {
     private readonly IProfileRepository _profileRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public ProfileController(IProfileRepository profileRepository)
+    public ProfileController(IProfileRepository profileRepository, IEmployeeRepository employeeRepository)
     {
         _profileRepository = profileRepository;
+        _employeeRepository = employeeRepository;
     }
 
     [Authorize(Roles =
@@ -123,12 +126,26 @@ public class ProfileController : Controller
                 return RedirectToAction(nameof(Index));
         }
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Details(Guid guid)
     {
+        var employeeGuid = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
+        var employeeGuidTemp = Guid.Parse(employeeGuid);
+
         var profile = await _profileRepository.Get(guid);
         var profileDtoGet = new ProfileDtoGet();
+
+        var employee = await _employeeRepository.Get(employeeGuidTemp);
+        var employeeDtoGets = new EmployeeDtoGet();
+
+        if (employee.Data is not null)
+        {
+            employeeDtoGets = employee.Data;
+        }
+
+        ViewData["Employee"] = employeeDtoGets;
+
         switch (profile.Code)
         {
             case 200:
