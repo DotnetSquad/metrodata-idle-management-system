@@ -162,4 +162,27 @@ public class ProfileController : Controller
                 return RedirectToAction(nameof(Index));
         }
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateProfileById(ProfileDtoGet profileDtoGet)
+    {
+        var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
+
+        switch (profile.Code)
+        {
+            case 200:
+                TempData["Success"] = profile.Message;
+                return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
+            case 400:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
+            case 404:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
+            default:
+                TempData["Error"] = profile.Message;
+                return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
+        }
+    }
 }

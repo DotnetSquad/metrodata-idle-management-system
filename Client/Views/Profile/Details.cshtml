@@ -1,10 +1,9 @@
 @using Newtonsoft.Json;
-@using Client.DataTransferObjects.Employees;
 @model Client.DataTransferObjects.Profiles.ProfileDtoGet
 
 @{
     Layout = "_LayoutDashboard";
-    var employee = (EmployeeDtoGet)ViewData["Employee"];
+    var employee = ViewData["Employee"] as Client.DataTransferObjects.Employees.EmployeeDtoGet;
     var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
     var emailAddress = User.Claims.FirstOrDefault(x => x.Type == "EmailAddress")?.Value;
 }
@@ -123,7 +122,7 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Phone</div>
                                     <div class="col-lg-9 col-md-8">
-                                       @employee.PhoneNumber
+                                        @employee.PhoneNumber
                                     </div>
                                 </div>
 
@@ -157,111 +156,212 @@
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form>
+                                @*<form>
+                                <div class="row mb-3">
+                                <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                                <div class="col-md-8 col-lg-9">
+                                <img src="assets/img/profile-img.jpg" alt="Profile">
+                                <div class="pt-2">
+                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image">
+                                <i class="bi bi-upload"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
+                                <i class="bi bi-trash"></i>
+                                </a>
+                                </div>
+                                </div>
+                                </div>*@
+
+                                <form action="/employee/updateemployeebyid" method="post" class="row g-3 needs-validation" novalidate>
+                                    @Html.AntiForgeryToken()
                                     <div class="row mb-3">
-                                        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                                        <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <img src="assets/img/profile-img.jpg" alt="Profile">
-                                            <div class="pt-2">
-                                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image">
-                                                    <i class="bi bi-upload"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
+                                            <input asp-for="@employee.FirstName" type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                                        <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                                            <input asp-for="@employee.LastName" type="text" class="form-control" id="lastName">
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                                        <label for="birthDate" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                                        <input asp-for="@employee.BirthDate" type="datetime-local" class="form-control" id="birthDate" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your birth date!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+                                        <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="company" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke">
+                                        <select asp-for="@employee.Gender" class="form-control" id="gender" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option value="1">Male</option>
+                                            <option value="0">Female</option>
+                                        </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select your gender!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
+                                        <label for="hiringDate" class="col-md-4 col-lg-3 col-form-label">Hiring Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                                        <input asp-for="@employee.HiringDate" type="datetime-local" class="form-control" id="hiringDate" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your hiring date!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                                        <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="country" type="text" class="form-control" id="Country" value="USA">
+                                        <input asp-for="@employee.Email" type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid Email adddress!
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
-                                        <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                        <label for="phoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
+                                        <input asp-for="@employee.PhoneNumber" type="text" class="form-control" id="phoneNumber" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your phone number!
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                    <div class="row mb-3" hidden>
+                                        <label for="status" class="col-md-4 col-lg-3 col-form-label">Status</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
+                                        <select asp-for="@employee.Status" class="form-control" id="status" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option value="1">Working</option>
+                                            <option value="0">Idle</option>
+                                        </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select your status!
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                    <div class="row mb-3" hidden>
+                                        <label for="guid" class="col-md-4 col-lg-3 col-form-label">Guid</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
+                                            <input asp-for="@employee.Guid" type="text" class="form-control" id="guid" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+                                    <div class="row mb-3" hidden>
+                                        <label for="nik" class="col-md-4 col-lg-3 col-form-label">Nik</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+                                        <input asp-for="@employee.Nik" type="text" class="form-control" id="nik" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
+                                    <div class="row mb-3" hidden>
+                                        <label for="gradeGuid" class="col-md-4 col-lg-3 col-form-label">Grade</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
+                                        <select asp-for="@employee.GradeGuid" class="form-select" id="gradeGuid">
+                                            @* foreach view bag grade *@
+                                            @{
+                                                if (Model != null)
+                                                {
+                                                    var item = Model;
+                                                    <option value="@employee.GradeGuid"></option>
+                                                }
+                                            }
+                                        </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a valid Grade.
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
+                                    <div class="row mb-3" hidden>
+                                        <label for="profileGuid" class="col-md-4 col-lg-3 col-form-label">Profile</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
+                                        <select asp-for="@employee.ProfileGuid" class="form-select" id="profileGuid">
+                                            @* foreach view bag profile *@
+                                            @{
+                                                if (Model != null)
+                                                {
+                                                    var item = Model;
+                                                    <option value="@employee.ProfileGuid"></option>
+                                                }
+                                            }
+                                        </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a valid Profile.
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit">Submit form</button>
                                     </div>
                                 </form><!-- End Profile Edit Form -->
-
+                                <br />
+                                <form action="/profile/updateprofilebyid" method="post" class="row g-3 needs-validation" novalidate>
+                                    @Html.AntiForgeryToken()
+                                    <div class="col-md-8" hidden>
+                                        <label for="validationCustom01" class="form-label">Guid</label>
+                                        <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="skill" class="col-md-4 col-lg-3 col-form-label">Skills</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="Skills" type="text" class="form-control" id="skill" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your skills!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input text="url" asp-for="Linkedin" class="form-control" id="linkedin" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your Linkedin Link!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="resume" class="col-md-4 col-lg-3 col-form-label">Resume</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input type="url" asp-for="Resume" class="form-control" id="resume" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your resume link!
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit">Submit form</button>
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="tab-pane fade pt-3" id="profile-settings">
