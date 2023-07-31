@@ -2,9 +2,9 @@
 using API.Data;
 using API.DataTransferObjects.Accounts;
 using API.Models;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
 using System.Security.Claims;
-using API.Utilities.Enums;
 
 namespace API.Services;
 
@@ -135,7 +135,7 @@ public class AccountService
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, employee.Guid.ToString()),
+                new Claim("Guid", employee.Guid.ToString()),
                 new Claim("NIK", employee.Nik),
                 new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
                 new Claim("EmailAddress", accountDtoLogin.Email),
@@ -145,8 +145,8 @@ public class AccountService
 
             var accountRoles = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);
             var getRolesNameByAccountRole = from accountRole in accountRoles
-                join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
-                select role.Name;
+                                            join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
+                                            select role.Name;
             claims.AddRange(getRolesNameByAccountRole.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = _tokenHandler.GenerateToken(claims);
