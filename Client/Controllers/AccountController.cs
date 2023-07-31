@@ -23,23 +23,20 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(AccountDtoLogin accountDtoLogin)
     {
-        var result = await _accountRepository.Login(accountDtoLogin);
-        if (result is null)
-        {
-            return RedirectToAction("Error", "Home");
-        }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            HttpContext.Session.SetString("JWTToken", result.Data);
-            return RedirectToAction("Index", "Dashboard");
-        }
+        var account = await _accountRepository.Login(accountDtoLogin);
 
-        return View();
+        switch (account.Code)
+        {
+            case 200:
+                HttpContext.Session.SetString("JWTToken", account.Data);
+                return RedirectToAction("Index", "Dashboard");
+            case 400:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(Login));
+            default:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(Login));
+        }
     }
 
     public IActionResult Register()
@@ -51,24 +48,20 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(AccountDtoRegister register)
     {
-        var result = await _accountRepository.Register(register);
-        if (result is null)
-        {
-            return RedirectToAction("Error", "Home");
-        }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return RedirectToAction("Login", "Account");
-        }
+        var account = await _accountRepository.Register(register);
 
-        return View();
+        switch (account.Code)
+        {
+            case 200:
+                TempData["Success"] = account.Message;
+                return RedirectToAction("Login", "Account");
+            case 400:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(Register));
+            default:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(Register));
+        }
     }
 
     public IActionResult Index()
@@ -85,25 +78,20 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> ForgotPassword(AccountDtoForgotPassword accountDtoForgotPassword)
     {
-        var result = await _accountRepository.ForgotPassword(accountDtoForgotPassword);
+        var account = await _accountRepository.ForgotPassword(accountDtoForgotPassword);
 
-        if (result is null)
+        switch (account.Code)
         {
-            return RedirectToAction("Error", "Home");
+            case 200:
+                TempData["Success"] = account.Message;
+                return RedirectToAction("ChangePassword", "Account");
+            case 400:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(ForgotPassword));
+            default:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(ForgotPassword));
         }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return RedirectToAction("ChangePassword", "Account");
-        }
-
-        return View();
     }
 
     public IActionResult ChangePassword()
@@ -114,25 +102,20 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> ChangePassword(AccountDtoChangePassword accountDtoChangePassword)
     {
-        var result = await _accountRepository.ChangePassword(accountDtoChangePassword);
+        var account = await _accountRepository.ChangePassword(accountDtoChangePassword);
 
-        if (result is null)
+        switch (account.Code)
         {
-            return RedirectToAction("Error", "Home");
+            case 200:
+                TempData["Success"] = account.Message;
+                return RedirectToAction("Login", "Account");
+            case 400:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(ChangePassword));
+            default:
+                TempData["Error"] = account.Message;
+                return RedirectToAction(nameof(ChangePassword));
         }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return RedirectToAction("Login", "Account");
-        }
-
-        return View();
     }
     
     public IActionResult Logout()
