@@ -67,6 +67,7 @@ public class EmployeeService
             Guid = Guid.NewGuid(),
             Skills = "",
             Linkedin = "",
+            Resume = "",
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now
         };
