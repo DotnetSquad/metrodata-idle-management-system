@@ -25,19 +25,17 @@ public class AccountController : Controller
     {
         var account = await _accountRepository.Login(accountDtoLogin);
 
-        switch (account?.Code)
+        switch (account.Code)
         {
-            case null:
-                return RedirectToAction("Error", "Home");
             case 200:
                 HttpContext.Session.SetString("JWTToken", account.Data);
                 return RedirectToAction("Index", "Dashboard");
             case 400:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Login));
             default:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Login));
         }
     }
 
@@ -52,19 +50,17 @@ public class AccountController : Controller
     {
         var account = await _accountRepository.Register(register);
 
-        switch (account?.Code)
+        switch (account.Code)
         {
-            case null:
-                return RedirectToAction("Error", "Home");
             case 200:
                 TempData["Success"] = account.Message;
                 return RedirectToAction("Login", "Account");
             case 400:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Register));
             default:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Register));
         }
     }
 
@@ -84,19 +80,17 @@ public class AccountController : Controller
     {
         var account = await _accountRepository.ForgotPassword(accountDtoForgotPassword);
 
-        switch (account?.Code)
+        switch (account.Code)
         {
-            case null:
-                return RedirectToAction("Error", "Home");
             case 200:
                 TempData["Success"] = account.Message;
                 return RedirectToAction("ChangePassword", "Account");
             case 400:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ForgotPassword));
             default:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ForgotPassword));
         }
     }
 
@@ -110,19 +104,17 @@ public class AccountController : Controller
     {
         var account = await _accountRepository.ChangePassword(accountDtoChangePassword);
 
-        switch (account?.Code)
+        switch (account.Code)
         {
-            case null:
-                return RedirectToAction("Error", "Home");
             case 200:
                 TempData["Success"] = account.Message;
                 return RedirectToAction("Login", "Account");
             case 400:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ChangePassword));
             default:
                 TempData["Error"] = account.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ChangePassword));
         }
     }
     
