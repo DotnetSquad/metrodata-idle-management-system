@@ -42,6 +42,7 @@ builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRoleService>();
 builder.Services.AddScoped<CompanyService>();
+builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<EmployeeInterviewService>();
 builder.Services.AddScoped<EmployeeProjectService>();

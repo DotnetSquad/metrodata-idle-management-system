@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.Data;
 using API.Models;
+using API.Utilities.Enums;
 
 namespace API.Repositories;
 
@@ -23,5 +24,15 @@ public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
     public string? GetLastEmployeeNik()
     {
         return Context.Set<Employee>().ToList().Select(e => e.Nik).LastOrDefault();
+    }
+
+    public int GetIdleEmployeeStatus()
+    {
+        return Context.Set<Employee>().Count(a => a.Status == StatusEnum.Idle);
+    }
+
+    public int GetWorkingEmployeeStatus()
+    {
+        return Context.Set<Employee>().Count(a => a.Status == StatusEnum.Working);
     }
 }
