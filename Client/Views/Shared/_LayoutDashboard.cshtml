@@ -3,6 +3,8 @@
     var successMessage = TempData["Success"] as string;
     var failMessage = TempData["Error"] as string;
     var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+    var gradeGuid = User.Claims.FirstOrDefault(x => x.Type == "GradeGuid")?.Value;
+    var profileGuid = User.Claims.FirstOrDefault(x => x.Type == "ProfileGuid")?.Value;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -238,7 +240,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <a class="dropdown-item d-flex align-items-center" href="~/profile/details?guid=@profileGuid">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -250,7 +252,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                 <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
+                                <span>My Grade</span>
                             </a>
                         </li>
                         <li>
