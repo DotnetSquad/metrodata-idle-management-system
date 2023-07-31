@@ -173,4 +173,56 @@ public class EmployeeController : ControllerBase
             Data = null
         });
     }
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [HttpGet("GetByRole/{guid}")]
+    public IActionResult GetByRole(Guid guid)
+    {
+        var employees = _employeeService.GetByRole(guid);
+
+        if (!employees.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
+        });
+    }
+    
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [HttpGet("GetExcludeRole/{guid}")]
+    public IActionResult GetExcludeRole(Guid guid)
+    {
+        var employees = _employeeService.GetExcludeRole(guid);
+
+        if (!employees.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
+        });
+    }
 }

@@ -8,16 +8,23 @@ namespace API.Services;
 
 public class EmployeeService
 {
-    private IEmployeeRepository _employeeRepository;
-    private IGradeRepository _gradeRepository;
-    private IProfileRepository _profileRepository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IGradeRepository _gradeRepository;
+    private readonly IProfileRepository _profileRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IGradeRepository gradeRepository,
-        IProfileRepository profileRepository)
+    public EmployeeService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
+        IEmployeeRepository employeeRepository, IGradeRepository gradeRepository,
+        IProfileRepository profileRepository, IRoleRepository roleRepository)
     {
+        _accountRepository = accountRepository;
+        _accountRoleRepository = accountRoleRepository;
         _employeeRepository = employeeRepository;
         _gradeRepository = gradeRepository;
         _profileRepository = profileRepository;
+        _roleRepository = roleRepository;
     }
 
     public IEnumerable<EmployeeDtoGet> Get()
@@ -103,5 +110,75 @@ public class EmployeeService
 
         var employeeDeleted = _employeeRepository.Delete(employee);
         return !employeeDeleted ? 0 : 1;
+    }
+
+    public IEnumerable<EmployeeDtoGet> GetByRole(Guid roleGuid)
+    {
+        var employeesByRole = (from employee in _employeeRepository.GetAll()
+            join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
+            join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
+            join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
+            where accountRole.RoleGuid == roleGuid
+            select new EmployeeDtoGet()
+            {
+                Guid = employee.Guid,
+                Nik = employee.Nik,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                BirthDate = employee.BirthDate,
+                Gender = employee.Gender,
+                HiringDate = employee.HiringDate,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                Status = employee.Status,
+                GradeGuid = employee.GradeGuid,
+                ProfileGuid = employee.ProfileGuid,
+            }).ToList();
+
+        return employeesByRole;
+    }
+
+    public IEnumerable<EmployeeDtoGet> GetExcludeRole(Guid roleGuid)
+    {
+        var employeesByRole = GetByRole(roleGuid).ToList();
+    
+        var employeesExcludeRole = (from employee in _employeeRepository.GetAll()
+            join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
+            join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
+            join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
+            where accountRole.RoleGuid != roleGuid
+            select new EmployeeDtoGet()
+            {
+                Guid = employee.Guid,
+                Nik = employee.Nik,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                BirthDate = employee.BirthDate,
+                Gender = employee.Gender,
+                HiringDate = employee.HiringDate,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                Status = employee.Status,
+                GradeGuid = employee.GradeGuid,
+                ProfileGuid = employee.ProfileGuid,
+            }).ToList();
+
+        var employeesExcludeRoleFiltered = employeesExcludeRole.Where(e => !employeesByRole.Any(r => r.Guid == e.Guid)).Distinct(new EmployeeDtoGetComparer());
+
+        return employeesExcludeRoleFiltered;
+    }
+
+    public class EmployeeDtoGetComparer : IEqualityComparer<EmployeeDtoGet>
+    {
+        public bool Equals(EmployeeDtoGet x, EmployeeDtoGet y)
+        {
+            // Assuming that the Guid property uniquely identifies an employee
+            return x.Guid == y.Guid;
+        }
+
+        public int GetHashCode(EmployeeDtoGet obj)
+        {
+            return obj.Guid.GetHashCode();
+        }
     }
 }

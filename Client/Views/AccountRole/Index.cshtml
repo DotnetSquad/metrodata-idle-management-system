@@ -1,8 +1,10 @@
-﻿@model IEnumerable<Client.DataTransferObjects.Roles.RoleDtoGet>
+@using Client.DataTransferObjects.AccountRoles
+@model IEnumerable<Client.DataTransferObjects.Employees.EmployeeDtoGet>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "_LayoutDashboard";
+    var roleGuid = ViewData["RoleGuid"];
 }
 
 <main id="main" class="main">
@@ -28,11 +30,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Datatables Role</h5>
-                        <a href="/role/create">
-                            <button class="btn btn-primary" style="margin-bottom: 15px">
-                                <i class="bi bi-plus-square"></i> Create
+                        <form action="~/accountrole/create" method="get">
+                            <input type="hidden" name="guid" value="@roleGuid"/>
+                            <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                <i class="ri-edit-box-fill"></i> Add
                             </button>
-                        </a>
+                        </form>
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <caption>List of roles</caption>
@@ -42,7 +45,7 @@
                                     @Html.DisplayName("No")
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Name)
+                                    @Html.DisplayName("Name")
                                 </th>
                                 <th scope="col">
                                     @Html.DisplayName("Action")
@@ -60,23 +63,21 @@
                                         @i
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        @Html.DisplayFor(modelItem => item.FirstName)
                                     </td>
                                     <td>
-                                        <form action="~/accountrole/index" method="get">
-                                            <input type="hidden" name="guid" value="@item.Guid"/>
-                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                <i class="ri-edit-box-fill"></i>
-                                            </button>
-                                        </form>
-                                        <form action="/role/Update" method="get">
-                                            <input type="hidden" name="guid" value="@item.Guid"/>
-                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                <i class="ri-edit-box-fill"></i>
-                                            </button>
-                                        </form>
-                                        <form action="/role/delete" method="post">
-                                            <input type="hidden" value="@item.Guid" name="guid"/>
+                                        @{
+                                            var accountRoleGuid = "";
+                                            foreach (var accounRole in (IEnumerable<AccountRoleDtoGet>)ViewData["AccountRoles"])
+                                            {
+                                                if (accounRole.AccountGuid == item.Guid)
+                                                {
+                                                    accountRoleGuid = accounRole.Guid.ToString();
+                                                }
+                                            }
+                                        }
+                                        <form action="/accountrole/delete" method="post">
+                                            <input type="hidden" value="@accountRoleGuid" name="guid"/>
                                             <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
                                                 <i class="bi bi-trash"></i>
                                             </button>
