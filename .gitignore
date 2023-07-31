@@ -407,3 +407,4 @@ Client/bin/*
 
 # appsettings.json
 API/appsettings.json
+Client/appsettings.json
