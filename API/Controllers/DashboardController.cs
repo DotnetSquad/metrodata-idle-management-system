@@ -27,7 +27,7 @@ public class DashboardController : ControllerBase
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "No accounts found",
+                Message = "No employees status found",
                 Data = null
             });
         }
@@ -36,7 +36,31 @@ public class DashboardController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "accounts found",
+            Message = "Employees status found",
+            Data = status
+        });
+    }
+
+    [HttpGet("get-interview-status")]
+    public IActionResult GetInterviewStatus()
+    {
+        var status = _dashboardService.GetInterviewStatus();
+        if (status is null)
+        {
+            return NotFound(new ResponseHandler<DashboardDtoGetInterviewStatus>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No interview status found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<DashboardDtoGetInterviewStatus>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Interview status found",
             Data = status
         });
     }

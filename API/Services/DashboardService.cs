@@ -1,15 +1,20 @@
 ﻿using API.Contracts;
 using API.DataTransferObjects.Dashboards;
+using API.Utilities.Enums;
 
 namespace API.Services;
 
 public class DashboardService
 {
-    private IEmployeeRepository _employeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IEmployeeInterviewRepository _employeeInterviewRepository;
+    private readonly IInterviewRepository _interviewRepository;
 
-    public DashboardService(IEmployeeRepository employeeRepository)
+    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeInterviewRepository employeeInterviewRepository)
     {
         _employeeRepository = employeeRepository;
+        _interviewRepository = interviewRepository;
+        _employeeInterviewRepository = employeeInterviewRepository;
     }
 
     public DashboardsDtoGetStatus GetEmployeeStatus()
@@ -27,6 +32,34 @@ public class DashboardService
         {
             Idle = idleEmployeeCount,
             Working = workingEmployeeCount
+        };
+
+        return status;
+    }
+
+    public DashboardDtoGetInterviewStatus GetInterviewStatus()
+    {
+
+        var interviewStatus = (from i in _interviewRepository.GetAll()
+                               join er in _employeeInterviewRepository.GetAll() on i.Guid equals er.InterviewGuid
+                               join e in _employeeRepository.GetAll() on er.EmployeeGuid equals e.Guid
+                               select new DashboardDtoGetInterviewStatus
+                               {
+                                   Accepted = i.StatusInterview == StatusInterviewEnum.Accepted ? 1 : 0,
+                                   Pending = i.StatusInterview == StatusInterviewEnum.Pending ? 1 : 0,
+                                   Rejected = i.StatusInterview == StatusInterviewEnum.Rejected ? 1 : 0
+                               });
+
+        if (!interviewStatus.Any())
+        {
+            return null;
+        }
+
+        var status = new DashboardDtoGetInterviewStatus
+        {
+            Accepted = interviewStatus.Sum(i => i.Accepted),
+            Pending = interviewStatus.Sum(i => i.Pending),
+            Rejected = interviewStatus.Sum(i => i.Rejected)
         };
 
         return status;
