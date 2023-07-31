@@ -54,7 +54,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Failed to create profile.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -77,7 +77,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Profile not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -100,7 +100,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Failed to update profile.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -122,7 +122,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Failed to delete profile";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -158,7 +158,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Data profile not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -181,7 +181,7 @@ public class ProfileController : Controller
                 TempData["Error"] = profile.Message;
                 return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
             default:
-                TempData["Error"] = profile.Message;
+                TempData["Error"] = "Failed to update profile.";
                 return RedirectToAction("Details", "Profile", new { guid = profileDtoGet.Guid });
         }
     }

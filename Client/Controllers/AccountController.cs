@@ -34,7 +34,7 @@ public class AccountController : Controller
                 TempData["Error"] = account.Message;
                 return RedirectToAction(nameof(Login));
             default:
-                TempData["Error"] = account.Message;
+                TempData["Error"] = "Login failed! Please ensure the email and password are valid.";
                 return RedirectToAction(nameof(Login));
         }
     }
@@ -59,7 +59,7 @@ public class AccountController : Controller
                 TempData["Error"] = account.Message;
                 return RedirectToAction(nameof(Register));
             default:
-                TempData["Error"] = account.Message;
+                TempData["Error"] = "Registration failed: Invalid user input.";
                 return RedirectToAction(nameof(Register));
         }
     }
@@ -89,7 +89,7 @@ public class AccountController : Controller
                 TempData["Error"] = account.Message;
                 return RedirectToAction(nameof(ForgotPassword));
             default:
-                TempData["Error"] = account.Message;
+                TempData["Error"] = "Forgot password failed: Invalid email address";
                 return RedirectToAction(nameof(ForgotPassword));
         }
     }
@@ -113,7 +113,7 @@ public class AccountController : Controller
                 TempData["Error"] = account.Message;
                 return RedirectToAction(nameof(ChangePassword));
             default:
-                TempData["Error"] = account.Message;
+                TempData["Error"] = "Password reset failed.";
                 return RedirectToAction(nameof(ChangePassword));
         }
     }

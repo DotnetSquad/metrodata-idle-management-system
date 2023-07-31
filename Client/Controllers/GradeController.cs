@@ -53,7 +53,7 @@ public class GradeController : Controller
                 TempData["Error"] = grade.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = grade.Message;
+                TempData["Error"] = "Failed to create grade.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -80,7 +80,7 @@ public class GradeController : Controller
                 TempData["Error"] = grade.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = grade.Message;
+                TempData["Error"] = "Grade not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -103,7 +103,7 @@ public class GradeController : Controller
                 TempData["Error"] = grade.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = grade.Message;
+                TempData["Error"] = "Failed to update grade.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -126,7 +126,7 @@ public class GradeController : Controller
                 TempData["Error"] = grade.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = grade.Message;
+                TempData["Error"] = "Failed to delete grade.";
                 return RedirectToAction(nameof(Index));
         }
     }

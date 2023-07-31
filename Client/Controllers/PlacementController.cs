@@ -97,7 +97,7 @@ public class PlacementController : Controller
                 TempData["Error"] = placement.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = placement.Message;
+                TempData["Error"] = "Failed to create placement.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -162,7 +162,7 @@ public class PlacementController : Controller
                 TempData["Error"] = result.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = result.Message;
+                TempData["Error"] = "Failed to update placement.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -185,7 +185,7 @@ public class PlacementController : Controller
                 TempData["Error"] = placement.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = placement.Message;
+                TempData["Error"] = "Failed to delete placement.";
                 return RedirectToAction(nameof(Index));
         }
     }

@@ -78,7 +78,7 @@ public class JobController : Controller
                 TempData["Error"] = job.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = job.Message;
+                TempData["Error"] = "Failed to create job.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -136,7 +136,7 @@ public class JobController : Controller
                 TempData["Error"] = job.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = job.Message;
+                TempData["Error"] = "Failed to update job.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -159,7 +159,7 @@ public class JobController : Controller
                 TempData["Error"] = job.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = job.Message;
+                TempData["Error"] = "Failed to delete job.";
                 return RedirectToAction(nameof(Index));
         }
     }

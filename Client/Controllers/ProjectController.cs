@@ -77,7 +77,7 @@ public class ProjectController : Controller
                 TempData["Error"] = project.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = project.Message;
+                TempData["Error"] = "Failed to create project.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -135,7 +135,7 @@ public class ProjectController : Controller
                 TempData["Error"] = project.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = project.Message;
+                TempData["Error"] = "Failed to update project.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -158,7 +158,7 @@ public class ProjectController : Controller
                 TempData["Error"] = project.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = project.Message;
+                TempData["Error"] = "Failed to delete project.";
                 return RedirectToAction(nameof(Index));
         }
     }
