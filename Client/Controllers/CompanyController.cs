@@ -52,7 +52,7 @@ public class CompanyController : Controller
                 TempData["Error"] = company.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = company.Message;
+                TempData["Error"] = "Failed to create company.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -76,7 +76,7 @@ public class CompanyController : Controller
                 TempData["Error"] = company.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = company.Message;
+                TempData["Error"] = "Company not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -100,7 +100,7 @@ public class CompanyController : Controller
                 TempData["Error"] = company.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = company.Message;
+                TempData["Error"] = "Failed to update company.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -123,7 +123,7 @@ public class CompanyController : Controller
                 TempData["Error"] = company.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = company.Message;
+                TempData["Error"] = "Failed to delete company.";
                 return RedirectToAction(nameof(Index));
         }
     }

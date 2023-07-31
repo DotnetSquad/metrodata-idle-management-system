@@ -79,7 +79,7 @@ public class EmployeeController : Controller
                 TempData["Error"] = employee.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = employee.Message;
+                TempData["Error"] = "Failed to create employee.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -111,7 +111,7 @@ public class EmployeeController : Controller
                 TempData["Error"] = employee.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = employee.Message;
+                TempData["Error"] = "Employee not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -134,7 +134,7 @@ public class EmployeeController : Controller
                 TempData["Error"] = employee.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = employee.Message;
+                TempData["Error"] = "Failed to update employee.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -157,7 +157,7 @@ public class EmployeeController : Controller
                 TempData["Error"] = employee.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = employee.Message;
+                TempData["Error"] = "Failed to delete employee.";
                 return RedirectToAction(nameof(Index));
         }
     }

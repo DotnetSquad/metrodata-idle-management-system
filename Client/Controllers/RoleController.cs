@@ -47,7 +47,7 @@ public class RoleController : Controller
                 TempData["Error"] = role.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = role.Message;
+                TempData["Error"] = "Failed to create role.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -68,7 +68,7 @@ public class RoleController : Controller
                 TempData["Error"] = role.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = role.Message;
+                TempData["Error"] = "Role not found.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -90,7 +90,7 @@ public class RoleController : Controller
                 TempData["Error"] = role.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = role.Message;
+                TempData["Error"] = "Failed to update role.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -112,7 +112,7 @@ public class RoleController : Controller
                 TempData["Error"] = role.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = role.Message;
+                TempData["Error"] = "Failed to delete role.";
                 return RedirectToAction(nameof(Index));
         }
     }

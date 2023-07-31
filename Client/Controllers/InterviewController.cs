@@ -64,7 +64,7 @@ public class InterviewController : Controller
                 TempData["Error"] = interview.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = interview.Message;
+                TempData["Error"] = "Failed to create interview.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -117,7 +117,7 @@ public class InterviewController : Controller
                 TempData["Error"] = interview.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = interview.Message;
+                TempData["Error"] = "Failed to update interview.";
                 return RedirectToAction(nameof(Index));
         }
     }
@@ -140,7 +140,7 @@ public class InterviewController : Controller
                 TempData["Error"] = interview.Message;
                 return RedirectToAction(nameof(Index));
             default:
-                TempData["Error"] = interview.Message;
+                TempData["Error"] = "Failed to delete interview.";
                 return RedirectToAction(nameof(Index));
         }
     }
