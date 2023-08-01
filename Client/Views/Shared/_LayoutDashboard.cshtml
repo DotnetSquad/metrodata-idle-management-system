@@ -354,6 +354,8 @@
                     </li>
 
                     <!-- End Profile Page Nav -->
+
+                    
                 }
                 @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
                 {
@@ -385,6 +387,15 @@
                     </li>
 
                     <!-- End Role Page Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/EmployeeInterview/Index">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Interview Management</span>
+                        </a>
+                    </li>
+
+                    <!-- End employee interview Page Nav -->
                 }
                 @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
                 {
@@ -396,6 +407,7 @@
                     </li>
 
                     <!-- End Employee Project Page Nav -->
+
                 }
             }
         </ul>
