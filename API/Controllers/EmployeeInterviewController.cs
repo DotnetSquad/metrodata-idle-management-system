@@ -36,7 +36,13 @@ public class EmployeeInterviewController : ControllerBase
             });
         }
 
-        return Ok(employeeInterviews);
+        return Ok(new ResponseHandler<IEnumerable<EmployeeInterviewDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employee interview found",
+            Data = employeeInterviews
+        });
     }
 
     [HttpGet("{guid}")]
@@ -55,7 +61,13 @@ public class EmployeeInterviewController : ControllerBase
             });
         }
 
-        return Ok(employeeInterview);
+        return Ok(new ResponseHandler<EmployeeInterviewDtoGet>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employee interview found",
+            Data = employeeInterview
+        });
     }
 
     [HttpPost]
