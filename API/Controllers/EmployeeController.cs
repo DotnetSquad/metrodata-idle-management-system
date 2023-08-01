@@ -225,4 +225,30 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
+    
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [HttpGet("GetByEmail/{email}")]
+    public IActionResult GetByEmail(string email)
+    {
+        var employee = _employeeService.GetByEmail(email);
+
+        if (employee is null)
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Employee not found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<EmployeeDtoGet>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employee found",
+            Data = employee
+        });
+    }
 }
