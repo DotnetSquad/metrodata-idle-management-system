@@ -156,4 +156,12 @@ public class EmployeeService
 
         return employeeDtoGets;
     }
+    
+    public EmployeeDtoGet? GetByEmail(string email)
+    {
+        var employee = _employeeRepository.GetByEmail(email);
+        if (employee is null) return null!;
+
+        return (EmployeeDtoGet)employee;
+    }
 }
