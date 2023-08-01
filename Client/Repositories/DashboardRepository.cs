@@ -7,7 +7,7 @@ namespace Client.Repositories;
 
 public class DashboardRepository : BaseRepository<DashboardsDtoGetStatus, Guid>, IDashboardRepository
 {
-    public DashboardRepository(string request = "dashboard") : base(request)
+    public DashboardRepository(string request = "dashboard/") : base(request)
     {
     }
 
@@ -19,17 +19,19 @@ public class DashboardRepository : BaseRepository<DashboardsDtoGetStatus, Guid>,
             string apiResponse = await response.Content.ReadAsStringAsync();
             entity = JsonConvert.DeserializeObject<ResponseHandler<DashboardsDtoGetStatus>>(apiResponse);
         }
+
         return entity;
     }
 
-	public async Task<ResponseHandler<DashboardDtoGetInterviewStatus>> GetStatisticInterviewStatus()
-	{
-		ResponseHandler<DashboardDtoGetInterviewStatus> entity = null!;
-		using (var response = await HttpClient.GetAsync(Request))
-		{
-			string apiResponse = await response.Content.ReadAsStringAsync();
-			entity = JsonConvert.DeserializeObject<ResponseHandler<DashboardDtoGetInterviewStatus>>(apiResponse);
-		}
-		return entity;
-	}
+    public async Task<ResponseHandler<DashboardDtoGetInterviewStatus>> GetStatisticInterviewStatus()
+    {
+        ResponseHandler<DashboardDtoGetInterviewStatus> entity = null!;
+        using (var response = await HttpClient.GetAsync(Request + "get-interview-status"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<DashboardDtoGetInterviewStatus>>(apiResponse);
+        }
+
+        return entity;
+    }
 }
