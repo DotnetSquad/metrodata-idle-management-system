@@ -115,7 +115,7 @@ public class EmployeeInterviewController : Controller
         if (interviews.Data is not null) listInterviewDtoGets = interviews.Data.ToList();
 
         ViewData["Employees"] = listEmployeeDtoGets;
-        ViewData["Interview"] = listInterviewDtoGets;
+        ViewData["Interviews"] = listInterviewDtoGets;
 
         return View(employeeInterviewDtoGet);
     }
