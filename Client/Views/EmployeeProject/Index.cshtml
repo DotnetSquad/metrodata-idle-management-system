@@ -1,0 +1,133 @@
+﻿@using Client.DataTransferObjects.Projects;
+@using Client.DataTransferObjects.Employees;
+@model IEnumerable<Client.DataTransferObjects.EmployeeProjects.EmployeeProjectDtoGet>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutDashboard";
+}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Data Tables</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="~/Dashboard/Index">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/EmployeeProject/Index">Project Management</a>
+                </li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Datatables Project Management</h5>
+                        <a href="/employeeproject/create">
+                            <button class="btn btn-primary" style="margin-bottom: 15px">
+                                <i class="bi bi-plus-square"></i> Create
+                            </button>
+                        </a>
+                        <!-- Table with stripped rows -->
+                        <table id="data-table" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        @Html.DisplayName("No")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Employee Name")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Project Name")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Project Lead")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Action")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @{
+                                            var culture = new System.Globalization.CultureInfo("id-ID");
+                                        }
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                                {
+                                                    var fullName = $"{employee.FirstName} {employee.LastName}";
+                                                    if (item.EmployeeGuid == employee.Guid)
+                                                    {
+                                                        @Html.DisplayFor(x => fullName)
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
+                                                {
+                                                    if (item.ProjectGuid == project.Guid)
+                                                    {
+                                                        @project.NameProject
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                        @{
+                                            foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
+                                            {
+                                                if (item.ProjectGuid == project.Guid)
+                                                {
+                                                    @project.ProjectLead
+                                                }
+                                            }
+                                        }
+                                        </td>
+                                        <td>
+                                            <form action="/employeeproject/update" method="get">
+                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                    <i class="ri-edit-box-fill"></i>
+                                                </button>
+                                            </form>
+                                            <form action="/employeeproject/delete" method="post">
+                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

@@ -74,7 +74,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public IActionResult Create(EmployeeProjectDtoCreate employeeProjectDtoCreate)
     {
@@ -100,7 +100,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPut]
     public IActionResult Update(EmployeeProjectDtoUpdate employeeProjectDtoUpdate)
     {
@@ -137,7 +137,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
