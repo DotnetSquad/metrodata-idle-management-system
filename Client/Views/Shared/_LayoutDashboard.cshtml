@@ -386,6 +386,17 @@
 
                     <!-- End Role Page Nav -->
                 }
+                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="~/EmployeeProject/Index">
+                            <i class="bi bi-building-add"></i>
+                            <span>Project Management</span>
+                        </a>
+                    </li>
+
+                    <!-- End Employee Project Page Nav -->
+                }
             }
         </ul>
 

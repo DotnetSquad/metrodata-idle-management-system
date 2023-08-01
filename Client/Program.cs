@@ -11,11 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeProjectRepository, EmployeeProjectRepository>();
 builder.Services.AddScoped<IInterviewRepository, InterviewRepository>();
 builder.Services.AddScoped<IPlacementRepository, PlacementRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
