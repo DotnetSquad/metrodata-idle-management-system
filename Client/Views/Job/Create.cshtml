@@ -1,5 +1,5 @@
-﻿@model Client.DataTransferObjects.Jobs.JobDtoGet
-@using Client.DataTransferObjects.Companies
+﻿@using Client.DataTransferObjects.Companies
+@model Client.DataTransferObjects.Jobs.JobDtoGet
 
 @{
     Layout = "_LayoutDashboard";
@@ -43,9 +43,9 @@
                                 <select asp-for="CompanyGuid" class="form-select" id="validationCustom02" required>
                                     <option selected disabled value="">Choose...</option>
                                     @{
-                                        foreach (var item in (IEnumerable<CompanyDtoGet>)ViewData["Companies"])
+                                        foreach (var company in (IEnumerable<CompanyDtoGet>)ViewData["Companies"])
                                         {
-                                            <option value="@item.Guid">@item.CompanyName</option>
+                                            <option value="@company.Guid">@company.CompanyName</option>
                                         }
                                     }
                                 </select>

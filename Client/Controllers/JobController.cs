@@ -53,7 +53,7 @@ public class JobController : Controller
         var companies = await _companyRepository.Get();
         var listCompanyDtoGets = new List<CompanyDtoGet>();
 
-        if (companies.Data is null)
+        if (companies.Data is not null)
         {
             listCompanyDtoGets = companies.Data.ToList();
         }
