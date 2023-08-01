@@ -52,6 +52,9 @@
                                         @Html.DisplayName("Interview Date")
                                     </th>
                                     <th scope="col">
+                                        @Html.DisplayName("Status")
+                                    </th>
+                                    <th scope="col">
                                         @Html.DisplayName("Action")
                                     </th>
                                 </tr>
@@ -99,6 +102,17 @@
                                                     if (item.InterviewGuid == interview.Guid)
                                                     {
                                                         @interview.InterviewDate
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var interview in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
+                                                {
+                                                    if (item.InterviewGuid == interview.Guid)
+                                                    {
+                                                        @interview.StatusInterview
                                                     }
                                                 }
                                             }
