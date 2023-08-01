@@ -26,14 +26,14 @@ public class EmployeeController : Controller
     public async Task<IActionResult> Index()
     {
         var emplooyees = await _employeerepository.Get();
-        var ListEmployees = new List<EmployeeDtoGet>();
+        var listEmployees = new List<EmployeeDtoGet>();
 
-        if (emplooyees.Data != null)
+        if (emplooyees.Data is not null)
         {
-            ListEmployees = emplooyees.Data.ToList();
+            listEmployees = emplooyees.Data.ToList();
         }
 
-        return View(ListEmployees);
+        return View(listEmployees);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
