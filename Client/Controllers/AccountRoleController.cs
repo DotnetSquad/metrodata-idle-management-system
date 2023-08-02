@@ -27,13 +27,12 @@ public class AccountRoleController : Controller
     {
         var accountRoles = await _accountRoleRepository.Get();
         var listAccountRoles = new List<AccountRoleDtoGet>();
-          
+
         if (accountRoles.Data is not null)
         {
-            // Filter account roles based on the given guid
             listAccountRoles = accountRoles.Data.Where(ar => ar.RoleGuid == guid).ToList();
         }
-        
+
         var employees = await _employeeRepository.GetByRole(guid);
         var listEmployees = new List<EmployeeDtoGet>();
 
@@ -62,42 +61,53 @@ public class AccountRoleController : Controller
 
         ViewData["RoleGuid"] = guid;
         ViewData["Employees"] = listEmployeeDtoGets;
-        
+
         return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Create(AccountRoleDtoGet accountRoleDtoGet)
     {
         var accountRole = await _accountRoleRepository.Post(accountRoleDtoGet);
-        if (accountRole is null)
-        {
-            return RedirectToAction("Create", new {guid = accountRoleDtoGet.RoleGuid});
-        }
 
-        return RedirectToAction("Index", new {guid = accountRoleDtoGet.RoleGuid});
+        switch (accountRole.Code)
+        {
+            case 201:
+                TempData["Success"] = accountRole.Message;
+                return RedirectToAction("Index", new { guid = accountRoleDtoGet.RoleGuid });
+            case 404:
+                TempData["Error"] = accountRole.Message;
+                return RedirectToAction("Index", new { guid = accountRoleDtoGet.RoleGuid });
+            case 500:
+                TempData["Error"] = accountRole.Message;
+                return RedirectToAction("Index", new { guid = accountRoleDtoGet.RoleGuid });
+            default:
+                TempData["Error"] = "An error occurred, please try again later.";
+                return RedirectToAction("Index", new { guid = accountRoleDtoGet.RoleGuid });
+        }
     }
-    
+
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
+        var getAccountRole = await _accountRoleRepository.Get(guid);
         var accountRole = await _accountRoleRepository.Delete(guid);
 
         switch (accountRole.Code)
         {
             case 200:
                 TempData["Success"] = accountRole.Message;
-                return RedirectToAction("Index", "Role");
+                return RedirectToAction("Index", new { guid = getAccountRole.Data.RoleGuid });
             case 404:
                 TempData["Error"] = accountRole.Message;
-                return RedirectToAction("Index", "Role");
+                return RedirectToAction("Index", new { guid = getAccountRole.Data.RoleGuid });
             case 500:
                 TempData["Error"] = accountRole.Message;
-                return RedirectToAction("Index", "Role");
+                return RedirectToAction("Index", new { guid = getAccountRole.Data.RoleGuid });
             default:
                 TempData["Error"] = "An error occurred, please try again later.";
-                return RedirectToAction("Index", "Role");
+                return RedirectToAction("Index", new { guid = getAccountRole.Data.RoleGuid });
         }
     }
 }

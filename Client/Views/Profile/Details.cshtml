@@ -195,7 +195,7 @@
                                     <div class="row mb-3">
                                         <label for="birthDate" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.BirthDate" type="datetime-local" class="form-control" id="birthDate" required>
+                                        <input asp-for="@employee.BirthDate" type="date" class="form-control" id="birthDate" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your birth date!
@@ -217,7 +217,7 @@
                                     <div class="row mb-3">
                                         <label for="hiringDate" class="col-md-4 col-lg-3 col-form-label">Hiring Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.HiringDate" type="datetime-local" class="form-control" id="hiringDate" required>
+                                        <input asp-for="@employee.HiringDate" type="date" class="form-control" id="hiringDate" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your hiring date!

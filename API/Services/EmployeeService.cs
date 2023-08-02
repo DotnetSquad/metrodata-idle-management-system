@@ -119,60 +119,57 @@ public class EmployeeService
     public IEnumerable<EmployeeDtoGet> GetByRole(Guid roleGuid)
     {
         var employeesByRole = (from employee in _employeeRepository.GetAll()
-                               join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
-                               join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
-                               join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
-                               where accountRole.RoleGuid == roleGuid
-                               select new EmployeeDtoGet()
-                               {
-                                   Guid = employee.Guid,
-                                   Nik = employee.Nik,
-                                   FirstName = employee.FirstName,
-                                   LastName = employee.LastName,
-                                   BirthDate = employee.BirthDate,
-                                   Gender = employee.Gender,
-                                   HiringDate = employee.HiringDate,
-                                   Email = employee.Email,
-                                   PhoneNumber = employee.PhoneNumber,
-                                   Status = employee.Status,
-                                   GradeGuid = employee.GradeGuid,
-                                   ProfileGuid = employee.ProfileGuid,
-                               }).ToList();
+            join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
+            join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
+            join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
+            where accountRole.RoleGuid == roleGuid
+            select new EmployeeDtoGet()
+            {
+                Guid = employee.Guid,
+                Nik = employee.Nik,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                BirthDate = employee.BirthDate,
+                Gender = employee.Gender,
+                HiringDate = employee.HiringDate,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                Status = employee.Status,
+                GradeGuid = employee.GradeGuid,
+                ProfileGuid = employee.ProfileGuid,
+            }).ToList();
 
         return employeesByRole;
     }
 
     public IEnumerable<EmployeeDtoGet> GetExcludeRole(Guid roleGuid)
     {
-        var employeesByRole = GetByRole(roleGuid).ToList();
+        var employeesByRole = GetByRole(roleGuid);
+        var employees = _employeeRepository.GetAll();
 
-        var employeesExcludeRole = (from employee in _employeeRepository.GetAll()
-                                    join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
-                                    join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
-                                    join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
-                                    where accountRole.RoleGuid != roleGuid
-                                    select new EmployeeDtoGet()
-                                    {
-                                        Guid = employee.Guid,
-                                        Nik = employee.Nik,
-                                        FirstName = employee.FirstName,
-                                        LastName = employee.LastName,
-                                        BirthDate = employee.BirthDate,
-                                        Gender = employee.Gender,
-                                        HiringDate = employee.HiringDate,
-                                        Email = employee.Email,
-                                        PhoneNumber = employee.PhoneNumber,
-                                        Status = employee.Status,
-                                        GradeGuid = employee.GradeGuid,
-                                        ProfileGuid = employee.ProfileGuid,
-                                    }).ToList();
+        var employeesByRoleGuid = employeesByRole.Select(employee => employee.Guid).ToList();
+        var employeesExcludeRole = employees.Where(employee => !employeesByRoleGuid.Contains(employee.Guid)).ToList();
 
-        var employeesExcludeRoleFiltered = employeesExcludeRole.Where(e => !employeesByRole.Any(r => r.Guid == e.Guid)).Distinct(new EmployeeDtoGetComparer());
+        if (!employeesExcludeRole.Any()) return Enumerable.Empty<EmployeeDtoGet>();
+        List<EmployeeDtoGet> employeeDtoGets = new();
 
-        return employeesExcludeRoleFiltered;
+        foreach (var employee in employeesExcludeRole)
+        {
+            employeeDtoGets.Add((EmployeeDtoGet)employee);
+        }
+
+        return employeeDtoGets;
     }
+    
+    public EmployeeDtoGet? GetByEmail(string email)
+    {
+        var employee = _employeeRepository.GetByEmail(email);
+        if (employee is null) return null!;
 
-    public IEnumerable<EmployeeDtoGet> GetEmployeeByProject(Guid projectGuid)
+        return (EmployeeDtoGet)employee;
+    }
+  
+  public IEnumerable<EmployeeDtoGet> GetEmployeeByProject(Guid projectGuid)
     {
         var employeesByProject = (from employee in _employeeRepository.GetAll()
                                   join employeeProject in _employeeProjectRepository.GetAll()
