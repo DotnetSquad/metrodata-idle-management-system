@@ -9,6 +9,7 @@ namespace Client.Controllers;
 
 public class ProjectController : Controller
 {
+    public string isNotCollapsed = "ProjectController";
     private readonly IProjectRepository _projectRepository;
     private readonly IEmployeeRepository _employeeRepository;
 
@@ -39,6 +40,7 @@ public class ProjectController : Controller
             listEmployeeDtoGets = employees.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
         return View(listProjectDtoGets);
@@ -58,6 +60,7 @@ public class ProjectController : Controller
         }
 
         // add to view data
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
         return View();
@@ -96,6 +99,7 @@ public class ProjectController : Controller
         }
 
         // add to view data
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
         var project = await _projectRepository.Get(guid);

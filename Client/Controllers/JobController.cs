@@ -9,6 +9,7 @@ namespace Client.Controllers;
 
 public class JobController : Controller
 {
+    public string isNotCollapsed = "JobController";
     private readonly IJobRepository _jobRepository;
     private readonly ICompanyRepository _companyRepository;
 
@@ -42,6 +43,7 @@ public class JobController : Controller
         // add to view data
         ViewData["Companies"] = listCompanyDtoGets;
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(listJobDtoGets);
     }
 
@@ -60,7 +62,7 @@ public class JobController : Controller
 
         // add to view data
         ViewData["Companies"] = listCompanyDtoGets;
-
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -115,6 +117,7 @@ public class JobController : Controller
             jobDtoGet.CompanyGuid = job.Data.CompanyGuid;
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(jobDtoGet);
     }
 

@@ -8,6 +8,7 @@ namespace Client.Controllers;
 
 public class GradeController : Controller
 {
+    public string isNotCollapsed = "GradeController";
     private readonly IGradeRepository _gradeRepository;
 
     public GradeController(IGradeRepository gradeRepository)
@@ -29,6 +30,7 @@ public class GradeController : Controller
             ListGrades = grades.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(ListGrades);
     }
 
@@ -36,6 +38,7 @@ public class GradeController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -65,6 +68,7 @@ public class GradeController : Controller
         var grade = await _gradeRepository.Get(guid);
         var gradeDtoGet = new GradeDtoGet();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (grade.Code)
         {
             case 200:

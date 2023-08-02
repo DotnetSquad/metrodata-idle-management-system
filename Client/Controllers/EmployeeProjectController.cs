@@ -10,6 +10,7 @@ namespace Client.Controllers;
 
 public class EmployeeProjectController : Controller
 {
+    public string isNotCollapsed = "EmployeeProjectController";
     private readonly IEmployeeProjectRepository _employeeProjectRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IProjectRepository _projectRepository;
@@ -42,6 +43,7 @@ public class EmployeeProjectController : Controller
 
         if (projects.Data != null) listProjectsDtoGets = projects.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Projects"] = listProjectsDtoGets;
 
         return View(listEmployeeProjectDtoGets);
@@ -61,6 +63,7 @@ public class EmployeeProjectController : Controller
 
         if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Projects"] = listProjectDtoGets;
         return View();
@@ -114,6 +117,7 @@ public class EmployeeProjectController : Controller
 
         if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Projects"] = listProjectDtoGets;
 

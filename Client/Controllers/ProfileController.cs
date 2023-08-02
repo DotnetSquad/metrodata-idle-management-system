@@ -9,6 +9,7 @@ namespace Client.Controllers;
 
 public class ProfileController : Controller
 {
+    public string isNotCollapsed = "ProfileController";
     private readonly IProfileRepository _profileRepository;
     private readonly IEmployeeRepository _employeeRepository;
 
@@ -31,6 +32,7 @@ public class ProfileController : Controller
             ListProfiles = profiles.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(ListProfiles);
     }
 
@@ -38,6 +40,7 @@ public class ProfileController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -65,6 +68,8 @@ public class ProfileController : Controller
     {
         var profile = await _profileRepository.Get(guid);
         var profileDtoGet = new ProfileDtoGet();
+
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (profile.Code)
         {
             case 200:
@@ -144,6 +149,7 @@ public class ProfileController : Controller
             employeeDtoGets = employee.Data;
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employee"] = employeeDtoGets;
 
         switch (profile.Code)

@@ -10,6 +10,7 @@ namespace Client.Controllers;
 
 public class PlacementController : Controller
 {
+    public string isNotCollapsed = "PlacementController";
     private readonly ICompanyRepository _companyRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPlacementRepository _placementRepository;
@@ -51,6 +52,7 @@ public class PlacementController : Controller
             listCompanyDtoGets = companies.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 
@@ -77,6 +79,7 @@ public class PlacementController : Controller
             listCompanyDtoGets = companies.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 
@@ -139,6 +142,7 @@ public class PlacementController : Controller
             listCompanyDtoGets = companies.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Companies"] = listCompanyDtoGets;
 

@@ -9,6 +9,7 @@ namespace Client.Controllers;
 [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
 public class RoleController : Controller
 {
+    public string isNotCollapsed = "RoleController";
     private readonly IRoleRepository _roleRepository;
 
     public RoleController(IRoleRepository roleRepository)
@@ -24,12 +25,14 @@ public class RoleController : Controller
 
         if (roles.Data is not null) listRoles = roles.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(listRoles);
     }
 
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -58,6 +61,7 @@ public class RoleController : Controller
         var role = await _roleRepository.Get(guid);
         var roleDtoGet = new RoleDtoGet();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (role.Code)
         {
             case 200:
