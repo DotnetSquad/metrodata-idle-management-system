@@ -8,14 +8,18 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Update</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/Grade/Index">Grade</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Grade/Update?guid=@Model.Guid">Update Grade</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -26,8 +30,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
-                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+                        <h5 class="card-title">Update Grade Form</h5>
+                        <p>Welcome to the Update Grade Form! This form allows you to modify and update the grades of employees who have completed the boot camp. You can then input the grade in the form below, which typically uses a numerical scale in range 0 - 100. Thank you for using our application.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/grade/update" method="post" class="row g-3 needs-validation" novalidate>
