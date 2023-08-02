@@ -15,8 +15,11 @@
                 <li class="breadcrumb-item">
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/employeeinterview/Index">Interview Management</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="~/employeeinterview/Update?guid=@Model.Guid">Update Interview Management</a>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -27,7 +30,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
+                        <h5 class="card-title">Update Interview Management Form</h5>
+                        <p>This form is used to update the interview management details for employee interviews with client's company. Remember to save any changes made to the form to keep the records updated and easily accessible. Thank you for using our "Update Interview Management" form!</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/employeeinterview/update" method="post" class="row g-3 needs-validation" novalidate>
@@ -83,6 +87,17 @@
                                 </select>
                                 <div class="invalid-feedback">
                                     Please select a valid state.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="statusApproval" class="form-label">Status</label>
+                                <select asp-for="StatusApproval" class="form-control" id="statusApproval" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="1">Accepted</option>
+                                    <option value="2">Rejected</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select status approval!
                                 </div>
                             </div>
                             <div class="col-12">
