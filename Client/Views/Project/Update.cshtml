@@ -8,14 +8,18 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Update</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/Project/Index">Project</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Project/Update?guid=@Model.Guid">Update Project</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -26,8 +30,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
-                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+                        <h5 class="card-title">Update Project Form</h5>
+                        Welcome to the Update Project Form for Internal Company Projects! This form is designed to facilitate the modification and enhancement of existing projects within organization. As you begin the update process, please ensure that the project name, project lead name and description accurately reflect any changes or developments in the project's scope and objectives. Thank you for using our application.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/project/update" method="post" class="row g-3 needs-validation" novalidate>
