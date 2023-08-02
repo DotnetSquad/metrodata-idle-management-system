@@ -1,5 +1,4 @@
-﻿using API.Utilities.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models;
 
@@ -17,9 +16,6 @@ public class Interview : BaseEntity
 
     [Column("description", TypeName = "nvarchar(255)")]
     public string Description { get; set; }
-
-    [Column("status_interview")]
-    public StatusInterviewEnum? StatusInterview { get; set; }
 
     [Column("job_guid")]
     public Guid JobGuid { get; set; }
