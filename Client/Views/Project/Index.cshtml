@@ -78,6 +78,12 @@
                                             @Html.DisplayFor(modelItem => item.Description)
                                         </td>
                                         <td>
+                                            <form action="~/employeeproject/index" method="get">
+                                                <input type="hidden" name="guid" value="@item.Guid" />
+                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                    <i class="ri-edit-box-fill"></i>
+                                                </button>
+                                            </form>
                                             <form action="/project/update" method="get">
                                                 <input type="hidden" value="@item.Guid" name="guid" />
                                                 <button type="submit" class="btn btn-primary" style="margin: 2px"><i class="ri-edit-box-fill"></i></button>

@@ -10,7 +10,7 @@ public class EmployeeRepository : BaseRepository<EmployeeDtoGet, Guid>, IEmploye
     public EmployeeRepository(string request = "Employee/") : base(request)
     {
     }
-    
+
     public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetByRole(Guid guid)
     {
         ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
@@ -22,12 +22,36 @@ public class EmployeeRepository : BaseRepository<EmployeeDtoGet, Guid>, IEmploye
 
         return entity;
     }
-    
-    
+
+
     public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetExcludeRole(Guid guid)
     {
         ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
         using (var response = await HttpClient.GetAsync(Request + "GetExcludeRole/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeDtoGet>>>(apiResponse);
+        }
+
+        return entity;
+    }
+
+    public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetByProject(Guid guid)
+    {
+        ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
+        using (var response = await HttpClient.GetAsync(Request + "GetByProject/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeDtoGet>>>(apiResponse);
+        }
+
+        return entity;
+    }
+
+    public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetExcludeProject(Guid guid)
+    {
+        ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
+        using (var response = await HttpClient.GetAsync(Request + "GetExcludeProject/" + guid))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeDtoGet>>>(apiResponse);

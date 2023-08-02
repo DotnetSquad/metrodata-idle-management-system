@@ -1,5 +1,4 @@
-﻿@using Client.DataTransferObjects.Projects;
-@using Client.DataTransferObjects.Employees;
+﻿@using Client.DataTransferObjects.Employees;
 @model Client.DataTransferObjects.EmployeeProjects.EmployeeProjectDtoCreate
 
 @{
@@ -31,31 +30,22 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/employeeproject/create" method="post" class="row g-3 needs-validation" novalidate>
-                            <div class="col-md-6">
-                                <label for="employeeGuid" class="form-label">Employee Name</label>
-                                <select asp-for="EmployeeGuid" class="form-select" id="employeeGuid" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    @* foreach view bag employee *@
-                                    @{
-                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
-                                        {
-                                            <option value="@item.Guid">@item.FirstName @item.LastName</option>
-                                        }
-                                    }
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid state.
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom01" class="form-label">Project</label>
+                                <input asp-for="ProjectGuid" type="text" class="form-control" id="validationCustom01" value="@ViewData["ProjectGuid"]">
+                                <div class="valid-feedback">
+                                    Looks good!
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="projectGuid" class="form-label">Project Name</label>
-                                <select asp-for="ProjectGuid" class="form-select" id="projectGuid" required>
+                                <label for="validationCustom04" class="form-label">Employee</label>
+                                <select asp-for="EmployeeGuid" class="form-select" id="validationCustom04" required>
                                     <option selected disabled value="">Choose...</option>
-                                    @* foreach view bag companies *@
+                                    @* foreach view data employees *@
                                     @{
-                                        foreach (var item in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
-                                        {
-                                            <option value="@item.Guid">@item.NameProject</option>
+                                        var employees = (IEnumerable<EmployeeDtoGet>)ViewData["Employees"];
+                                        foreach (var item in employees.Where(e => e.Status == Client.Utilities.Enums.StatusEnum.Idle)){
+                                            <option value="@item.Guid">@item.Nik - @item.FirstName @item.LastName</option>
                                         }
                                     }
                                 </select>

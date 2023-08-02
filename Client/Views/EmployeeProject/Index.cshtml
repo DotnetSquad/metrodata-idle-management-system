@@ -1,10 +1,10 @@
-﻿@using Client.DataTransferObjects.Projects;
-@using Client.DataTransferObjects.Employees;
-@model IEnumerable<Client.DataTransferObjects.EmployeeProjects.EmployeeProjectDtoGet>
+﻿@using Client.DataTransferObjects.EmployeeProjects
+@model IEnumerable<Client.DataTransferObjects.Employees.EmployeeDtoGet>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "_LayoutDashboard";
+    var projectGuid = ViewData["ProjectGuid"];
 }
 
 <main id="main" class="main">
@@ -30,11 +30,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Datatables Project Management</h5>
-                        <a href="/employeeproject/create">
-                            <button class="btn btn-primary" style="margin-bottom: 15px">
-                                <i class="bi bi-plus-square"></i> Create
+                        <form action="~/employeeproject/create" method="get">
+                            <input type="hidden" name="guid" value="@projectGuid" />
+                            <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                <i class="ri-edit-box-fill"></i> Add
                             </button>
-                        </a>
+                        </form>
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
@@ -71,18 +72,12 @@
                                         </td>
                                         <td>
                                             @{
-                                                foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
-                                                {
-                                                    var fullName = $"{employee.FirstName} {employee.LastName}";
-                                                    if (item.EmployeeGuid == employee.Guid)
-                                                    {
-                                                        @Html.DisplayFor(x => fullName)
-                                                    }
-                                                }
+                                                var fullName = $"{item.FirstName} {item.LastName}";
                                             }
+                                            @Html.DisplayFor(x => fullName)
                                         </td>
                                         <td>
-                                            @{
+                                            @*@{
                                                 foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
                                                     if (item.ProjectGuid == project.Guid)
@@ -90,10 +85,10 @@
                                                         @project.NameProject
                                                     }
                                                 }
-                                            }
+                                            }*@
                                         </td>
                                         <td>
-                                        @{
+                                        @*@{
                                             foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                             {
                                                 if (item.ProjectGuid == project.Guid)
@@ -101,17 +96,21 @@
                                                     @project.ProjectLead
                                                 }
                                             }
-                                        }
+                                        }*@
                                         </td>
                                         <td>
-                                            <form action="/employeeproject/update" method="get">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                    <i class="ri-edit-box-fill"></i>
-                                                </button>
-                                            </form>
+                                            @{
+                                                var employeeProjectGuid = "";
+                                                foreach (var employeeProject in (IEnumerable<EmployeeProjectDtoGet>)ViewData["EmployeeProjects"])
+                                                {
+                                                    if (employeeProject.EmployeeGuid == item.Guid)
+                                                    {
+                                                        employeeProjectGuid = employeeProject.Guid.ToString();
+                                                    }
+                                                }
+                                            }
                                             <form action="/employeeproject/delete" method="post">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
+                                                <input type="hidden" value="@employeeProjectGuid" name="guid" />
                                                 <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

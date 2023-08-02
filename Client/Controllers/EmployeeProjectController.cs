@@ -1,7 +1,6 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.EmployeeProjects;
 using Client.DataTransferObjects.Employees;
-using Client.DataTransferObjects.Projects;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,46 +22,37 @@ public class EmployeeProjectController : Controller
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(Guid guid)
     {
         var employeeProjects = await _employeeProjectRepository.Get();
         var listEmployeeProjectDtoGets = new List<EmployeeProjectDtoGet>();
 
-        if (employeeProjects.Data is not null) listEmployeeProjectDtoGets = employeeProjects.Data.ToList();
+        if (employeeProjects.Data is not null) listEmployeeProjectDtoGets = employeeProjects.Data.Where(ep => ep.ProjectGuid == guid).ToList();
 
-        var employees = await _employeeRepository.Get();
-        var listEmployeesDtoGets = new List<EmployeeDtoGet>();
+        var employees = await _employeeRepository.GetByProject(guid);
+        var listEmployees = new List<EmployeeDtoGet>();
 
-        if (employees.Data != null) listEmployeesDtoGets = employees.Data.ToList();
+        if (employees.Data is not null) listEmployees = employees.Data.ToList();
 
-        ViewData["Employees"] = listEmployeesDtoGets;
+        ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
+        ViewData["ProjectGuid"] = guid;
 
-        var projects = await _projectRepository.Get();
-        var listProjectsDtoGets = new List<ProjectDtoGet>();
-
-        if (projects.Data != null) listProjectsDtoGets = projects.Data.ToList();
-
-        ViewData["Projects"] = listProjectsDtoGets;
-
-        return View(listEmployeeProjectDtoGets);
+        return View(listEmployees);
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(Guid guid)
     {
-        var employees = await _employeeRepository.Get();
+        var employeesExcludeProject = await _employeeRepository.GetExcludeProject(guid);
+        var project = await _projectRepository.Get(guid);
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
 
-        if (employees.Data is not null) listEmployeeDtoGets = employees.Data.ToList();
+        if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
 
-        var project = await _projectRepository.Get();
-        var listProjectDtoGets = new List<ProjectDtoGet>();
-
-        if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
         ViewData["Employees"] = listEmployeeDtoGets;
-        ViewData["Projects"] = listProjectDtoGets;
+        ViewData["ProjectGuid"] = guid;
         return View();
     }
 
@@ -71,75 +61,12 @@ public class EmployeeProjectController : Controller
     {
         var employeeProject = await _employeeProjectRepository.Post(employeeProjectDtoGet);
 
-        switch (employeeProject.Code)
+        if (employeeProject is null)
         {
-            case 201:
-                TempData["Success"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-            case 400:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-            default:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-        }
-    }
-
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
-    [HttpGet]
-    public async Task<IActionResult> Update(Guid guid)
-    {
-        var employeeProject = await _employeeProjectRepository.Get(guid);
-        var employeeProjectDtoGet = new EmployeeProjectDtoGet();
-
-        if (employeeProject.Data is null)
-        {
-            TempData["Error"] = employeeProject.Message;
-            return RedirectToAction(nameof(Index));
-        }
-        else
-        {
-            employeeProjectDtoGet.Guid = employeeProject.Data!.Guid;
-            employeeProjectDtoGet.EmployeeGuid = employeeProject.Data!.EmployeeGuid;
-            employeeProjectDtoGet.ProjectGuid = employeeProject.Data!.EmployeeGuid;
+            return RedirectToAction("Create", new { guid = employeeProjectDtoGet.ProjectGuid });
         }
 
-        var employees = await _employeeRepository.Get();
-        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
-
-        if (employees.Data is not null) listEmployeeDtoGets = employees.Data.ToList();
-
-        var project = await _projectRepository.Get();
-        var listProjectDtoGets = new List<ProjectDtoGet>();
-
-        if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
-
-        ViewData["Employees"] = listEmployeeDtoGets;
-        ViewData["Projects"] = listProjectDtoGets;
-
-        return View(employeeProjectDtoGet);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Update(EmployeeProjectDtoGet employeeProjectDtoGet)
-    {
-        var employeeProject = await _employeeProjectRepository.Put(employeeProjectDtoGet.Guid, employeeProjectDtoGet);
-
-        switch (employeeProject.Code)
-        {
-            case 200:
-                TempData["Success"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-            case 400:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-            case 404:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-            default:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
-        }
+        return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -152,16 +79,16 @@ public class EmployeeProjectController : Controller
         {
             case 200:
                 TempData["Success"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Project");
             case 404:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Project");
             case 500:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Project");
             default:
-                TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "An error occurred, please try again later.";
+                return RedirectToAction("Index", "Project");
         }
     }
 }

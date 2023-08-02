@@ -1,5 +1,6 @@
 ﻿@model Client.DataTransferObjects.Projects.ProjectDtoGet
 @using Client.DataTransferObjects.Employees
+@using Client.Utilities.Handlers;
 
 @{
     Layout = "_LayoutDashboard";
@@ -43,7 +44,8 @@
                                 <select asp-for="ProjectLead" class="form-select" id="validationCustom02" required>
                                     <option selected disabled value="">Choose...</option>
                                     @{
-                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                        var employees = (IEnumerable<EmployeeDtoGet>)ViewData["Employees"];
+                                        foreach (var item in employees.Where(e => e.Status == Client.Utilities.Enums.StatusEnum.Working))
                                         {
                                             <option value="@item.FirstName @item.LastName">@item.FirstName @item.LastName</option>
                                         }
