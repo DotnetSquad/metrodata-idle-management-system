@@ -1,4 +1,5 @@
 ﻿@using Client.DataTransferObjects.EmployeeProjects
+@using Client.DataTransferObjects.Projects;
 @model IEnumerable<Client.DataTransferObjects.Employees.EmployeeDtoGet>
 
 @{
@@ -10,14 +11,14 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Projects Data View</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeProject/Index">Project Management</a>
+                    <a href="~/EmployeeProject/Index?guid=@projectGuid">Project Management</a>
                 </li>
             </ol>
         </nav>
@@ -29,7 +30,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables Project Management</h5>
+                        <h5 class="card-title">Project Management Listings</h5>
                         <form action="~/employeeproject/create" method="get">
                             <input type="hidden" name="guid" value="@projectGuid" />
                             <button type="submit" class="btn btn-primary" style="margin: 2px">
@@ -77,26 +78,26 @@
                                             @Html.DisplayFor(x => fullName)
                                         </td>
                                         <td>
-                                            @*@{
+                                            @{
                                                 foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
-                                                    if (item.ProjectGuid == project.Guid)
+                                                    if (Guid.Parse(projectGuid.ToString()) == project.Guid)
                                                     {
                                                         @project.NameProject
                                                     }
                                                 }
-                                            }*@
+                                            }
                                         </td>
                                         <td>
-                                        @*@{
-                                            foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
-                                            {
-                                                if (item.ProjectGuid == project.Guid)
+                                            @{
+                                                foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
-                                                    @project.ProjectLead
+                                                    if (Guid.Parse(projectGuid.ToString()) == project.Guid)
+                                                    {
+                                                        @project.ProjectLead
+                                                    }
                                                 }
                                             }
-                                        }*@
                                         </td>
                                         <td>
                                             @{

@@ -9,14 +9,19 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Update</h1>
         <nav>
             <ol class="breadcrumb">
+                <
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/EmployeeProject/Index?guid=@ViewData["ProjectGuid"]">Project Management</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/EmployeeProject/Update?guid=@ViewData["ProjectGuid"]">Update Project Management</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -27,7 +32,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
+                        <h5 class="card-title">Update Project Management Form</h5>
+                        <p>Welcome to the Update Project Management Form for Employee Status "Idle" to be Requested for Internal Projects. This form is specifically designed to streamline the process of managing employee assignments and facilitating their transition from "Idle" status to active participation in internal company projects. If approved, the employee's status will be updated from "Idle" to "Working" for the specified project duration. Thank you for using our application.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/employeeproject/update" method="post" class="row g-3 needs-validation" novalidate>
