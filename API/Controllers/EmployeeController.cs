@@ -199,7 +199,7 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
-    
+
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("GetExcludeRole/{guid}")]
     public IActionResult GetExcludeRole(Guid guid)
@@ -225,6 +225,55 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
+
+    [HttpGet("GetByProject/{guid}")]
+    public IActionResult GetByProject(Guid guid)
+    {
+        var employees = _employeeService.GetEmployeeByProject(guid);
+
+        if (!employees.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
+        });
+    }
+
+    [HttpGet("GetExcludeProject/{guid}")]
+    public IActionResult GetExcludeProject(Guid guid)
+    {
+        var employees = _employeeService.GetExcludeProject(guid);
+
+        if (!employees.Any()){
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
+        });
+    }
     
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("GetByEmail/{email}")]
@@ -233,16 +282,16 @@ public class EmployeeController : ControllerBase
         var employee = _employeeService.GetByEmail(email);
 
         if (employee is null)
+
         {
             return NotFound(new ResponseHandler<EmployeeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Employee not found",
+                Message = "No employees found",
                 Data = null
             });
         }
-
         return Ok(new ResponseHandler<EmployeeDtoGet>
         {
             Code = StatusCodes.Status200OK,

@@ -11,13 +11,15 @@ public class EmployeeService
     private readonly IAccountRepository _accountRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IEmployeeProjectRepository _employeeProjectRepository;
     private readonly IGradeRepository _gradeRepository;
     private readonly IProfileRepository _profileRepository;
+    private readonly IProjectRepository _projectRepository;
     private readonly IRoleRepository _roleRepository;
 
     public EmployeeService(IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository,
         IEmployeeRepository employeeRepository, IGradeRepository gradeRepository,
-        IProfileRepository profileRepository, IRoleRepository roleRepository)
+        IProfileRepository profileRepository, IRoleRepository roleRepository, IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository)
     {
         _accountRepository = accountRepository;
         _accountRoleRepository = accountRoleRepository;
@@ -25,6 +27,8 @@ public class EmployeeService
         _gradeRepository = gradeRepository;
         _profileRepository = profileRepository;
         _roleRepository = roleRepository;
+        _projectRepository = projectRepository;
+        _employeeProjectRepository = employeeProjectRepository;
     }
 
     public IEnumerable<EmployeeDtoGet> Get()
@@ -163,5 +167,75 @@ public class EmployeeService
         if (employee is null) return null!;
 
         return (EmployeeDtoGet)employee;
+    }
+  
+  public IEnumerable<EmployeeDtoGet> GetEmployeeByProject(Guid projectGuid)
+    {
+        var employeesByProject = (from employee in _employeeRepository.GetAll()
+                                  join employeeProject in _employeeProjectRepository.GetAll()
+                                  on employee.Guid equals employeeProject.EmployeeGuid
+                                  join project in _projectRepository.GetAll()
+                                  on employeeProject.ProjectGuid equals project.Guid
+                                  where employeeProject.ProjectGuid == projectGuid
+                                  select new EmployeeDtoGet()
+                                  {
+                                      Guid = employee.Guid,
+                                      Nik = employee.Nik,
+                                      FirstName = employee.FirstName,
+                                      LastName = employee.LastName,
+                                      BirthDate = employee.BirthDate,
+                                      Gender = employee.Gender,
+                                      HiringDate = employee.HiringDate,
+                                      Email = employee.Email,
+                                      PhoneNumber = employee.PhoneNumber,
+                                      Status = employee.Status,
+                                      GradeGuid = employee.GradeGuid,
+                                      ProfileGuid = employee.ProfileGuid,
+                                  }).ToList();
+        return employeesByProject;
+    }
+
+    public IEnumerable<EmployeeDtoGet> GetExcludeProject(Guid projectGuid)
+    {
+        var employeesByProject = GetEmployeeByProject(projectGuid).ToList();
+
+        var employeesExcludeProject = (from employee in _employeeRepository.GetAll()
+                                       join employeeProject in _employeeProjectRepository.GetAll()
+                                       on employee.Guid equals employeeProject.EmployeeGuid into employeeProjectsGroup
+                                       from employeeProject in employeeProjectsGroup.DefaultIfEmpty()
+                                       where employeeProject == null || employeeProject.ProjectGuid != projectGuid
+                                       select new EmployeeDtoGet()
+                                       {
+                                           Guid = employee.Guid,
+                                           Nik = employee.Nik,
+                                           FirstName = employee.FirstName,
+                                           LastName = employee.LastName,
+                                           BirthDate = employee.BirthDate,
+                                           Gender = employee.Gender,
+                                           HiringDate = employee.HiringDate,
+                                           Email = employee.Email,
+                                           PhoneNumber = employee.PhoneNumber,
+                                           Status = employee.Status,
+                                           GradeGuid = employee.GradeGuid,
+                                           ProfileGuid = employee.ProfileGuid,
+                                       }).ToList();
+
+        var employeesExcludeProjectFiltered = employeesExcludeProject.Where(e => !employeesByProject.Any(r => r.Guid == e.Guid)).Distinct(new EmployeeDtoGetComparer());
+
+        return employeesExcludeProjectFiltered;
+    }
+
+    public class EmployeeDtoGetComparer : IEqualityComparer<EmployeeDtoGet>
+    {
+        public bool Equals(EmployeeDtoGet x, EmployeeDtoGet y)
+        {
+            // Assuming that the Guid property uniquely identifies an employee
+            return x.Guid == y.Guid;
+        }
+
+        public int GetHashCode(EmployeeDtoGet obj)
+        {
+            return obj.Guid.GetHashCode();
+        }
     }
 }
