@@ -60,7 +60,6 @@ public class EmployeeProjectController : Controller
 
         if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
 
-
         ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["ProjectGuid"] = guid;
@@ -76,9 +75,21 @@ public class EmployeeProjectController : Controller
         {
             return RedirectToAction("Create", new { guid = employeeProjectDtoGet.ProjectGuid });
         }
-        
-        ViewData["isNotCollapsed"] = isNotCollapsed;
-        return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+        switch (employeeProject.Code)
+        {
+            case 201:
+                TempData["Success"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+            case 404:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+            case 500:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+            default:
+                TempData["Error"] = "An error occurred, please try again later.";
+                return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+        };
     }
 
     [HttpPost]
@@ -107,22 +118,23 @@ public class EmployeeProjectController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid guid)
     {
+        var getEmployeeProject = await _employeeProjectRepository.Get(guid);
         var employeeProject = await _employeeProjectRepository.Delete(guid);
 
         switch (employeeProject.Code)
         {
             case 200:
                 TempData["Success"] = employeeProject.Message;
-                return RedirectToAction("Index", "Project");
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             case 404:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction("Index", "Project");
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             case 500:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction("Index", "Project");
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             default:
                 TempData["Error"] = "An error occurred, please try again later.";
-                return RedirectToAction("Index", "Project");
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
 }
