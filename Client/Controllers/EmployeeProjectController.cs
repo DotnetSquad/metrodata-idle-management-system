@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.DataTransferObjects.EmployeeProjects;
 using Client.DataTransferObjects.Employees;
+using Client.DataTransferObjects.Projects;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
