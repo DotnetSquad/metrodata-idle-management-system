@@ -9,14 +9,18 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Update</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/Job/Index">Job</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Job/Update">Update Job</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -27,8 +31,9 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
-                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+                        <h5 class="card-title">Update Job Form</h5>
+                        <p>Welcome to the "Update Job" form! This form allows you to modify and update existing job listings in our system. Please make sure to make accurate and relevant changes to ensure that the job information remains up-to-date.</p>
+                        <p>Make sure to review all the changes before clicking the "Submit Form" button to update the job listing. If there are any errors, the system will prompt you to correct them before saving the updates. Thank you for using our "Update Job" form!</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/job/update" method="post" class="row g-3 needs-validation" novalidate>
