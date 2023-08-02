@@ -1,5 +1,4 @@
 ﻿using API.Models;
-using API.Utilities.Enums;
 
 namespace API.DataTransferObjects.Interviews;
 
@@ -10,7 +9,6 @@ public class InterviewDtoUpdate
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
-    public StatusInterviewEnum? StatusInterview { get; set; }
     public Guid JobGuid { get; set; }
 
     // implicit operator
@@ -23,7 +21,6 @@ public class InterviewDtoUpdate
             Link = interviewDtoUpdate.Link,
             InterviewDate = interviewDtoUpdate.InterviewDate,
             Description = interviewDtoUpdate.Description,
-            StatusInterview = interviewDtoUpdate.StatusInterview,
             JobGuid = interviewDtoUpdate.JobGuid,
             ModifiedDate = DateTime.UtcNow
         };
@@ -39,7 +36,6 @@ public class InterviewDtoUpdate
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
             Description = interview.Description,
-            StatusInterview = interview.StatusInterview,
             JobGuid = interview.JobGuid
         };
     }
