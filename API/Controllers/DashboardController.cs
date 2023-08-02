@@ -41,7 +41,7 @@ public class DashboardController : ControllerBase
         });
     }
 
-    [HttpGet("get-interview-status")]
+    [HttpGet("GetInterviewStatus")]
     public IActionResult GetInterviewStatus()
     {
         var status = _dashboardService.GetInterviewStatus();

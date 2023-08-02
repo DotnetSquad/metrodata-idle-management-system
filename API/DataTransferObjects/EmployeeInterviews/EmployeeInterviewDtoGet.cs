@@ -1,5 +1,5 @@
-using API.DataTransferObjects.Accounts;
 using API.Models;
+using API.Utilities.Enums;
 
 namespace API.DataTransferObjects.EmployeeInterviews;
 
@@ -8,6 +8,7 @@ public class EmployeeInterviewDtoGet
     public Guid Guid { get; set; }
     public Guid EmployeeGuid { get; set; }
     public Guid InterviewGuid { get; set; }
+    public StatusApprovalEnum StatusApproval { get; set; }
 
     // implicit operator
     public static implicit operator EmployeeInterview(EmployeeInterviewDtoGet employeeInterviewDtoGet)
@@ -16,7 +17,8 @@ public class EmployeeInterviewDtoGet
         {
             Guid = employeeInterviewDtoGet.Guid,
             EmployeeGuid = employeeInterviewDtoGet.EmployeeGuid,
-            InterviewGuid = employeeInterviewDtoGet.InterviewGuid
+            InterviewGuid = employeeInterviewDtoGet.InterviewGuid,
+            StatusApproval = employeeInterviewDtoGet.StatusApproval
         };
     }
 
@@ -27,7 +29,8 @@ public class EmployeeInterviewDtoGet
         {
             Guid = employeeInterview.Guid,
             EmployeeGuid = employeeInterview.EmployeeGuid,
-            InterviewGuid = employeeInterview.InterviewGuid
+            InterviewGuid = employeeInterview.InterviewGuid,
+            StatusApproval = employeeInterview.StatusApproval
         };
     }
 }
