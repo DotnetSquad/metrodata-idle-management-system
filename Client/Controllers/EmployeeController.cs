@@ -8,6 +8,7 @@ namespace Client.Controllers;
 
 public class EmployeeController : Controller
 {
+    public string isNotCollapsed = "EmployeeController";
     private readonly IEmployeeRepository _employeerepository;
     private readonly IGradeRepository _gradeRepository;
     private readonly IProfileRepository _profileRepository;
@@ -33,6 +34,7 @@ public class EmployeeController : Controller
             listEmployees = emplooyees.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(listEmployees);
     }
 
@@ -62,6 +64,7 @@ public class EmployeeController : Controller
         ViewData["Grades"] = listGradeDtoGets;
         ViewData["Profiles"] = listProfileDtoGets;*/
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -91,6 +94,7 @@ public class EmployeeController : Controller
         var employee = await _employeerepository.Get(guid);
         var employeeDtoGet = new EmployeeDtoGet();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (employee.Code)
         {
             case 200:

@@ -9,6 +9,7 @@ namespace Client.Controllers;
 
 public class EmployeeProjectController : Controller
 {
+    public string isNotCollapsed = "EmployeeProjectController";
     private readonly IEmployeeProjectRepository _employeeProjectRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IProjectRepository _projectRepository;
@@ -37,6 +38,14 @@ public class EmployeeProjectController : Controller
         ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
         ViewData["ProjectGuid"] = guid;
 
+        var projects = await _projectRepository.Get();
+        var listProjectsDtoGets = new List<ProjectDtoGet>();
+
+        if (projects.Data != null) listProjectsDtoGets = projects.Data.ToList();
+
+        ViewData["isNotCollapsed"] = isNotCollapsed;
+        ViewData["Projects"] = listProjectsDtoGets;
+
         return View(listEmployees);
     }
 
@@ -51,6 +60,7 @@ public class EmployeeProjectController : Controller
         if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
 
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["ProjectGuid"] = guid;
         return View();
@@ -65,8 +75,31 @@ public class EmployeeProjectController : Controller
         {
             return RedirectToAction("Create", new { guid = employeeProjectDtoGet.ProjectGuid });
         }
-
+        
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return RedirectToAction("Index", new { guid = employeeProjectDtoGet.ProjectGuid });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Update(EmployeeProjectDtoGet employeeProjectDtoGet)
+    {
+        var employeeProject = await _employeeProjectRepository.Put(employeeProjectDtoGet.Guid, employeeProjectDtoGet);
+
+        switch (employeeProject.Code)
+        {
+            case 200:
+                TempData["Success"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+        }
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]

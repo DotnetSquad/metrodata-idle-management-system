@@ -10,6 +10,7 @@ namespace Client.Controllers;
 
 public class EmployeeInterviewController : Controller
 {
+    public string isNotCollapsed = "EmployeeInterviewController";
     private readonly IEmployeeInterviewRepository _employeeInterviewRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IInterviewRepository _interviewRepository;
@@ -42,6 +43,7 @@ public class EmployeeInterviewController : Controller
 
         if (interviews.Data != null) listInterviewsDtoGets = interviews.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Interviews"] = listInterviewsDtoGets;
 
         return View(listEmployeeInterviewDtoGets);
@@ -61,6 +63,7 @@ public class EmployeeInterviewController : Controller
 
         if (interviews.Data is not null) listInterviewDtoGets = interviews.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Interviews"] = listInterviewDtoGets;
         return View();
@@ -114,6 +117,7 @@ public class EmployeeInterviewController : Controller
 
         if (interviews.Data is not null) listInterviewDtoGets = interviews.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["Interviews"] = listInterviewDtoGets;
 
