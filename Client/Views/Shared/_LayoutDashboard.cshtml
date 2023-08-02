@@ -230,23 +230,21 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-            @if (User.Identity.IsAuthenticated)
+            <li class="nav-item">
+                @{
+                    var dashboardController = "collapsed";
+                    if (isNotCollapsed == "DashboardController") dashboardController = "";
+                }
+                <a class="nav-link @dashboardController" href="~/Dashboard/Index">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li> <!-- End Dashboard Nav -->
+
+            <li class="nav-heading">Pages</li>
+
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
-                <li class="nav-item">
-                    @{
-                        var dashboardController = "collapsed";
-                        if (isNotCollapsed == "DashboardController") dashboardController = "";
-                    }
-                    <a class="nav-link @dashboardController" href="~/Dashboard/Index">
-                        <i class="bi bi-grid"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-
-                <!-- End Dashboard Nav -->
-
-                <li class="nav-heading">Pages</li>
-
                 <li class="nav-item">
                     @{
                         var companyController = "collapsed";
@@ -256,10 +254,11 @@
                         <i class="ri-community-line"></i>
                         <span>Company</span>
                     </a>
-                </li>
+                </li> <!-- End Company Page Nav -->
+            }
 
-                <!-- End Company Page Nav -->
-
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
                 <li class="nav-item">
                     @{
                         var jobController = "collapsed";
@@ -269,140 +268,138 @@
                         <i class="ri-archive-2-line"></i>
                         <span>Job</span>
                     </a>
-                </li>
+                </li> <!-- End Job Page Nav -->
+            }
 
-                <!-- End Job Page Nav -->
-                @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) ||
-               User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-                {
-                    <li class="nav-item"> 
-                        @{
-                            var employeeController = "collapsed";
-                            if (isNotCollapsed == "EmployeeController") employeeController = "";
-                        }
-                        <a class="nav-link @employeeController" href="~/Employee/Index">
-                            <i class="ri-team-line"></i>
-                            <span>Employee</span>
-                        </a>
-                    </li>
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item"> 
+                    @{
+                        var employeeController = "collapsed";
+                        if (isNotCollapsed == "EmployeeController") employeeController = "";
+                    }
+                    <a class="nav-link @employeeController" href="~/Employee/Index">
+                        <i class="ri-team-line"></i>
+                        <span>Employee</span>
+                    </a>
+                </li> <!-- End Employee Page Nav -->
+            }
 
-                    <!-- End Employee Page Nav -->
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var interviewController = "collapsed";
+                        if (isNotCollapsed == "InterviewController") interviewController = "";
+                    }
+                    <a class="nav-link @interviewController" href="~/Interview/Index">
+                        <i class="ri-presentation-line"></i>
+                        <span>Interview</span>
+                    </a>
+                </li> <!-- End Interview Page Nav -->
+            }
 
-                    <li class="nav-item">
-                        @{
-                            var interviewController = "collapsed";
-                            if (isNotCollapsed == "InterviewController") interviewController = "";
-                        }
-                        <a class="nav-link @interviewController" href="~/Interview/Index">
-                            <i class="ri-presentation-line"></i>
-                            <span>Interview</span>
-                        </a>
-                    </li>
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var placementController = "collapsed";
+                        if (isNotCollapsed == "PlacementController") placementController = "";
+                    }
+                    <a class="nav-link @placementController" href="~/Placement/Index">
+                        <i class="ri-honour-line"></i>
+                        <span>Placement</span>
+                    </a>
+                </li> <!-- End Placement Page Nav -->
+            }
 
-                    <!-- End Interview Page Nav -->
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var profileController = "collapsed";
+                        if (isNotCollapsed == "ProfileController") profileController = "";
+                    }
+                    <a class="nav-link @profileController" href="~/Profile/Index">
+                        <i class="ri-user-3-line"></i>
+                        <span>Profile</span>
+                    </a>
+                </li> <!-- End Profile Page Nav -->
+            }
 
-                    <li class="nav-item">
-                        @{
-                            var placementController = "collapsed";
-                            if (isNotCollapsed == "PlacementController") placementController = "";
-                        }
-                        <a class="nav-link @placementController" href="~/Placement/Index">
-                            <i class="ri-honour-line"></i>
-                            <span>Placement</span>
-                        </a>
-                    </li>
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var projectController = "collapsed";
+                        if (isNotCollapsed == "ProjectController") projectController = "";
+                    }
+                    <a class="nav-link @projectController" href="~/Project/Index">
+                        <i class="ri-git-repository-commits-line"></i>
+                        <span>Project</span>
+                    </a>
+                </li> <!-- End Project Page Nav -->
+            }
 
-                    <!-- End Placement Page Nav -->
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var gradeController = "collapsed";
+                        if (isNotCollapsed == "GradeController") gradeController = "";
+                    }
+                    <a class="nav-link @gradeController" href="~/Grade/Index">
+                        <i class="ri-medal-line"></i>
+                        <span>Grade</span>
+                    </a>
+                </li> <!-- End Grade Page Nav -->
+            }
 
-                    <li class="nav-item">
-                        @{
-                            var profileController = "collapsed";
-                            if (isNotCollapsed == "ProfileController") profileController = "";
-                        }
-                        <a class="nav-link @profileController" href="~/Profile/Index">
-                            <i class="ri-user-3-line"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var roleController = "collapsed";
+                        if (isNotCollapsed == "RoleController") roleController = "";
+                    }
+                    <a class="nav-link @roleController" href="~/Role/Index">
+                        <i class="ri-ruler-2-line"></i>
+                        <span>Role</span>
+                    </a>
+                </li> <!-- End Role Page Nav -->
+            }
 
-                    <!-- End Profile Page Nav -->
-                }
-                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) ||
-               User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-                {
-                    <li class="nav-item">
-                        @{
-                            var projectController = "collapsed";
-                            if (isNotCollapsed == "ProjectController") projectController = "";
-                        }
-                        <a class="nav-link @projectController" href="~/Project/Index">
-                            <i class="ri-git-repository-commits-line"></i>
-                            <span>Project</span>
-                        </a>
-                    </li>
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var employeeInterviewController = "collapsed";
+                        if (isNotCollapsed == "EmployeeInterviewController") employeeInterviewController = "";
+                    }
+                    <a class="nav-link @employeeInterviewController" href="~/EmployeeInterview/Index">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Interview Management</span>
+                    </a>
+                </li> <!-- End employee interview Page Nav -->
+            }
 
-                    <!-- End Project Page Nav -->
-
-                    <li class="nav-item">
-                        @{
-                            var gradeController = "collapsed";
-                            if (isNotCollapsed == "GradeController") gradeController = "";
-                        }
-                        <a class="nav-link @gradeController" href="~/Grade/Index">
-                            <i class="ri-medal-line"></i>
-                            <span>Grade</span>
-                        </a>
-                    </li>
-
-                    <!-- End Grade Page Nav -->
-                }
-                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()))
-                {
-                    <li class="nav-item">
-                        @{
-                            var roleController = "collapsed";
-                            if (isNotCollapsed == "RoleController") roleController = "";
-                        }
-                        <a class="nav-link @roleController" href="~/Role/Index">
-                            <i class="ri-ruler-2-line"></i>
-                            <span>Role</span>
-                        </a>
-                    </li>
-
-                    <!-- End Role Page Nav -->
-
-                    <li class="nav-item">
-                        @{
-                            var employeeInterviewController = "collapsed";
-                            if (isNotCollapsed == "EmployeeInterviewController") employeeInterviewController = "";
-                        }
-                        <a class="nav-link @employeeInterviewController" href="~/EmployeeInterview/Index">
-                            <i class="bi bi-people-fill"></i>
-                            <span>Interview Management</span>
-                        </a>
-                    </li>
-
-                    <!-- End employee interview Page Nav -->
-                }
-                @if (User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-                {
-                    <li class="nav-item">
-                         @{
-                            var employeeProjectController = "collapsed";
-                            if (isNotCollapsed == "EmployeeProjectController") employeeProjectController = "";
-                        }
-                        <a class="nav-link @employeeProjectController" href="~/EmployeeProject/Index">
-                            <i class="bi bi-building-add"></i>
-                            <span>Project Management</span>
-                        </a>
-                    </li>
-
-                    <!-- End Employee Project Page Nav -->
-                }
+            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var employeeProjectController = "collapsed";
+                        if (isNotCollapsed == "EmployeeProjectController") employeeProjectController = "";
+                    }
+                    <a class="nav-link @employeeProjectController" href="~/EmployeeProject/Index">
+                        <i class="bi bi-building-add"></i>
+                        <span>Project Management</span>
+                    </a>
+                </li> <!-- End Employee Project Page Nav -->
             }
         </ul>
 
     </aside><!-- End Sidebar-->
+
     @if (!string.IsNullOrEmpty(successMessage))
     {
         <script type="text/javascript">
@@ -434,6 +431,7 @@
             });
         </script>
     }
+
     @RenderBody()
 
     <!-- ======= Footer ======= -->
