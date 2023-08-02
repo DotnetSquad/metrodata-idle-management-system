@@ -45,9 +45,9 @@ public class DashboardService
                                join e in _employeeRepository.GetAll() on er.EmployeeGuid equals e.Guid
                                select new DashboardDtoGetInterviewStatus
                                {
-                                   Accepted = i.StatusInterview == StatusInterviewEnum.Accepted ? 1 : 0,
-                                   Pending = i.StatusInterview == StatusInterviewEnum.Pending ? 1 : 0,
-                                   Rejected = i.StatusInterview == StatusInterviewEnum.Rejected ? 1 : 0
+                                   Accepted = er.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
+                                   Pending = er.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
+                                   Rejected = er.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
                                });
 
         if (!interviewStatus.Any())
