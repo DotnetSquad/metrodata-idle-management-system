@@ -8,6 +8,7 @@ namespace Client.Controllers;
 [Authorize]
 public class DashboardController : Controller
 {
+    public string isNotCollapsed = "DashboardController";
     private readonly IDashboardRepository _dashboardRepository;
 
     public DashboardController(IDashboardRepository dashboardRepository)
@@ -15,11 +16,13 @@ public class DashboardController : Controller
         _dashboardRepository = dashboardRepository;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var statisticEmployees = await _dashboardRepository.GetStatisticEmployee();
         var statisticInterviewStatus = await _dashboardRepository.GetStatisticInterviewStatus();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (statisticInterviewStatus.Code)
         {
             case 200:
@@ -48,7 +51,7 @@ public class DashboardController : Controller
                     Idle = 0,
                     Working = 0
                 };
-                 statisticEmployees.Data = statistic;
+                statisticEmployees.Data = statistic;
                 ViewData["statisticEmployees"] = statisticEmployees.Data;
                 break;
         }

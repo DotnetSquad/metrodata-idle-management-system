@@ -8,6 +8,7 @@ namespace Client.Controllers;
 
 public class CompanyController : Controller
 {
+    public string isNotCollapsed = "CompanyController";
     private readonly ICompanyRepository _companyRepository;
 
     public CompanyController(ICompanyRepository companyRepository)
@@ -27,6 +28,7 @@ public class CompanyController : Controller
             ListCompanies = companies.Data.ToList();
         }
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View(ListCompanies);
     }
 
@@ -34,6 +36,7 @@ public class CompanyController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         return View();
     }
 
@@ -64,6 +67,7 @@ public class CompanyController : Controller
         var company = await _companyRepository.Get(guid);
         var companyDtoGet = new CompanyDtoGet();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         switch (company.Code)
         {
             case 200:

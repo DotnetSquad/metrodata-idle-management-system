@@ -9,6 +9,7 @@ namespace Client.Controllers;
 
 public class InterviewController : Controller
 {
+    public string isNotCollapsed = "InterviewController";
     private readonly IInterviewRepository _interviewRepository;
     private readonly IJobRepository _jobRepository;
 
@@ -33,6 +34,7 @@ public class InterviewController : Controller
 
         if (jobs.Data != null) listJobDtoGets = jobs.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Jobs"] = listJobDtoGets;
         return View(listInterviewDtoGets);
     }
@@ -46,6 +48,7 @@ public class InterviewController : Controller
 
         if (jobs.Data is not null) listJobDtoGets = jobs.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Jobs"] = listJobDtoGets;
         return View();
     }
@@ -96,6 +99,7 @@ public class InterviewController : Controller
 
         if (jobs.Data is not null) listJobDtoGets = jobs.Data.ToList();
 
+        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Jobs"] = listJobDtoGets;
         return View(interviewDtoGet);
     }
