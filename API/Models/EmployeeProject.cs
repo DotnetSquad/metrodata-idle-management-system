@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using API.Utilities.Enums;
 
 namespace API.Models;
 
@@ -10,6 +11,9 @@ public class EmployeeProject : BaseEntity
 
     [Column("project_guid")]
     public Guid ProjectGuid { get; set; }
+    
+    [Column("status_approval")]
+    public StatusApprovalEnum StatusApproval { get; set; }
 
     // Cardinality
     public Employee? Employee { get; set; }
