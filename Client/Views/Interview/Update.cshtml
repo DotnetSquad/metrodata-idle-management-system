@@ -8,14 +8,18 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Update Form</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/Interview/Index">Interview</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Interview/Update?guid=@Model.Guid">Update Interview</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -26,8 +30,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
-                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+                        <h5 class="card-title">Update Interview Form</h5>
+                        <p>Welcome to the "Update Interview" form! This form allows you to modify and update existing interview listings in our system. Please make sure to make accurate and relevant changes to ensure that the interview information remains up-to-date. Click the "Submit Form" button to update the interview listing. Thank you for using our application!.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/interview/update" method="post" class="row g-3 needs-validation" novalidate>
@@ -54,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="validationCustom05" class="form-label">Hiring Date</label>
+                                <label for="validationCustom05" class="form-label">Interview Date</label>
                                 <input asp-for="InterviewDate" type="datetime-local" class="form-control" id="validationCustom05" required>
                                 <div class="invalid-feedback">
                                     Please enter your hiring date!
