@@ -67,6 +67,7 @@ public class EmployeeProjectController : Controller
     public async Task<IActionResult> Create(EmployeeProjectDtoGet employeeProjectDtoGet)
     {
         var employeeProject = await _employeeProjectRepository.Post(employeeProjectDtoGet);
+        ViewData["ProjectGuid"] = employeeProjectDtoGet.ProjectGuid;
 
         if (employeeProject is null)
         {

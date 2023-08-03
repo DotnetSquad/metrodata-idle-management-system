@@ -7,14 +7,18 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Update</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a href="~/Dashboard/Index">Home</a>
                 </li>
-                <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Validation</li>
+                <li class="breadcrumb-item">
+                    <a href="~/Profile/Index">Profile</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Profile/Update?guid=@Model.Guid">Update Profile</a>
+                </li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -25,8 +29,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Custom Styled Validation</h5>
-                        <p>For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to your <code>&lt;form&gt;</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. </p>
+                        <h5 class="card-title">Update Profile Form</h5>
+                        <p>Welcome to the "Update Profile" form! This form allows you to modify and update existing profile listings in our system. Please make sure to make accurate and relevant changes to ensure that the profile information remains up-to-date. Click the "Submit Form" button to update the profile listing. Thank you for using our application!.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/profile/update" method="post" class="row g-3 needs-validation" novalidate>

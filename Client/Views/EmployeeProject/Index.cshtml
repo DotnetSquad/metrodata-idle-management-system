@@ -1,4 +1,4 @@
-﻿@using Client.DataTransferObjects.EmployeeProjects
+@using Client.DataTransferObjects.EmployeeProjects
 @using Client.DataTransferObjects.Projects
 @using Client.Utilities.Enums;
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -15,14 +15,14 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Projects Data View</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeProject/Index">Project Management</a>
+                    <a href="~/EmployeeProject/Index?guid=@projectGuid">Project Management</a>
                 </li>
             </ol>
         </nav>
@@ -34,7 +34,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables Project Management</h5>
+                        <h5 class="card-title">Project Management Listings</h5>
                         <form action="~/employeeproject/create" method="get">
                             <input type="hidden" name="guid" value="@projectGuid"/>
                             <button type="submit" class="btn btn-primary" style="margin: 2px">
@@ -83,42 +83,47 @@
                                             var fullName = $"{item.FirstName} {item.LastName}";
                                         }
                                         @Html.DisplayFor(x => fullName)
-                                    </td>
-                                    <td>
-                                        @*@project.NameProject*@
-                                    </td>
-                                    <td>
-                                        @*@project.ProjectLead*@
-                                    </td>
-
-                                    <td>
-                                        @foreach (var employeeProject in employeeProjects)
-                                        {
-                                            @if (item.Guid == employeeProject.EmployeeGuid)
-                                            {
-                                                @employeeProject.StatusApproval
-                                            }
-                                        }
-
-                                    </td>
-                                    <td>
-                                        @{
-                                            var employeeProjectGuid = "";
-                                            foreach (var employeeProject in (IEnumerable<EmployeeProjectDtoGet>)ViewData["EmployeeProjects"])
-                                            {
-                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                   </td>
+                                   <td>
+                                          @{
+                                                foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
-                                                    employeeProjectGuid = employeeProject.Guid.ToString();
+                                                    if (Guid.Parse(projectGuid.ToString()) == project.Guid)
+                                                    {
+                                                        @project.NameProject
+                                                    }
                                                 }
-                                            }
+                                          }
+                                   </td>
+                                   <td>
+                                        @{
+                                           foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
+                                           {
+                                              if (Guid.Parse(projectGuid.ToString()) == project.Guid)
+                                              {
+                                                 @project.ProjectLead
+                                              }
+                                           }
                                         }
+                                   </td>
+                                   <td>
+                                        @{
+                                           var employeeProjectGuid = "";
+                                           foreach (var employeeProject in (IEnumerable<EmployeeProjectDtoGet>)ViewData["EmployeeProjects"])
+                                           {
+                                              employeeProjectGuid = employeeProject.Guid.ToString();
+                                           }
+                                        }
+                                     
                                         <form action="/employeeproject/delete" method="post">
                                             <input type="hidden" value="@employeeProjectGuid" name="guid"/>
                                             <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString())){
+                                     
+                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                        {
                                             <form action="/employeeproject/approve" method="post">
                                                 <input type="hidden" value="@employeeProjectGuid" name="guid"/>
                                                 <button type="submit" class="btn btn-primary delete-button" style="margin: 2px">
@@ -126,7 +131,9 @@
                                                 </button>
                                             </form>
                                         }
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString())){
+                                     
+                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                        {
                                             <form action="/employeeproject/approve" method="post">
                                                 <input type="hidden" value="@employeeProjectGuid" name="guid"/>
                                                 <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">

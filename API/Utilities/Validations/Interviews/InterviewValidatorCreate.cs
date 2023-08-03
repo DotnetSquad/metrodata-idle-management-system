@@ -13,8 +13,6 @@ public class InterviewValidatorCreate : AbstractValidator<InterviewDtoCreate>
 
         RuleFor(x => x.Description).NotEmpty();
 
-        RuleFor(x => x.StatusInterview).NotNull().IsInEnum().WithMessage("Status Interview must be either 0 is Pending status, 1 is Accepted status, and 2 is Rejected");
-
         RuleFor(x => x.JobGuid).NotEmpty();
     }
 }

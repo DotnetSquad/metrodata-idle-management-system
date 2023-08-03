@@ -1,5 +1,4 @@
 ﻿using API.Models;
-using API.Utilities.Enums;
 
 namespace API.DataTransferObjects.Interviews;
 
@@ -9,9 +8,8 @@ public class InterviewDtoCreate
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
-    public StatusInterviewEnum? StatusInterview { get; set; }
     public Guid JobGuid { get; set; }
-    
+
     // implicit operator
     public static implicit operator Interview(InterviewDtoCreate interviewDtoCreate)
     {
@@ -21,12 +19,11 @@ public class InterviewDtoCreate
             Link = interviewDtoCreate.Link,
             InterviewDate = interviewDtoCreate.InterviewDate,
             Description = interviewDtoCreate.Description,
-            StatusInterview = interviewDtoCreate.StatusInterview,
             JobGuid = interviewDtoCreate.JobGuid,
             CreatedDate = DateTime.UtcNow
         };
     }
-    
+
     // explicit operator
     public static explicit operator InterviewDtoCreate(Interview interview)
     {
@@ -36,7 +33,6 @@ public class InterviewDtoCreate
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
             Description = interview.Description,
-            StatusInterview = interview.StatusInterview,
             JobGuid = interview.JobGuid
         };
     }

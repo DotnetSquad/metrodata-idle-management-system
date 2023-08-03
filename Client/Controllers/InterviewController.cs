@@ -90,7 +90,6 @@ public class InterviewController : Controller
             interviewDtoGet.Link = interview.Data.Link;
             interviewDtoGet.InterviewDate = interview.Data.InterviewDate;
             interviewDtoGet.Description = interview.Data.Description;
-            interviewDtoGet.StatusInterview = interview.Data.StatusInterview;
             interviewDtoGet.JobGuid = interview.Data.JobGuid;
         }
 

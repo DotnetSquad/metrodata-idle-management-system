@@ -10,7 +10,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Interviews Management Data View</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -29,7 +29,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables Interview Management</h5>
+                        <h5 class="card-title">Interview Management Listings</h5>
                         <a href="/employeeinterview/create">
                             <button class="btn btn-primary" style="margin-bottom: 15px">
                                 <i class="bi bi-plus-square"></i> Create
@@ -107,15 +107,7 @@
                                             }
                                         </td>
                                         <td>
-                                            @{
-                                                foreach (var interview in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
-                                                {
-                                                    if (item.InterviewGuid == interview.Guid)
-                                                    {
-                                                        @interview.StatusInterview
-                                                    }
-                                                }
-                                            }
+                                            @Html.DisplayFor(modelItem => item.StatusApproval)
                                         </td>
                                         <td>
                                             <form action="/employeeinterview/update" method="get">
