@@ -1,7 +1,6 @@
 @using Client.DataTransferObjects.EmployeeProjects
 @using Client.DataTransferObjects.Projects
 @using Client.Utilities.Enums;
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<Client.DataTransferObjects.Employees.EmployeeDtoGet>
 
 @{
@@ -128,40 +127,59 @@
                                         }
                                     </td>
                                     <td>
-                                        @{
-                                            var employeeProjectGuid = "";
-                                            foreach (var employeeProject in (IEnumerable<EmployeeProjectDtoGet>)ViewData["EmployeeProjects"])
+                                        @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                        {
+                                            foreach (var employeeProject in employeeProjects)
                                             {
-                                                employeeProjectGuid = employeeProject.Guid.ToString();
+                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                                {
+                                                    <form action="/employeeproject/delete" method="post">
+                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
+                                                        <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    break;
+                                                }
                                             }
                                         }
 
-                                        <form action="/employeeproject/delete" method="post">
-                                            <input type="hidden" value="@employeeProjectGuid" name="guid"/>
-                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+
 
                                         @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                         {
-                                            <form action="/employeeproject/approve" method="post">
-                                                <input type="hidden" value="@employeeProjectGuid" name="guid"/>
-                                                <button type="submit" class="btn btn-primary delete-button" style="margin: 2px">
-                                                    <i class="bi bi-check-square"></i> Approve
-                                                </button>
-                                            </form>
+                                            foreach (var employeeProject in employeeProjects)
+                                            {
+                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                                {
+                                                    <form action="/employeeproject/approve" method="post">
+                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
+                                                        <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                            <i class="bi bi-check-square"></i> Approve
+                                                        </button>
+                                                    </form>
+                                                    break;
+                                                }
+                                            }
                                         }
 
                                         @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                         {
-                                            <form action="/employeeproject/approve" method="post">
-                                                <input type="hidden" value="@employeeProjectGuid" name="guid"/>
-                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                    <i class="bi bi-x-square"></i> Reject
-                                                </button>
-                                            </form>
+                                            foreach (var employeeProject in employeeProjects)
+                                            {
+                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                                {
+                                                    <form action="/employeeproject/reject" method="post">
+                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
+                                                        <button type="submit" class="btn btn-danger" style="margin: 2px">
+                                                            <i class="bi bi-x-square"></i> Reject
+                                                        </button>
+                                                    </form>
+                                                    break;
+                                                }
+                                            }
                                         }
+
                                     </td>
                                 </tr>
                                 i++;
