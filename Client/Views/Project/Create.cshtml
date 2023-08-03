@@ -36,6 +36,7 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/project/create" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Name Project</label>
                                 <input asp-for="NameProject" type="text" class="form-control" id="validationCustom01" required>

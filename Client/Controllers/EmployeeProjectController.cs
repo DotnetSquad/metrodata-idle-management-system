@@ -35,10 +35,10 @@ public class EmployeeProjectController : Controller
         var listEmployees = new List<EmployeeDtoGet>();
 
         if (employees.Data is not null) listEmployees = employees.Data.ToList();
-        
+
         var project = await _projectRepository.Get();
         var listProjectDtoGets = new List<ProjectDtoGet>();
-        
+
         if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
 
@@ -46,7 +46,7 @@ public class EmployeeProjectController : Controller
         ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
         ViewData["ProjectGuid"] = guid;
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        
+
         return View(listEmployees);
     }
 
@@ -67,7 +67,9 @@ public class EmployeeProjectController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EmployeeProjectDtoGet employeeProjectDtoGet)
     {
         var employeeProject = await _employeeProjectRepository.Post(employeeProjectDtoGet);
@@ -94,7 +96,9 @@ public class EmployeeProjectController : Controller
         };
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(EmployeeProjectDtoGet employeeProjectDtoGet)
     {
         var employeeProject = await _employeeProjectRepository.Put(employeeProjectDtoGet.Guid, employeeProjectDtoGet);
@@ -139,8 +143,8 @@ public class EmployeeProjectController : Controller
                 return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
-    
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Approve(Guid guid)
     {
@@ -164,7 +168,8 @@ public class EmployeeProjectController : Controller
                 return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Reject(Guid guid)
     {

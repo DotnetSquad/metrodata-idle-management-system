@@ -44,7 +44,7 @@ public class ProjectController : Controller
         {
             isNotCollapsed = "EmployeeProjectController";
         }
-        
+
         ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
@@ -63,7 +63,7 @@ public class ProjectController : Controller
         {
             listEmployeeDtoGets = employees.Data.ToList();
         }
-        
+
         if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
         {
             isNotCollapsed = "EmployeeProjectController";
@@ -76,7 +76,9 @@ public class ProjectController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ProjectDtoGet projectDtoPost)
     {
         var project = await _projectRepository.Post(projectDtoPost);
@@ -107,7 +109,7 @@ public class ProjectController : Controller
         {
             listEmployeeDtoGets = employees.Data.ToList();
         }
-        
+
         if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
         {
             isNotCollapsed = "EmployeeProjectController";
@@ -136,6 +138,7 @@ public class ProjectController : Controller
         return View(projectDtoGet);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(ProjectDtoGet projectDtoGet)
