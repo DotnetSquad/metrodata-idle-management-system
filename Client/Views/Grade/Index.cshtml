@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Client.DataTransferObjects.Grades.GradeDtoGet>
+﻿@using Client.DataTransferObjects.Employees;
+@model IEnumerable<Client.DataTransferObjects.Grades.GradeDtoGet>
 
 @{
     ViewData["Title"] = "Index";
@@ -41,6 +42,9 @@
                                     <th scope="col">
                                         @Html.DisplayName("No")
                                     </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Employee Name")
+                                    </th>
                                      <th scope="col">
                                         @Html.DisplayNameFor(model => model.ScoreSegment1)
                                     </th> 
@@ -73,6 +77,18 @@
                                     <tr>
                                         <td>
                                             @i
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                                {
+                                                    var fullName = $"{employee.FirstName} {employee.LastName}";
+                                                    if (item.Guid == employee.GradeGuid)
+                                                    {
+                                                        @Html.DisplayFor(x => fullName)
+                                                    }
+                                                }
+                                            }
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.ScoreSegment1)

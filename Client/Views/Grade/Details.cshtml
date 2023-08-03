@@ -1,0 +1,58 @@
+﻿@model Client.DataTransferObjects.Grades.GradeDtoGet
+
+@{
+    Layout = "_LayoutDashboard";
+    var employee = ViewData["Employee"] as Client.DataTransferObjects.Employees.EmployeeDtoGet;
+    var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Profile</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="~/Dashboard/Index">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="~/Grade/Details?guid=@Model.Guid">Grade</a>
+                </li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">@fullName</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Segment 1 Score:</strong></div>
+                <div class="col-lg-9 col-md-8">@Model.ScoreSegment1</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Segment 2 Score:</strong></div>
+                <div class="col-lg-9 col-md-8">@Model.ScoreSegment2</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Segment 3 Score:</strong></div>
+                <div class="col-lg-9 col-md-8">@Model.ScoreSegment3</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Segment 4 Score:</strong></div>
+                <div class="col-lg-9 col-md-8">@Model.ScoreSegment4</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Total Score:</strong></div>
+                <div class="col-lg-9 col-md-8">@Math.Floor(Model.TotalScore)</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 label "><strong>Grade Level:</strong></div>
+                <div class="col-lg-9 col-md-8">@Model.GradeLevel</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- End #main -->

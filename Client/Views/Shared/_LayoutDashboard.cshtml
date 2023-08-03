@@ -26,9 +26,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="~/NiceAdmin/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -183,7 +182,7 @@
 
                         <li>
                             <a class="dropdown-item d-flex align-items-center"
-                                href="~/profile/details?guid=@profileGuid">
+                               href="~/profile/details?guid=@profileGuid">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -193,8 +192,9 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-gear"></i>
+                            <a class="dropdown-item d-flex align-items-center"
+                               href="~/grade/details?guid=@gradeGuid">
+                                <i class="bi bi-award"></i>
                                 <span>My Grade</span>
                             </a>
                         </li>
@@ -273,7 +273,7 @@
 
             @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
-                <li class="nav-item"> 
+                <li class="nav-item">
                     @{
                         var employeeController = "collapsed";
                         if (isNotCollapsed == "EmployeeController") employeeController = "";
@@ -396,24 +396,23 @@
                     </a>
                 </li> <!-- End Employee Project Page Nav -->
             }
-            
+
             @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
             {
                 <li class="nav-item">
-                        @{
-                            var employeeProjectController = "collapsed";
-                            if (isNotCollapsed == "EmployeeProjectController") employeeProjectController = "";
-                        }
-                        <a class="nav-link @employeeProjectController" href="~/Project/Index">
-                            <i class="bi bi-building-add"></i>
-                            <span>Project Management</span>
-                        </a>
-                </li> <!-- End Employee Project Page Nav -->                    
+                    @{
+                        var employeeProjectController = "collapsed";
+                        if (isNotCollapsed == "EmployeeProjectController") employeeProjectController = "";
+                    }
+                    <a class="nav-link @employeeProjectController" href="~/Project/Index">
+                        <i class="bi bi-building-add"></i>
+                        <span>Project Management</span>
+                    </a>
+                </li> <!-- End Employee Project Page Nav -->
             }
         </ul>
 
     </aside><!-- End Sidebar-->
-
     @if (!string.IsNullOrEmpty(successMessage))
     {
         <script type="text/javascript">
