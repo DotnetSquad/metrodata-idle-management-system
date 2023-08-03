@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<AccountRole> AccountRoles { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<Employee> Employees { get; set; }
-    public DbSet<EmployeeInterview> EmployeeInterviews { get; set; }
+    public DbSet<EmployeeJob> EmployeeJobs { get; set; }
     public DbSet<EmployeeProject> EmployeeProjects { get; set; }
     public DbSet<Grade> Grades { get; set; }
     public DbSet<Interview> Interviews { get; set; }
@@ -59,11 +59,11 @@ public class ApplicationDbContext : DbContext
             .WithOne(placement => placement.Company)
             .HasForeignKey(placement => placement.CompanyGuid);
 
-        // Employee - EmployeeInterview (One to Many)
+        // Employee - EmployeeJob (One to Many)
         modelBuilder.Entity<Employee>()
             .HasMany(employee => employee.EmployeeInterviews)
-            .WithOne(employeeInterview => employeeInterview.Employee)
-            .HasForeignKey(employeeInterview => employeeInterview.EmployeeGuid);
+            .WithOne(employeeJob => employeeJob.Employee)
+            .HasForeignKey(employeeJob => employeeJob.EmployeeGuid);
 
         // Employee - EmployeeProject (One to Many)
         modelBuilder.Entity<Employee>()
@@ -89,17 +89,17 @@ public class ApplicationDbContext : DbContext
             .WithOne(profile => profile.Employee)
             .HasForeignKey<Employee>(employee => employee.ProfileGuid);
 
-        // Interview - Job (One to Many)
+        // Interview - EmployeeJob (One to One)
         modelBuilder.Entity<Interview>()
-            .HasOne(interview => interview.Job)
-            .WithMany(job => job.Interviews)
-            .HasForeignKey(interview => interview.JobGuid);
+            .HasOne(interview => interview.EmployeeJob)
+            .WithOne(employeeJob => employeeJob.Interview)
+            .HasForeignKey<EmployeeJob>(employeeJob => employeeJob.InterviewGuid);
 
-        // Interview - EmployeeInterview (One to Many)
-        modelBuilder.Entity<Interview>()
-            .HasMany(interview => interview.EmployeeInterviews)
-            .WithOne(employeeInterview => employeeInterview.Interview)
-            .HasForeignKey(employeeInterview => employeeInterview.InterviewGuid);
+        // Job - EmployeeJob (One to Many)
+        modelBuilder.Entity<Job>()
+            .HasMany(job => job.EmployeeJobs)
+            .WithOne(employeeJob => employeeJob.Job)
+            .HasForeignKey(employeeJob => employeeJob.JobGuid);
 
         // Project - EmployeeProject (One to Many)
         modelBuilder.Entity<Project>()

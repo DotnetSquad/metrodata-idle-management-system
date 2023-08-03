@@ -42,7 +42,7 @@ public class Employee : BaseEntity
     // Cardinality
     public Account? Account { get; set; }
 
-    public ICollection<EmployeeInterview>? EmployeeInterviews { get; set; }
+    public ICollection<EmployeeJob>? EmployeeInterviews { get; set; }
 
     public ICollection<EmployeeProject>? EmployeeProjects { get; set; }
 

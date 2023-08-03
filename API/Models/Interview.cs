@@ -17,10 +17,6 @@ public class Interview : BaseEntity
     [Column("description", TypeName = "nvarchar(255)")]
     public string Description { get; set; }
 
-    [Column("job_guid")]
-    public Guid JobGuid { get; set; }
-
     // Cardinality
-    public Job? Job { get; set; }
-    public ICollection<EmployeeInterview>? EmployeeInterviews { get; set; }
+    public EmployeeJob? EmployeeJob { get; set; }
 }
