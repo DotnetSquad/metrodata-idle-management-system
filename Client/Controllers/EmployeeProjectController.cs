@@ -39,10 +39,13 @@ public class EmployeeProjectController : Controller
         ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
         ViewData["ProjectGuid"] = guid;
 
-        var project = await _projectRepository.Get(guid);
+        var project = await _projectRepository.Get();
+        var listProjectDtoGets = new List<ProjectDtoGet>();
+        
+        if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Projects"] = project;
+        ViewData["Projects"] = listProjectDtoGets;
 
         return View(listEmployees);
     }
