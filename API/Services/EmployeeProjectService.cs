@@ -59,4 +59,19 @@ public class EmployeeProjectService
         var employeeProjectDeleted = _employeeProjectRepository.Delete(employeeProject);
         return !employeeProjectDeleted ? 0 : 1;
     }
+    
+    public IEnumerable<EmployeeProjectDtoGet> GetByProject(Guid projectGuid)
+    {
+        var allProjects = _employeeProjectRepository.GetAll();
+        var projectsByGuid = allProjects.Where(employeeProject => employeeProject.ProjectGuid == projectGuid);
+        
+        List<EmployeeProjectDtoGet> projectDtoGets = new();
+
+        foreach (var project in projectsByGuid)
+        {
+            projectDtoGets.Add((EmployeeProjectDtoGet)project);
+        }
+
+        return projectDtoGets;
+    }
 }

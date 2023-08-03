@@ -100,7 +100,7 @@ public class EmployeeProjectController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPut]
     public IActionResult Update(EmployeeProjectDtoUpdate employeeProjectDtoUpdate)
     {
@@ -171,6 +171,32 @@ public class EmployeeProjectController : ControllerBase
             Status = HttpStatusCode.OK.ToString(),
             Message = "Employee project deleted",
             Data = null
+        });
+    }
+    
+    
+    [HttpGet("GetByProject/{guid}")]
+    public IActionResult GetByProject(Guid guid)
+    {
+        var projects = _employeeProjectService.GetByProject(guid);
+
+        if (!projects.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeProjectDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No projects found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeProjectDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Projects found",
+            Data = projects
         });
     }
 }
