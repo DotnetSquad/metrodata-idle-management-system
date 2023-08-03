@@ -1,6 +1,7 @@
 ﻿@using Client.DataTransferObjects.Interviews;
 @using Client.DataTransferObjects.Employees;
-@model IEnumerable<Client.DataTransferObjects.EmployeeInterviews.EmployeeInterviewDtoGet>
+@using Client.DataTransferObjects.Jobs;
+@model IEnumerable<Client.DataTransferObjects.EmployeeJobs.EmployeeJobDtoGet>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +18,7 @@
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeInterview/Index">Interview Management</a>
+                    <a href="~/EmployeeJob/Index">Interview Management</a>
                 </li>
             </ol>
         </nav>
@@ -30,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Interview Management Listings</h5>
-                        <a href="/employeeinterview/create">
+                        <a href="/employeejob/create">
                             <button class="btn btn-primary" style="margin-bottom: 15px">
                                 <i class="bi bi-plus-square"></i> Create
                             </button>
@@ -44,6 +45,9 @@
                                     </th>
                                     <th scope="col">
                                         @Html.DisplayName("Employee Name")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Job Name")
                                     </th>
                                     <th scope="col">
                                         @Html.DisplayName("Interview Title")
@@ -86,6 +90,17 @@
                                         </td>
                                         <td>
                                             @{
+                                                foreach (var job in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
+                                                {
+                                                    if (item.JobGuid == job.Guid)
+                                                    {
+                                                        @job.JobName
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
                                                 foreach (var interview in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
                                                 {
                                                     if (item.InterviewGuid == interview.Guid)
@@ -110,13 +125,13 @@
                                             @Html.DisplayFor(modelItem => item.StatusApproval)
                                         </td>
                                         <td>
-                                            <form action="/employeeinterview/update" method="get">
+                                            <form action="/employeejob/update" method="get">
                                                 <input type="hidden" value="@item.Guid" name="guid" />
                                                 <button type="submit" class="btn btn-primary" style="margin: 2px">
                                                     <i class="ri-edit-box-fill"></i>
                                                 </button>
                                             </form>
-                                            <form action="/employeeinterview/delete" method="post">
+                                            <form action="/employeejob/delete" method="post">
                                                 <input type="hidden" value="@item.Guid" name="guid" />
                                                 <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
                                                     <i class="bi bi-trash"></i>

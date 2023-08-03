@@ -373,14 +373,14 @@
             {
                 <li class="nav-item">
                     @{
-                        var employeeInterviewController = "collapsed";
-                        if (isNotCollapsed == "EmployeeInterviewController") employeeInterviewController = "";
+                        var employeeJobController = "collapsed";
+                        if (isNotCollapsed == "EmployeeJobController") employeeJobController = "";
                     }
-                    <a class="nav-link @employeeInterviewController" href="~/EmployeeInterview/Index">
+                    <a class="nav-link @employeeJobController" href="~/EmployeeJob/Index">
                         <i class="bi bi-people-fill"></i>
                         <span>Interview Management</span>
                     </a>
-                </li> <!-- End employee interview Page Nav -->
+                </li> <!-- End employee job Page Nav -->
             }
 
             @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))

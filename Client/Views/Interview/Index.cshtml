@@ -54,9 +54,6 @@
                                     @Html.DisplayNameFor(model => model.Description)
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayName("Job")
-                                </th>
-                                <th scope="col">
                                     @Html.DisplayName("Action")
                                 </th>
                             </tr>
@@ -89,17 +86,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        @{
-                                            foreach (var job in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
-                                            {
-                                                if (item.JobGuid == job.Guid)
-                                                {
-                                                    @job.JobName
-                                                }
-                                            }
-                                        }
                                     </td>
                                     <td>
                                         <form action="/interview/update" method="get">
