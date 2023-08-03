@@ -17,7 +17,7 @@ builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IEmployeeInterviewRepository, EmployeeInterviewRepository>();
+builder.Services.AddScoped<IEmployeeJobRepository, EmployeeJobRepository>();
 builder.Services.AddScoped<IEmployeeProjectRepository, EmployeeProjectRepository>();
 builder.Services.AddScoped<IInterviewRepository, InterviewRepository>();
 builder.Services.AddScoped<IPlacementRepository, PlacementRepository>();

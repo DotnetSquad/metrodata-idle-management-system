@@ -1,11 +1,12 @@
 using Client.Utilities.Enums;
 
-namespace Client.DataTransferObjects.EmployeeInterviews;
+namespace Client.DataTransferObjects.EmployeeJobs;
 
-public class EmployeeInterviewDtoGet
+public class EmployeeJobDtoUpdate
 {
     public Guid Guid { get; set; }
     public Guid EmployeeGuid { get; set; }
-    public Guid InterviewGuid { get; set; }
+    public Guid? InterviewGuid { get; set; }
+    public Guid JobGuid { get; set; }
     public StatusApprovalEnum StatusApproval { get; set; }
 }

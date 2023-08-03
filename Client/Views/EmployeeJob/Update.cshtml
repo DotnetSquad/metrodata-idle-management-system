@@ -1,6 +1,7 @@
-﻿@using Client.DataTransferObjects.Employees;
-@using Client.DataTransferObjects.Interviews;
-@model Client.DataTransferObjects.EmployeeInterviews.EmployeeInterviewDtoGet
+﻿@using Client.DataTransferObjects.Interviews;
+@using Client.DataTransferObjects.Employees;
+@using Client.DataTransferObjects.Jobs;
+@model Client.DataTransferObjects.EmployeeJobs.EmployeeJobDtoGet
 
 @{
     Layout = "_LayoutDashboard";
@@ -16,10 +17,10 @@
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="~/employeeinterview/Index">Interview Management</a>
+                    <a href="~/employeejob/Index">Interview Management</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="~/employeeinterview/Update?guid=@Model.Guid">Update Interview Management</a>
+                    <a href="~/employeejob/Update?guid=@Model.Guid">Update Interview Management</a>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -34,7 +35,7 @@
                         <p>This form is used to update the interview management details for employee interviews with client's company. Remember to save any changes made to the form to keep the records updated and easily accessible. Thank you for using our "Update Interview Management" form!</p>
 
                         <!-- Custom Styled Validation -->
-                        <form action="/employeeinterview/update" method="post" class="row g-3 needs-validation" novalidate>
+                        <form action="/employeejob/update" method="post" class="row g-3 needs-validation" novalidate>
                             <div class="col-md-6" hidden>
                                 <label for="validationCustom01" class="form-label">Guid</label>
                                 <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>
@@ -57,6 +58,30 @@
                                             else
                                             {
                                                 <option value="@item.Guid">@item.FirstName @item.LastName</option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid state.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="jobGuid" class="form-label">Job Name</label>
+                                <select asp-for="JobGuid" class="form-select" id="jobGuid" required>
+                                    <option disabled value="">Choose...</option>
+                                    @* foreach view bag employee *@
+                                    @{
+                                        foreach (var item in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
+                                        {
+                                            if (item.Guid == Model.JobGuid)
+                                            {
+                                                <option selected value="@item.Guid">@item.JobName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Guid">@item.JobName</option>
                                             }
 
                                         }
@@ -93,6 +118,7 @@
                                 <label for="statusApproval" class="form-label">Status</label>
                                 <select asp-for="StatusApproval" class="form-control" id="statusApproval" required>
                                     <option selected disabled value="">Choose...</option>
+                                    <option value="0">Pending</option>
                                     <option value="1">Accepted</option>
                                     <option value="2">Rejected</option>
                                 </select>

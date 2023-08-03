@@ -64,22 +64,6 @@
                                     Looks good!
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="validationCustom04" class="form-label">Job</label>
-                                <select asp-for="JobGuid" class="form-select" id="validationCustom04" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    @* foreach view bag companies *@
-                                    @{
-                                        foreach (var item in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
-                                        {
-                                            <option value="@item.Guid">@item.JobName</option>
-                                        }
-                                    }
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid state.
-                                </div>
-                            </div>
                             <div class="col-12">
                                 <button class="btn btn-primary" type="submit">Submit form</button>
                             </div>

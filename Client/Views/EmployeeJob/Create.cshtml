@@ -1,6 +1,7 @@
-﻿@using Client.DataTransferObjects.Employees;
-@using Client.DataTransferObjects.Interviews;
-@model Client.DataTransferObjects.EmployeeInterviews.EmployeeInterviewDtoCreate
+﻿@using Client.DataTransferObjects.Interviews;
+@using Client.DataTransferObjects.Employees;
+@using Client.DataTransferObjects.Jobs;
+@model Client.DataTransferObjects.EmployeeJobs.EmployeeJobDtoCreate
 
 @{
     Layout = "_LayoutDashboard";
@@ -16,10 +17,10 @@
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="~/EmployeeInterview/Index">Interview Management</a>
+                    <a href="~/EmployeeJob/Index">Interview Management</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeInterview/Create">Create Interview Management</a>
+                    <a href="~/EmployeeJob/Create">Create Interview Management</a>
                 </li>
             </ol>
         </nav>
@@ -35,7 +36,7 @@
                         <p>This form allows you to manage the interview process for prospective candidates seeking employment with client's company. Please provide the necessary information to facilitate the interview process. Thank you for your cooperation in making the interview process seamless and efficient.</p>
 
                         <!-- Custom Styled Validation -->
-                        <form action="/employeeinterview/create" method="post" class="row g-3 needs-validation" novalidate>
+                        <form action="/employeejob/create" method="post" class="row g-3 needs-validation" novalidate>
                             <div class="col-md-6">
                                 <label for="employeeGuid" class="form-label">Employee Name</label>
                                 <select asp-for="EmployeeGuid" class="form-select" id="employeeGuid" required>
@@ -53,14 +54,13 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="interviewGuid" class="form-label">Interview Title</label>
-                                <select asp-for="InterviewGuid" class="form-select" id="interviewGuid" required>
+                                <label for="jobGuid" class="form-label">Job Name</label>
+                                <select asp-for="JobGuid" class="form-select" id="jobGuid" required>
                                     <option selected disabled value="">Choose...</option>
-                                    @* foreach view bag companies *@
                                     @{
-                                        foreach (var item in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
+                                        foreach (var item in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
                                         {
-                                            <option value="@item.Guid">@item.Title</option>
+                                            <option value="@item.Guid">@item.JobName</option>
                                         }
                                     }
                                 </select>
