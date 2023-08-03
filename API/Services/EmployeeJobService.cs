@@ -1,5 +1,6 @@
 using API.Contracts;
 using API.DataTransferObjects.EmployeeJobs;
+using API.DataTransferObjects.EmployeeProjects;
 
 namespace API.Services;
 
@@ -58,5 +59,20 @@ public class EmployeeJobService
 
         var employeeJobDeleted = _employeeJobRepository.Delete(employeeJob);
         return !employeeJobDeleted ? 0 : 1;
+    }
+    
+    public IEnumerable<EmployeeJobDtoGet> GetByJob(Guid jobGuid)
+    {
+        var allJobs = _employeeJobRepository.GetAll();
+        var employeeJobs = allJobs.Where(employeeJob => employeeJob.JobGuid == jobGuid);
+        
+        List<EmployeeJobDtoGet> employeeJobDtoGets = new();
+
+        foreach (var employeeJob in employeeJobs)
+        {
+            employeeJobDtoGets.Add((EmployeeJobDtoGet)employeeJob);
+        }
+
+        return employeeJobDtoGets;
     }
 }

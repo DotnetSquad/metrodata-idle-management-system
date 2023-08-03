@@ -166,4 +166,29 @@ public class EmployeeJobController : ControllerBase
             Data = null
         });
     }
+    
+    [HttpGet("GetByJob/{guid}")]
+    public IActionResult GetByProject(Guid guid)
+    {
+        var jobs = _employeeJobService.GetByJob(guid);
+
+        if (!jobs.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeJobDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No projects found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeJobDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Projects found",
+            Data = jobs
+        });
+    }
 }
