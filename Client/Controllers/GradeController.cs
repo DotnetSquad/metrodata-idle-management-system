@@ -144,7 +144,6 @@ public class GradeController : Controller
         }
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public async Task<IActionResult> Details(Guid guid)
     {
