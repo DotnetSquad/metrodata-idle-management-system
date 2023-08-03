@@ -29,24 +29,24 @@ public class EmployeeProjectController : Controller
         var employeeProjects = await _employeeProjectRepository.GetByProject(guid);
         var listEmployeeProjectDtoGets = new List<EmployeeProjectDtoGet>();
 
-        if (employeeProjects.Data is not null) listEmployeeProjectDtoGets = employeeProjects.Data.Where(ep => ep.ProjectGuid == guid).ToList();
+        if (employeeProjects.Data is not null) listEmployeeProjectDtoGets = employeeProjects.Data.ToList();
 
         var employees = await _employeeRepository.GetByProject(guid);
         var listEmployees = new List<EmployeeDtoGet>();
 
         if (employees.Data is not null) listEmployees = employees.Data.ToList();
-
-        ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
-        ViewData["ProjectGuid"] = guid;
-
+        
         var project = await _projectRepository.Get();
         var listProjectDtoGets = new List<ProjectDtoGet>();
         
         if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
-        ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Projects"] = listProjectDtoGets;
 
+        ViewData["Projects"] = listProjectDtoGets;
+        ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
+        ViewData["ProjectGuid"] = guid;
+        ViewData["isNotCollapsed"] = isNotCollapsed;
+        
         return View(listEmployees);
     }
 
@@ -60,9 +60,10 @@ public class EmployeeProjectController : Controller
 
         if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
 
-        ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
         ViewData["ProjectGuid"] = guid;
+        ViewData["isNotCollapsed"] = isNotCollapsed;
+
         return View();
     }
 
@@ -151,16 +152,40 @@ public class EmployeeProjectController : Controller
         {
             case 200:
                 TempData["Success"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             case 400:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             case 404:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
             default:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+        }
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Reject(Guid guid)
+    {
+        var getEmployeeProject = await _employeeProjectRepository.Get(guid);
+        getEmployeeProject.Data.StatusApproval = StatusApprovalEnum.Rejected;
+        var employeeProject = await _employeeProjectRepository.Put(getEmployeeProject.Data.Guid, getEmployeeProject.Data);
+
+        switch (employeeProject.Code)
+        {
+            case 200:
+                TempData["Success"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+            case 400:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+            case 404:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+            default:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
 }
