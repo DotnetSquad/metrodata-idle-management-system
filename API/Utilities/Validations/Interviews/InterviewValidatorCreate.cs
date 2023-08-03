@@ -12,7 +12,5 @@ public class InterviewValidatorCreate : AbstractValidator<InterviewDtoCreate>
         RuleFor(x => x.InterviewDate).NotEmpty();
 
         RuleFor(x => x.Description).NotEmpty();
-
-        RuleFor(x => x.JobGuid).NotEmpty();
     }
 }

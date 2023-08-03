@@ -7,10 +7,10 @@ namespace API.Services;
 public class DashboardService
 {
     private readonly IEmployeeRepository _employeeRepository;
-    private readonly IEmployeeInterviewRepository _employeeInterviewRepository;
+    private readonly IEmployeeJobRepository _employeeInterviewRepository;
     private readonly IInterviewRepository _interviewRepository;
 
-    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeInterviewRepository employeeInterviewRepository)
+    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeJobRepository employeeInterviewRepository)
     {
         _employeeRepository = employeeRepository;
         _interviewRepository = interviewRepository;

@@ -16,5 +16,5 @@ public class Job : BaseEntity
 
     // Cardinality
     public Company? Company { get; set; }
-    public ICollection<Interview>? Interviews { get; set; }
+    public ICollection<EmployeeJob>? EmployeeJobs { get; set; }
 }

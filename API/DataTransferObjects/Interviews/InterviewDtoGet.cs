@@ -9,7 +9,6 @@ public class InterviewDtoGet
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
-    public Guid JobGuid { get; set; }
 
     // implicit operator
     public static implicit operator Interview(InterviewDtoGet interviewDtoGet)
@@ -20,8 +19,7 @@ public class InterviewDtoGet
             Title = interviewDtoGet.Title,
             Link = interviewDtoGet.Link,
             InterviewDate = interviewDtoGet.InterviewDate,
-            Description = interviewDtoGet.Description,
-            JobGuid = interviewDtoGet.JobGuid
+            Description = interviewDtoGet.Description
         };
     }
 
@@ -34,8 +32,7 @@ public class InterviewDtoGet
             Title = interview.Title,
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
-            Description = interview.Description,
-            JobGuid = interview.JobGuid
+            Description = interview.Description
         };
     }
 }

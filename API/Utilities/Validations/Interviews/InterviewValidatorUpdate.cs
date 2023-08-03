@@ -14,7 +14,5 @@ public class InterviewValidatorUpdate : AbstractValidator<InterviewDtoUpdate>
         RuleFor(x => x.InterviewDate).NotEmpty();
 
         RuleFor(x => x.Description).NotEmpty();
-
-        RuleFor(x => x.JobGuid).NotEmpty();
     }
 }

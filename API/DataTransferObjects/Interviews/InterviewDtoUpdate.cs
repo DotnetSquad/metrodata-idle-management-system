@@ -9,7 +9,6 @@ public class InterviewDtoUpdate
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
-    public Guid JobGuid { get; set; }
 
     // implicit operator
     public static implicit operator Interview(InterviewDtoUpdate interviewDtoUpdate)
@@ -21,7 +20,6 @@ public class InterviewDtoUpdate
             Link = interviewDtoUpdate.Link,
             InterviewDate = interviewDtoUpdate.InterviewDate,
             Description = interviewDtoUpdate.Description,
-            JobGuid = interviewDtoUpdate.JobGuid,
             ModifiedDate = DateTime.UtcNow
         };
     }
@@ -36,7 +34,6 @@ public class InterviewDtoUpdate
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
             Description = interview.Description,
-            JobGuid = interview.JobGuid
         };
     }
 }

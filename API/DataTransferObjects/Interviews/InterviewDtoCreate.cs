@@ -8,7 +8,6 @@ public class InterviewDtoCreate
     public string? Link { get; set; }
     public DateTime InterviewDate { get; set; }
     public string Description { get; set; }
-    public Guid JobGuid { get; set; }
 
     // implicit operator
     public static implicit operator Interview(InterviewDtoCreate interviewDtoCreate)
@@ -19,7 +18,6 @@ public class InterviewDtoCreate
             Link = interviewDtoCreate.Link,
             InterviewDate = interviewDtoCreate.InterviewDate,
             Description = interviewDtoCreate.Description,
-            JobGuid = interviewDtoCreate.JobGuid,
             CreatedDate = DateTime.UtcNow
         };
     }
@@ -32,8 +30,7 @@ public class InterviewDtoCreate
             Title = interview.Title,
             Link = interview.Link,
             InterviewDate = interview.InterviewDate,
-            Description = interview.Description,
-            JobGuid = interview.JobGuid
+            Description = interview.Description
         };
     }
 }
