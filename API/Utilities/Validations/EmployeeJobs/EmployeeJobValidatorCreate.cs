@@ -14,6 +14,6 @@ public class EmployeeJobValidatorCreate : AbstractValidator<EmployeeJobDtoCreate
             .NotEmpty();
 
         RuleFor(x => x.StatusApproval)
-            .NotEmpty();
+            .IsInEnum();
     }
 }

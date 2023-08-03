@@ -17,6 +17,6 @@ public class EmployeeJobValidatorUpdate : AbstractValidator<EmployeeJobDtoUpdate
            .NotEmpty();
 
         RuleFor(x => x.StatusApproval)
-            .NotEmpty();
+            .IsInEnum();
     }
 }
