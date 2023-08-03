@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.DataTransferObjects.Projects;
+using API.Models;
 
 namespace API.Services;
 

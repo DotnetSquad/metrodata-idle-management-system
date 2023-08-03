@@ -6,7 +6,7 @@
     var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
     var gradeGuid = User.Claims.FirstOrDefault(x => x.Type == "GradeGuid")?.Value;
     var profileGuid = User.Claims.FirstOrDefault(x => x.Type == "ProfileGuid")?.Value;
-    var isNotCollapsed = (string)ViewData["isNotCollapsed"];
+    var isNotCollapsed = (string)ViewData["isNotCollapsed"]!;
 }
 
 <!DOCTYPE html>
@@ -243,7 +243,7 @@
 
             <li class="nav-heading">Pages</li>
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -257,7 +257,7 @@
                 </li> <!-- End Company Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -271,7 +271,7 @@
                 </li> <!-- End Job Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item"> 
                     @{
@@ -285,7 +285,7 @@
                 </li> <!-- End Employee Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -299,7 +299,7 @@
                 </li> <!-- End Interview Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -313,7 +313,7 @@
                 </li> <!-- End Placement Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -327,7 +327,7 @@
                 </li> <!-- End Profile Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -341,7 +341,7 @@
                 </li> <!-- End Project Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -355,7 +355,7 @@
                 </li> <!-- End Grade Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -369,7 +369,7 @@
                 </li> <!-- End Role Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -383,7 +383,7 @@
                 </li> <!-- End employee interview Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Employee.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -395,6 +395,20 @@
                         <span>Project Management</span>
                     </a>
                 </li> <!-- End Employee Project Page Nav -->
+            }
+            
+            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
+            {
+                <li class="nav-item">
+                        @{
+                            var employeeProjectController = "collapsed";
+                            if (isNotCollapsed == "EmployeeProjectController") employeeProjectController = "";
+                        }
+                        <a class="nav-link @employeeProjectController" href="~/Project/Index">
+                            <i class="bi bi-building-add"></i>
+                            <span>Project Management</span>
+                        </a>
+                </li> <!-- End Employee Project Page Nav -->                    
             }
         </ul>
 

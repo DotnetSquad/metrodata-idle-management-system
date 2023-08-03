@@ -40,6 +40,11 @@ public class ProjectController : Controller
             listEmployeeDtoGets = employees.Data.ToList();
         }
 
+        if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+        {
+            isNotCollapsed = "EmployeeProjectController";
+        }
+        
         ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
@@ -57,6 +62,11 @@ public class ProjectController : Controller
         if (employees.Data is not null)
         {
             listEmployeeDtoGets = employees.Data.ToList();
+        }
+        
+        if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+        {
+            isNotCollapsed = "EmployeeProjectController";
         }
 
         // add to view data
@@ -96,6 +106,11 @@ public class ProjectController : Controller
         if (employees.Data != null)
         {
             listEmployeeDtoGets = employees.Data.ToList();
+        }
+        
+        if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+        {
+            isNotCollapsed = "EmployeeProjectController";
         }
 
         // add to view data

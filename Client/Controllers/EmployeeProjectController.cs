@@ -22,11 +22,11 @@ public class EmployeeProjectController : Controller
         _projectRepository = projectRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet]
     public async Task<IActionResult> Index(Guid guid)
     {
-        var employeeProjects = await _employeeProjectRepository.Get();
+        var employeeProjects = await _employeeProjectRepository.GetByProject(guid);
         var listEmployeeProjectDtoGets = new List<EmployeeProjectDtoGet>();
 
         if (employeeProjects.Data is not null) listEmployeeProjectDtoGets = employeeProjects.Data.Where(ep => ep.ProjectGuid == guid).ToList();
@@ -39,13 +39,10 @@ public class EmployeeProjectController : Controller
         ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
         ViewData["ProjectGuid"] = guid;
 
-        var projects = await _projectRepository.Get();
-        var listProjectsDtoGets = new List<ProjectDtoGet>();
-
-        if (projects.Data != null) listProjectsDtoGets = projects.Data.ToList();
+        var project = await _projectRepository.Get(guid);
 
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Projects"] = listProjectsDtoGets;
+        ViewData["Projects"] = project;
 
         return View(listEmployees);
     }
@@ -135,6 +132,31 @@ public class EmployeeProjectController : Controller
             default:
                 TempData["Error"] = "An error occurred, please try again later.";
                 return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+        }
+    }
+    
+    
+    [HttpPost]
+    public async Task<IActionResult> Approve(Guid guid)
+    {
+        var getEmployeeProject = await _employeeProjectRepository.Get(guid);
+        getEmployeeProject.Data.StatusApproval = StatusApprovalEnum.Accepted;
+        var employeeProject = await _employeeProjectRepository.Put(getEmployeeProject.Data.Guid, getEmployeeProject.Data);
+
+        switch (employeeProject.Code)
+        {
+            case 200:
+                TempData["Success"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            case 400:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            case 404:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
+            default:
+                TempData["Error"] = employeeProject.Message;
+                return RedirectToAction(nameof(Index));
         }
     }
 }
