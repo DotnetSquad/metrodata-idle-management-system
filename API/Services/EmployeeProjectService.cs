@@ -1,14 +1,17 @@
 using API.Contracts;
 using API.DataTransferObjects.EmployeeProjects;
+using API.Utilities.Enums;
 
 namespace API.Services;
 
 public class EmployeeProjectService
 {
-    private IEmployeeProjectRepository _employeeProjectRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IEmployeeProjectRepository _employeeProjectRepository;
 
-    public EmployeeProjectService(IEmployeeProjectRepository employeeProjectRepository)
+    public EmployeeProjectService(IEmployeeRepository employeeRepository, IEmployeeProjectRepository employeeProjectRepository)
     {
+        _employeeRepository = employeeRepository;
         _employeeProjectRepository = employeeProjectRepository;
     }
 
@@ -48,6 +51,19 @@ public class EmployeeProjectService
         if (employeeProject is null) return -1;
 
         var employeeProjectUpdated = _employeeProjectRepository.Update(employeeProjectDtoUpdate);
+        var employee = _employeeRepository.GetByGuid(employeeProjectDtoUpdate.EmployeeGuid);
+
+        if (employeeProjectUpdated && employeeProjectDtoUpdate.StatusApproval == StatusApprovalEnum.Accepted)
+        {
+            employee.Status = StatusEnum.Working;
+            _employeeRepository.Update(employee);
+        }
+        else if (employeeProjectUpdated && employeeProjectDtoUpdate.StatusApproval == StatusApprovalEnum.Rejected)
+        {
+            employee.Status = StatusEnum.Idle;
+            _employeeRepository.Update(employee);
+        }
+        
         return !employeeProjectUpdated ? 0 : 1;
     }
 
@@ -57,7 +73,15 @@ public class EmployeeProjectService
         if (employeeProject is null) return -1;
 
         var employeeProjectDeleted = _employeeProjectRepository.Delete(employeeProject);
-        return !employeeProjectDeleted ? 0 : 1;
+        var employee = _employeeRepository.GetByGuid(employeeProject.EmployeeGuid);
+        
+        if (employeeProjectDeleted)
+        {
+            employee.Status = StatusEnum.Idle;
+            _employeeRepository.Update(employee);
+        }
+        
+        return employeeProjectDeleted ? 1 : 0;
     }
     
     public IEnumerable<EmployeeProjectDtoGet> GetByProject(Guid projectGuid)
