@@ -1,5 +1,5 @@
 @using Newtonsoft.Json;
-@model Client.DataTransferObjects.Profiles.ProfileDtoGet
+@model Client.DataTransferObjects.Profiles.EmployeeProfileDtoGet
 
 @{
     Layout = "_LayoutDashboard";
@@ -155,29 +155,12 @@
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                                <!-- Profile Edit Form -->
-                                @*<form>
-                                <div class="row mb-3">
-                                <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                <div class="col-md-8 col-lg-9">
-                                <img src="assets/img/profile-img.jpg" alt="Profile">
-                                <div class="pt-2">
-                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image">
-                                <i class="bi bi-upload"></i>
-                                </a>
-                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
-                                <i class="bi bi-trash"></i>
-                                </a>
-                                </div>
-                                </div>
-                                </div>*@
-
-                                <form action="/employee/updateemployeebyid" method="post" class="row g-3 needs-validation" novalidate>
+                                <form action="/profile/UpdateEmployeeProfile" method="post" class="row g-3 needs-validation" novalidate>
                                     @Html.AntiForgeryToken()
                                     <div class="row mb-3">
                                         <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input asp-for="@employee.FirstName" type="text" class="form-control" id="firstName" required>
+                                            <input asp-for="FirstName" type="text" class="form-control" id="firstName" required>
                                         </div>
                                         <div class="valid-feedback">
                                             Looks good!
@@ -186,7 +169,7 @@
                                     <div class="row mb-3">
                                         <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input asp-for="@employee.LastName" type="text" class="form-control" id="lastName">
+                                            <input asp-for="LastName" type="text" class="form-control" id="lastName">
                                         </div>
                                         <div class="valid-feedback">
                                             Looks good!
@@ -195,7 +178,7 @@
                                     <div class="row mb-3">
                                         <label for="birthDate" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.BirthDate" type="date" class="form-control" id="birthDate" required>
+                                        <input asp-for="BirthDate" type="date" class="form-control" id="birthDate" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your birth date!
@@ -204,7 +187,7 @@
                                     <div class="row mb-3">
                                         <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <select asp-for="@employee.Gender" class="form-control" id="gender" required>
+                                        <select asp-for="Gender" class="form-control" id="gender" required>
                                             <option selected disabled value="">Choose...</option>
                                             <option value="1">Male</option>
                                             <option value="0">Female</option>
@@ -217,7 +200,7 @@
                                     <div class="row mb-3">
                                         <label for="hiringDate" class="col-md-4 col-lg-3 col-form-label">Hiring Date</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.HiringDate" type="date" class="form-control" id="hiringDate" required>
+                                        <input asp-for="HiringDate" type="date" class="form-control" id="hiringDate" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your hiring date!
@@ -226,7 +209,7 @@
                                     <div class="row mb-3">
                                         <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.Email" type="email" class="form-control" id="email" required>
+                                        <input asp-for="Email" type="email" class="form-control" id="email" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter a valid Email adddress!
@@ -235,7 +218,7 @@
                                     <div class="row mb-3">
                                         <label for="phoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.PhoneNumber" type="text" class="form-control" id="phoneNumber" required>
+                                        <input asp-for="PhoneNumber" type="text" class="form-control" id="phoneNumber" required>
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your phone number!
@@ -244,7 +227,7 @@
                                     <div class="row mb-3" hidden>
                                         <label for="status" class="col-md-4 col-lg-3 col-form-label">Status</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <select asp-for="@employee.Status" class="form-control" id="status" required>
+                                        <select asp-for="Status" class="form-control" id="status" required>
                                             <option selected disabled value="">Choose...</option>
                                             <option value="1">Working</option>
                                             <option value="0">Idle</option>
@@ -257,7 +240,7 @@
                                     <div class="row mb-3" hidden>
                                         <label for="guid" class="col-md-4 col-lg-3 col-form-label">Guid</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input asp-for="@employee.Guid" type="text" class="form-control" id="guid" required>
+                                            <input asp-for="EmployeeGuid" type="text" class="form-control" id="guid" required>
                                         </div>
                                         <div class="valid-feedback">
                                             Looks good!
@@ -266,7 +249,7 @@
                                     <div class="row mb-3" hidden>
                                         <label for="nik" class="col-md-4 col-lg-3 col-form-label">Nik</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <input asp-for="@employee.Nik" type="text" class="form-control" id="nik" required>
+                                        <input asp-for="Nik" type="text" class="form-control" id="nik" required>
                                         </div>
                                         <div class="valid-feedback">
                                             Looks good!
@@ -275,16 +258,8 @@
                                     <div class="row mb-3" hidden>
                                         <label for="gradeGuid" class="col-md-4 col-lg-3 col-form-label">Grade</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <select asp-for="@employee.GradeGuid" class="form-select" id="gradeGuid">
-                                            @* foreach view bag grade *@
-                                            @{
-                                                if (Model != null)
-                                                {
-                                                    var item = Model;
-                                                    <option value="@employee.GradeGuid"></option>
-                                                }
-                                            }
-                                        </select>
+                                        <input asp-for="GradeGuid" type="text" class="form-control" id="nik" required>
+                                            
                                         </div>
                                         <div class="invalid-feedback">
                                             Please select a valid Grade.
@@ -293,31 +268,16 @@
                                     <div class="row mb-3" hidden>
                                         <label for="profileGuid" class="col-md-4 col-lg-3 col-form-label">Profile</label>
                                         <div class="col-md-8 col-lg-9">
-                                        <select asp-for="@employee.ProfileGuid" class="form-select" id="profileGuid">
-                                            @* foreach view bag profile *@
-                                            @{
-                                                if (Model != null)
-                                                {
-                                                    var item = Model;
-                                                    <option value="@employee.ProfileGuid"></option>
-                                                }
-                                            }
-                                        </select>
+                                        <input asp-for="ProfileGuidInEmployee" type="text" class="form-control" id="nik" required>
+                                            
                                         </div>
                                         <div class="invalid-feedback">
                                             Please select a valid Profile.
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary" type="submit">Submit form</button>
-                                    </div>
-                                </form><!-- End Profile Edit Form -->
-                                <br />
-                                <form action="/profile/updateprofilebyid" method="post" class="row g-3 needs-validation" novalidate>
-                                    @Html.AntiForgeryToken()
                                     <div class="col-md-8" hidden>
                                         <label for="validationCustom01" class="form-label">Guid</label>
-                                        <input asp-for="Guid" type="text" class="form-control" id="validationCustom01" required>
+                                        <input asp-for="ProfileGuid" type="text" class="form-control" id="validationCustom01" required>
                                         <div class="valid-feedback">
                                             Looks good!
                                         </div>

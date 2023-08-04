@@ -1,5 +1,8 @@
-﻿using Client.Contracts;
+﻿using System.Text;
+using Client.Contracts;
 using Client.DataTransferObjects.Profiles;
+using Client.Utilities.Handlers;
+using Newtonsoft.Json;
 
 namespace Client.Repositories;
 

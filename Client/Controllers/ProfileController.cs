@@ -141,16 +141,36 @@ public class ProfileController : Controller
         var profile = await _profileRepository.Get(guid);
         var profileDtoGet = new ProfileDtoGet();
 
-        var employee = await _employeeRepository.Get(employeeGuidTemp);
-        var employeeDtoGets = new EmployeeDtoGet();
+        if (profile.Data is not null) profileDtoGet = profile.Data;
 
-        if (employee.Data is not null)
-        {
-            employeeDtoGets = employee.Data;
-        }
+        var employee = await _employeeRepository.Get(employeeGuidTemp);
+        var employeeDtoGet = new EmployeeDtoGet();
+
+        if (employee.Data is not null) employeeDtoGet = employee.Data;
+   
 
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Employee"] = employeeDtoGets;
+        ViewData["Employee"] = employeeDtoGet;
+        
+        var employeeProfileDtoGet = new EmployeeProfileDtoGet
+        {
+            EmployeeGuid = employeeDtoGet.Guid,
+            Nik = employeeDtoGet.Nik,
+            FirstName = employeeDtoGet.FirstName,
+            LastName = employeeDtoGet.LastName,
+            BirthDate = employeeDtoGet.BirthDate,
+            Gender = employeeDtoGet.Gender,
+            HiringDate = employeeDtoGet.HiringDate,
+            Email = employeeDtoGet.Email,
+            PhoneNumber = employeeDtoGet.PhoneNumber,
+            Status = employeeDtoGet.Status,
+            GradeGuid = employeeDtoGet.GradeGuid,
+            ProfileGuidInEmployee = employeeDtoGet.ProfileGuid,
+            ProfileGuid = profileDtoGet.Guid,
+            Skills = profileDtoGet.Skills,
+            Linkedin = profileDtoGet.Linkedin,
+            Resume = profileDtoGet.Resume
+        };
 
         switch (profile.Code)
         {
@@ -159,7 +179,7 @@ public class ProfileController : Controller
                 profileDtoGet.Skills = profile.Data!.Skills;
                 profileDtoGet.Linkedin = profile.Data!.Linkedin;
                 profileDtoGet.Resume = profile.Data!.Resume;
-                return View(profileDtoGet);
+                return View(employeeProfileDtoGet);
             case 400:
                 TempData["Error"] = profile.Message;
                 return RedirectToAction(nameof(Index));
@@ -171,9 +191,34 @@ public class ProfileController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateProfileById(ProfileDtoGet profileDtoGet)
+    public async Task<IActionResult> UpdateEmployeeProfile(EmployeeProfileDtoGet employeeProfileDtoGet)
     {
+        var profileDtoGet = new ProfileDtoGet
+        {
+            Guid = employeeProfileDtoGet.ProfileGuid,
+            Skills = employeeProfileDtoGet.Skills,
+            Linkedin = employeeProfileDtoGet.Linkedin,
+            Resume = employeeProfileDtoGet.Resume
+        };
+
+        var employeeDtoGet = new EmployeeDtoGet
+        {
+            Guid = employeeProfileDtoGet.EmployeeGuid,
+            Nik = employeeProfileDtoGet.Nik,
+            FirstName = employeeProfileDtoGet.FirstName,
+            LastName = employeeProfileDtoGet.LastName,
+            BirthDate = employeeProfileDtoGet.BirthDate,
+            Gender = employeeProfileDtoGet.Gender,
+            HiringDate = employeeProfileDtoGet.HiringDate,
+            Email = employeeProfileDtoGet.Email,
+            PhoneNumber = employeeProfileDtoGet.PhoneNumber,
+            Status = employeeProfileDtoGet.Status,
+            GradeGuid = employeeProfileDtoGet.GradeGuid,
+            ProfileGuid = employeeProfileDtoGet.ProfileGuidInEmployee
+        };
+        
         var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
+        var employee = await _employeeRepository.Put(employeeDtoGet.Guid, employeeDtoGet);
 
         switch (profile.Code)
         {
