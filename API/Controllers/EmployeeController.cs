@@ -255,7 +255,8 @@ public class EmployeeController : ControllerBase
     {
         var employees = _employeeService.GetExcludeProject(guid);
 
-        if (!employees.Any()){
+        if (!employees.Any())
+        {
             return NotFound(new ResponseHandler<EmployeeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
@@ -273,8 +274,9 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
-    
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+
+    [Authorize(Roles =
+        $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("GetByEmail/{email}")]
     public IActionResult GetByEmail(string email)
     {
@@ -291,12 +293,64 @@ public class EmployeeController : ControllerBase
                 Data = null
             });
         }
+
         return Ok(new ResponseHandler<EmployeeDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
             Message = "Employee found",
             Data = employee
+        });
+    }
+
+
+    [HttpGet("GetByJob/{guid}")]
+    public IActionResult GetByJob(Guid guid)
+    {
+        var employees = _employeeService.GetEmployeeByJob(guid);
+
+        if (!employees.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
+        });
+    }
+
+    [HttpGet("GetExcludeJob/{guid}")]
+    public IActionResult GetExcludeJob(Guid guid)
+    {
+        var employees = _employeeService.GetExcludeJob(guid);
+
+        if (!employees.Any())
+        {
+            return NotFound(new ResponseHandler<EmployeeDtoGet>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No employees found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<EmployeeDtoGet>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Employees found",
+            Data = employees
         });
     }
 }
