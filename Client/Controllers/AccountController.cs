@@ -59,7 +59,8 @@ public class AccountController : Controller
                 TempData["Error"] = account.Message;
                 return RedirectToAction(nameof(Register));
             default:
-                TempData["Error"] = "Registration failed: Invalid user input.";
+                TempData["Error"] = account.Errors.Email[0];
+                
                 return RedirectToAction(nameof(Register));
         }
     }
