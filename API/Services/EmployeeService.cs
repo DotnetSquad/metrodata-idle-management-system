@@ -159,10 +159,8 @@ public class EmployeeService
         if (!employeesExcludeRole.Any()) return Enumerable.Empty<EmployeeDtoGet>();
         List<EmployeeDtoGet> employeeDtoGets = new();
 
-        foreach (var employee in employeesExcludeRole)
-        {
-            employeeDtoGets.Add((EmployeeDtoGet)employee);
-        }
+        foreach (var employee in employeesExcludeRole) employeeDtoGets.Add((EmployeeDtoGet)employee);
+
 
         return employeeDtoGets;
     }
@@ -203,49 +201,20 @@ public class EmployeeService
 
     public IEnumerable<EmployeeDtoGet> GetExcludeProject(Guid projectGuid)
     {
-        var employeesByProject = GetEmployeeByProject(projectGuid).ToList();
+        var employeesByProject = GetEmployeeByProject(projectGuid);
+        var employees = _employeeRepository.GetAll();
 
-        var employeesExcludeProject = (from employee in _employeeRepository.GetAll()
-            join employeeProject in _employeeProjectRepository.GetAll()
-                on employee.Guid equals employeeProject.EmployeeGuid into employeeProjectsGroup
-            from employeeProject in employeeProjectsGroup.DefaultIfEmpty()
-            where employeeProject == null || employeeProject.ProjectGuid != projectGuid
-            select new EmployeeDtoGet()
-            {
-                Guid = employee.Guid,
-                Nik = employee.Nik,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                BirthDate = employee.BirthDate,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                Status = employee.Status,
-                GradeGuid = employee.GradeGuid,
-                ProfileGuid = employee.ProfileGuid,
-            }).ToList();
+        var employeesByProjectGuid = employeesByProject.Select(employee => employee.Guid).ToList();
+        var employeesExcludeProject = employees.Where(employee => !employeesByProjectGuid.Contains(employee.Guid)).ToList();
 
-        var employeesExcludeProjectFiltered = employeesExcludeProject
-            .Where(e => !employeesByProject.Any(r => r.Guid == e.Guid)).Distinct(new EmployeeDtoGetComparer());
+        if (!employeesExcludeProject.Any()) return Enumerable.Empty<EmployeeDtoGet>();
+        List<EmployeeDtoGet> employeeDtoGets = new();
 
-        return employeesExcludeProjectFiltered;
+        foreach (var employee in employeesExcludeProject) if (employee.Status == StatusEnum.Idle) employeeDtoGets.Add((EmployeeDtoGet)employee);
+
+        return employeeDtoGets;
     }
-
-    public class EmployeeDtoGetComparer : IEqualityComparer<EmployeeDtoGet>
-    {
-        public bool Equals(EmployeeDtoGet x, EmployeeDtoGet y)
-        {
-            // Assuming that the Guid property uniquely identifies an employee
-            return x.Guid == y.Guid;
-        }
-
-        public int GetHashCode(EmployeeDtoGet obj)
-        {
-            return obj.Guid.GetHashCode();
-        }
-    }
-
+    
     public IEnumerable<EmployeeDtoGet> GetEmployeeByJob(Guid jobGuid)
     {
         var employeesByProject = (from employee in _employeeRepository.GetAll()
@@ -283,10 +252,7 @@ public class EmployeeService
         if (!employeesExcludeJob.Any()) return Enumerable.Empty<EmployeeDtoGet>();
         List<EmployeeDtoGet> employeeDtoGets = new();
 
-        foreach (var employee in employeesExcludeJob)
-        {
-            employeeDtoGets.Add((EmployeeDtoGet)employee);
-        }
+        foreach (var employee in employeesExcludeJob) if (employee.Status == StatusEnum.Idle) employeeDtoGets.Add((EmployeeDtoGet)employee);
 
         return employeeDtoGets;
     }
