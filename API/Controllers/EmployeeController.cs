@@ -173,7 +173,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet("GetByRole/{guid}")]
     public IActionResult GetByRole(Guid guid)
     {
@@ -275,8 +275,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
-    [Authorize(Roles =
-        $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("GetByEmail/{email}")]
     public IActionResult GetByEmail(string email)
     {

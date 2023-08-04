@@ -36,6 +36,7 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/project/create" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Name Project</label>
                                 <input asp-for="NameProject" type="text" class="form-control" id="validationCustom01" required>
@@ -49,9 +50,9 @@
                                     <option selected disabled value="">Choose...</option>
                                     @{
                                         var employees = (IEnumerable<EmployeeDtoGet>)ViewData["Employees"];
-                                        foreach (var item in employees.Where(e => e.Status == Client.Utilities.Enums.StatusEnum.Working))
+                                        foreach (var item in employees)
                                         {
-                                            <option value="@item.FirstName @item.LastName">@item.FirstName @item.LastName</option>
+                                            <option value="@item.Nik - @item.FirstName @item.LastName">@item.Nik - @item.FirstName @item.LastName</option>
                                         }
                                     }
                                 </select>

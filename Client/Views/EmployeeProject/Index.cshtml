@@ -33,157 +33,160 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Project Management Listings</h5>
-                        <form action="~/employeeproject/create" method="get">
-                            <input type="hidden" name="guid" value="@projectGuid"/>
-                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                <i class="ri-edit-box-fill"></i> Add
-                            </button>
-                        </form>
+                        @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                        {
+                            <form action="~/employeeproject/create" method="get">
+                                <input type="hidden" name="guid" value="@projectGuid" />
+                                <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                    <i class="ri-edit-box-fill"></i> Add
+                                </button>
+                            </form>
+                        }
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
-                            <tr>
-                                <th scope="col">
-                                    @Html.DisplayName("No")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Employee Name")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Project Name")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Project Lead")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Status")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Action")
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">
+                                        @Html.DisplayName("No")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Employee Name")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Project Name")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Project Lead")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Status")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Action")
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @{
-                                var i = 1;
-                            }
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    @{
-                                        var culture = new System.Globalization.CultureInfo("id-ID");
-                                    }
-                                    <td>
-                                        @i
-                                    </td>
-                                    <td>
+                                @{
+                                    var i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
                                         @{
-                                            var fullName = $"{item.FirstName} {item.LastName}";
+                                            var culture = new System.Globalization.CultureInfo("id-ID");
                                         }
-                                        @Html.DisplayFor(x => fullName)
-                                    </td>
-                                    <td>
-                                        @{
-                                            foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
-                                            {
-                                                if (Guid.Parse(projectGuid.ToString()) == project.Guid)
-                                                {
-                                                    @project.NameProject
-                                                }
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @{
+                                                var fullName = $"{item.FirstName} {item.LastName}";
                                             }
-                                        }
-                                    </td>
-                                    <td>
-                                        @{
-                                            foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
-                                            {
-                                                if (Guid.Parse(projectGuid.ToString()) == project.Guid)
+                                            @Html.DisplayFor(x => fullName)
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
-                                                    @project.ProjectLead
-                                                }
-                                            }
-                                        }
-                                    </td>
-                                    <td>
-                                        @{
-                                            foreach (var employeeProject in employeeProjects)
-                                            {
-                                                if (employeeProject.EmployeeGuid == item.Guid)
-                                                {
-                                                    if (employeeProject.StatusApproval == StatusApprovalEnum.Accepted)
+                                                    if (Guid.Parse(projectGuid.ToString()) == project.Guid)
                                                     {
-                                                        <span class="badge bg-success">@employeeProject.StatusApproval</span>
-                                                    }
-                                                    else if (employeeProject.StatusApproval == StatusApprovalEnum.Rejected)
-                                                    {
-                                                        <span class="badge bg-danger">@employeeProject.StatusApproval</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-warning">@employeeProject.StatusApproval</span>
+                                                        @project.NameProject
                                                     }
                                                 }
                                             }
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-                                        {
-                                            foreach (var employeeProject in employeeProjects)
-                                            {
-                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var project in (IEnumerable<ProjectDtoGet>)ViewData["Projects"])
                                                 {
-                                                    <form action="/employeeproject/delete" method="post">
-                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
-                                                        <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                    break;
+                                                    if (Guid.Parse(projectGuid.ToString()) == project.Guid)
+                                                    {
+                                                        @project.ProjectLead
+                                                    }
                                                 }
                                             }
-                                        }
-
-
-
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                        {
-                                            foreach (var employeeProject in employeeProjects)
-                                            {
-                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                        </td>
+                                        <td>
+                                            @{
+                                                foreach (var employeeProject in employeeProjects)
                                                 {
-                                                    <form action="/employeeproject/approve" method="post">
-                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
-                                                        <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                            <i class="bi bi-check-square"></i> Approve
-                                                        </button>
-                                                    </form>
-                                                    break;
+                                                    if (employeeProject.EmployeeGuid == item.Guid)
+                                                    {
+                                                        if (employeeProject.StatusApproval == StatusApprovalEnum.Accepted)
+                                                        {
+                                                            <span class="badge bg-success">@employeeProject.StatusApproval</span>
+                                                        }
+                                                        else if (employeeProject.StatusApproval == StatusApprovalEnum.Rejected)
+                                                        {
+                                                            <span class="badge bg-danger">@employeeProject.StatusApproval</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-warning">@employeeProject.StatusApproval</span>
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                        {
-                                            foreach (var employeeProject in employeeProjects)
+                                        </td>
+                                        <td>
+                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
                                             {
-                                                if (employeeProject.EmployeeGuid == item.Guid)
+                                                foreach (var employeeProject in employeeProjects)
                                                 {
-                                                    <form action="/employeeproject/reject" method="post">
-                                                        <input type="hidden" value="@employeeProject.Guid" name="guid"/>
-                                                        <button type="submit" class="btn btn-danger" style="margin: 2px">
-                                                            <i class="bi bi-x-square"></i> Reject
-                                                        </button>
-                                                    </form>
-                                                    break;
+                                                    if (employeeProject.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeeproject/delete" method="post">
+                                                            <input type="hidden" value="@employeeProject.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                    </td>
-                                </tr>
-                                i++;
-                            }
+
+
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                foreach (var employeeProject in employeeProjects)
+                                                {
+                                                    if (employeeProject.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeeproject/approve" method="post">
+                                                            <input type="hidden" value="@employeeProject.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                                <i class="bi bi-check-square"></i> Approve
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                foreach (var employeeProject in employeeProjects)
+                                                {
+                                                    if (employeeProject.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeeproject/reject" method="post">
+                                                            <input type="hidden" value="@employeeProject.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-danger" style="margin: 2px">
+                                                                <i class="bi bi-x-square"></i> Reject
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
