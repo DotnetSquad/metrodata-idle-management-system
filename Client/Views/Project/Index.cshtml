@@ -43,75 +43,78 @@
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
-                            <tr>
-                                <th scope="col">
-                                    @Html.DisplayName("No")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.NameProject)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.ProjectLead)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Action")
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">
+                                        @Html.DisplayName("No")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.NameProject)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.ProjectLead)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayName("Action")
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @{
-                                var i = 1;
-                            }
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    @{
-                                        var culture = new System.Globalization.CultureInfo("id-ID");
-                                    }
-                                    <td>
-                                        @i
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NameProject)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ProjectLead)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        <form action="~/employeeproject/index" method="get">
-                                            <input type="hidden" name="guid" value="@item.Guid"/>
-                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                <i class="ri-edit-box-fill"></i>
-                                            </button>
-                                        </form>
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                        {
-                                            <form action="/project/update" method="get">
-                                                <input type="hidden" value="@item.Guid" name="guid"/>
-                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                    <i class="ri-edit-box-fill"></i>
-                                                </button>
-                                            </form>
+                                @{
+                                    var i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @{
+                                            var culture = new System.Globalization.CultureInfo("id-ID");
                                         }
-                                        @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                        {
-                                            <form action="/project/delete" method="post">
-                                                <input type="hidden" value="@item.Guid" name="guid"/>
-                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        }
-                                    </td>
-                                </tr>
-                                i++;
-                            }
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NameProject)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ProjectLead)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                <form action="~/employeeproject/index" method="get">
+                                                    <input type="hidden" name="guid" value="@item.Guid" />
+                                                    <button type="submit" class="btn btn-success" style="margin: 2px">
+                                                        <i class="bi bi-clipboard-check"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                <form action="/project/update" method="get">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                        <i class="ri-edit-box-fill"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                <form action="/project/delete" method="post">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

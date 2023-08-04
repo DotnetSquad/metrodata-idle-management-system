@@ -2,6 +2,7 @@
 using Client.DataTransferObjects.EmployeeProjects;
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
+using Client.DataTransferObjects.Roles;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,14 @@ public class EmployeeProjectController : Controller
     private readonly IEmployeeProjectRepository _employeeProjectRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IProjectRepository _projectRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public EmployeeProjectController(IEmployeeProjectRepository employeeProjectRepository, IEmployeeRepository employeeRepository, IProjectRepository projectRepository)
+    public EmployeeProjectController(IEmployeeProjectRepository employeeProjectRepository, IEmployeeRepository employeeRepository, IProjectRepository projectRepository, IRoleRepository roleRepository)
     {
         _employeeProjectRepository = employeeProjectRepository;
         _employeeRepository = employeeRepository;
         _projectRepository = projectRepository;
+        _roleRepository = roleRepository;
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -35,10 +38,10 @@ public class EmployeeProjectController : Controller
         var listEmployees = new List<EmployeeDtoGet>();
 
         if (employees.Data is not null) listEmployees = employees.Data.ToList();
-        
+
         var project = await _projectRepository.Get();
         var listProjectDtoGets = new List<ProjectDtoGet>();
-        
+
         if (project.Data is not null) listProjectDtoGets = project.Data.ToList();
 
 
@@ -46,7 +49,7 @@ public class EmployeeProjectController : Controller
         ViewData["EmployeeProjects"] = listEmployeeProjectDtoGets;
         ViewData["ProjectGuid"] = guid;
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        
+
         return View(listEmployees);
     }
 
@@ -55,19 +58,34 @@ public class EmployeeProjectController : Controller
     public async Task<IActionResult> Create(Guid guid)
     {
         var employeesExcludeProject = await _employeeRepository.GetExcludeProject(guid);
-        var project = await _projectRepository.Get(guid);
-        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+        var listEmployeeDtoGets = employeesExcludeProject.Data?.ToList() ?? new List<EmployeeDtoGet>();
 
-        if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
+        var roles = await _roleRepository.Get();
+        var listRoleDtoGets = roles.Data?.ToList() ?? new List<RoleDtoGet>();
 
-        ViewData["Employees"] = listEmployeeDtoGets;
+        var employeeRoleDtoGet = listRoleDtoGets.FirstOrDefault(role => role.Name == RoleLevelEnum.Employee.ToString());
+
+        var filteredEmployees = new List<EmployeeDtoGet>();
+        if (employeeRoleDtoGet != null)
+        {
+            var employeeRoles = await _employeeRepository.GetByRole(employeeRoleDtoGet.Guid);
+            var listEmployeeRoleDtoGets = employeeRoles.Data?.ToList() ?? new List<EmployeeDtoGet>();
+
+            filteredEmployees = listEmployeeDtoGets
+                .Join(listEmployeeRoleDtoGets, emp => emp.Guid, empRole => empRole.Guid, (emp, empRole) => emp)
+                .ToList();
+        }
+
+        ViewData["Employees"] = filteredEmployees;
         ViewData["ProjectGuid"] = guid;
         ViewData["isNotCollapsed"] = isNotCollapsed;
 
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EmployeeProjectDtoGet employeeProjectDtoGet)
     {
         var employeeProject = await _employeeProjectRepository.Post(employeeProjectDtoGet);
@@ -94,7 +112,9 @@ public class EmployeeProjectController : Controller
         };
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(EmployeeProjectDtoGet employeeProjectDtoGet)
     {
         var employeeProject = await _employeeProjectRepository.Put(employeeProjectDtoGet.Guid, employeeProjectDtoGet);
@@ -139,8 +159,8 @@ public class EmployeeProjectController : Controller
                 return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
-    
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Approve(Guid guid)
     {
@@ -164,7 +184,8 @@ public class EmployeeProjectController : Controller
                 return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
         }
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Reject(Guid guid)
     {

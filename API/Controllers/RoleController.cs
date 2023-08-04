@@ -10,7 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+
 public class RoleController : ControllerBase
 {
     private readonly RoleService _roleService;
@@ -20,6 +20,7 @@ public class RoleController : ControllerBase
         _roleService = roleService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -45,6 +46,7 @@ public class RoleController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -70,6 +72,7 @@ public class RoleController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public IActionResult Create(RoleDtoCreate roleDtoCreate)
     {
@@ -95,6 +98,7 @@ public class RoleController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPut]
     public IActionResult Update(RoleDtoUpdate roleDtoUpdate)
     {
@@ -131,6 +135,7 @@ public class RoleController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {

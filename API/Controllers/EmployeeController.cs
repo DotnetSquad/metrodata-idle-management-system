@@ -173,7 +173,7 @@ public class EmployeeController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet("GetByRole/{guid}")]
     public IActionResult GetByRole(Guid guid)
     {
@@ -255,7 +255,8 @@ public class EmployeeController : ControllerBase
     {
         var employees = _employeeService.GetExcludeProject(guid);
 
-        if (!employees.Any()){
+        if (!employees.Any())
+        {
             return NotFound(new ResponseHandler<EmployeeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
@@ -273,7 +274,7 @@ public class EmployeeController : ControllerBase
             Data = employees
         });
     }
-    
+
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpGet("GetByEmail/{email}")]
     public IActionResult GetByEmail(string email)
