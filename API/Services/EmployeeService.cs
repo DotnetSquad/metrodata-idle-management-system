@@ -118,32 +118,52 @@ public class EmployeeService
         var employee = _employeeRepository.GetByGuid(guid);
         if (employee is null) return -1;
 
+        var gradeGuid = employee.GradeGuid;
+        var profileGuid = employee.ProfileGuid;
+
         var employeeDeleted = _employeeRepository.Delete(employee);
-        return !employeeDeleted ? 0 : 1;
+
+        if (employeeDeleted)
+        {
+            var grade = _gradeRepository.GetByGuid((Guid)gradeGuid);
+            if (grade != null)
+            {
+                _gradeRepository.Delete(grade);
+            }
+
+            var profile = _profileRepository.GetByGuid((Guid)profileGuid);
+            if (profile != null)
+            {
+                _profileRepository.Delete(profile);
+            }
+
+            return 1;
+        }
+        return 0;
     }
 
     public IEnumerable<EmployeeDtoGet> GetByRole(Guid roleGuid)
     {
         var employeesByRole = (from employee in _employeeRepository.GetAll()
-            join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
-            join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
-            join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
-            where accountRole.RoleGuid == roleGuid
-            select new EmployeeDtoGet()
-            {
-                Guid = employee.Guid,
-                Nik = employee.Nik,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                BirthDate = employee.BirthDate,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                Status = employee.Status,
-                GradeGuid = employee.GradeGuid,
-                ProfileGuid = employee.ProfileGuid,
-            }).ToList();
+                               join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
+                               join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
+                               join roleRepository in _roleRepository.GetAll() on accountRole.RoleGuid equals roleRepository.Guid
+                               where accountRole.RoleGuid == roleGuid
+                               select new EmployeeDtoGet()
+                               {
+                                   Guid = employee.Guid,
+                                   Nik = employee.Nik,
+                                   FirstName = employee.FirstName,
+                                   LastName = employee.LastName,
+                                   BirthDate = employee.BirthDate,
+                                   Gender = employee.Gender,
+                                   HiringDate = employee.HiringDate,
+                                   Email = employee.Email,
+                                   PhoneNumber = employee.PhoneNumber,
+                                   Status = employee.Status,
+                                   GradeGuid = employee.GradeGuid,
+                                   ProfileGuid = employee.ProfileGuid,
+                               }).ToList();
 
         return employeesByRole;
     }
@@ -176,26 +196,26 @@ public class EmployeeService
     public IEnumerable<EmployeeDtoGet> GetEmployeeByProject(Guid projectGuid)
     {
         var employeesByProject = (from employee in _employeeRepository.GetAll()
-            join employeeProject in _employeeProjectRepository.GetAll()
-                on employee.Guid equals employeeProject.EmployeeGuid
-            join project in _projectRepository.GetAll()
-                on employeeProject.ProjectGuid equals project.Guid
-            where employeeProject.ProjectGuid == projectGuid
-            select new EmployeeDtoGet()
-            {
-                Guid = employee.Guid,
-                Nik = employee.Nik,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                BirthDate = employee.BirthDate,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                Status = employee.Status,
-                GradeGuid = employee.GradeGuid,
-                ProfileGuid = employee.ProfileGuid,
-            }).ToList();
+                                  join employeeProject in _employeeProjectRepository.GetAll()
+                                      on employee.Guid equals employeeProject.EmployeeGuid
+                                  join project in _projectRepository.GetAll()
+                                      on employeeProject.ProjectGuid equals project.Guid
+                                  where employeeProject.ProjectGuid == projectGuid
+                                  select new EmployeeDtoGet()
+                                  {
+                                      Guid = employee.Guid,
+                                      Nik = employee.Nik,
+                                      FirstName = employee.FirstName,
+                                      LastName = employee.LastName,
+                                      BirthDate = employee.BirthDate,
+                                      Gender = employee.Gender,
+                                      HiringDate = employee.HiringDate,
+                                      Email = employee.Email,
+                                      PhoneNumber = employee.PhoneNumber,
+                                      Status = employee.Status,
+                                      GradeGuid = employee.GradeGuid,
+                                      ProfileGuid = employee.ProfileGuid,
+                                  }).ToList();
         return employeesByProject;
     }
 
@@ -214,30 +234,30 @@ public class EmployeeService
 
         return employeeDtoGets;
     }
-    
+
     public IEnumerable<EmployeeDtoGet> GetEmployeeByJob(Guid jobGuid)
     {
         var employeesByProject = (from employee in _employeeRepository.GetAll()
-            join employeeJob in _employeeJobRepository.GetAll()
-                on employee.Guid equals employeeJob.EmployeeGuid
-            join job in _jobRepository.GetAll()
-                on employeeJob.JobGuid equals job.Guid
-            where employeeJob.JobGuid == jobGuid
-            select new EmployeeDtoGet()
-            {
-                Guid = employee.Guid,
-                Nik = employee.Nik,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                BirthDate = employee.BirthDate,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                Status = employee.Status,
-                GradeGuid = employee.GradeGuid,
-                ProfileGuid = employee.ProfileGuid,
-            }).ToList();
+                                  join employeeJob in _employeeJobRepository.GetAll()
+                                      on employee.Guid equals employeeJob.EmployeeGuid
+                                  join job in _jobRepository.GetAll()
+                                      on employeeJob.JobGuid equals job.Guid
+                                  where employeeJob.JobGuid == jobGuid
+                                  select new EmployeeDtoGet()
+                                  {
+                                      Guid = employee.Guid,
+                                      Nik = employee.Nik,
+                                      FirstName = employee.FirstName,
+                                      LastName = employee.LastName,
+                                      BirthDate = employee.BirthDate,
+                                      Gender = employee.Gender,
+                                      HiringDate = employee.HiringDate,
+                                      Email = employee.Email,
+                                      PhoneNumber = employee.PhoneNumber,
+                                      Status = employee.Status,
+                                      GradeGuid = employee.GradeGuid,
+                                      ProfileGuid = employee.ProfileGuid,
+                                  }).ToList();
         return employeesByProject;
     }
 
