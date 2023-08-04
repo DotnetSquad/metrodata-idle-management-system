@@ -1,11 +1,15 @@
 ﻿@using Client.DataTransferObjects.Interviews;
-@using Client.DataTransferObjects.Employees;
+@using Client.DataTransferObjects.EmployeeJobs;
 @using Client.DataTransferObjects.Jobs;
-@model IEnumerable<Client.DataTransferObjects.EmployeeJobs.EmployeeJobDtoGet>
+@using Client.Utilities.Enums;
+@model IEnumerable<Client.DataTransferObjects.Employees.EmployeeDtoGet>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "_LayoutDashboard";
+    var JobGuid = ViewData["JobGuid"];
+    var employeeJobs = (IEnumerable<EmployeeJobDtoGet>)ViewData["EmployeeJobs"];
+    var interviews = (IEnumerable<InterviewDtoGet>)ViewData["Interviews"];
 }
 
 <main id="main" class="main">
@@ -18,7 +22,7 @@
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeJob/Index">Interview Management</a>
+                    <a href="~/EmployeeJob/Index">Job Management</a>
                 </li>
             </ol>
         </nav>
@@ -30,12 +34,16 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Interview Management Listings</h5>
-                        <a href="/employeejob/create">
-                            <button class="btn btn-primary" style="margin-bottom: 15px">
-                                <i class="bi bi-plus-square"></i> Create
-                            </button>
-                        </a>
+                        <h5 class="card-title">Job Management Listings</h5>
+                        @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                        {
+                            <form action="~/employeejob/create" method="get">
+                                <input type="hidden" name="guid" value="@JobGuid" />
+                                <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                    <i class="ri-edit-box-fill"></i> Add
+                                </button>
+                            </form>
+                        }
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
@@ -78,21 +86,15 @@
                                         </td>
                                         <td>
                                             @{
-                                                foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
-                                                {
-                                                    var fullName = $"{employee.FirstName} {employee.LastName}";
-                                                    if (item.EmployeeGuid == employee.Guid)
-                                                    {
-                                                        @Html.DisplayFor(x => fullName)
-                                                    }
-                                                }
+                                                var fullName = $"{item.FirstName} {item.LastName}";
                                             }
+                                            @Html.DisplayFor(x => fullName)
                                         </td>
                                         <td>
                                             @{
                                                 foreach (var job in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
                                                 {
-                                                    if (item.JobGuid == job.Guid)
+                                                    if (Guid.Parse(JobGuid.ToString()) == job.Guid)
                                                     {
                                                         @job.JobName
                                                     }
@@ -101,42 +103,111 @@
                                         </td>
                                         <td>
                                             @{
-                                                foreach (var interview in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
+                                                foreach (var employeeJob in employeeJobs)
                                                 {
-                                                    if (item.InterviewGuid == interview.Guid)
+                                                    foreach (var interview in interviews)
                                                     {
-                                                        @interview.Title
+                                                        if (employeeJob.EmployeeGuid == item.Guid)
+                                                        {
+                                                            if (employeeJob.InterviewGuid == interview.Guid)
+                                                            {
+                                                                @interview.Title
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         </td>
                                         <td>
                                             @{
-                                                foreach (var interview in (IEnumerable<InterviewDtoGet>)ViewData["Interviews"])
+                                                foreach (var employeeJob in employeeJobs)
                                                 {
-                                                    if (item.InterviewGuid == interview.Guid)
+                                                    foreach (var interview in interviews)
                                                     {
-                                                        @interview.InterviewDate
+                                                        if (employeeJob.EmployeeGuid == item.Guid)
+                                                        {
+                                                            if (employeeJob.InterviewGuid == interview.Guid)
+                                                            {
+                                                                @interview.InterviewDate
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.StatusApproval)
+                                            @{
+                                                foreach (var employeeJob in employeeJobs)
+                                                {
+                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    {
+                                                        if (employeeJob.StatusApproval == StatusApprovalEnum.Accepted)
+                                                        {
+                                                            <span class="badge bg-success">@employeeJob.StatusApproval</span>
+                                                        }
+                                                        else if (employeeJob.StatusApproval == StatusApprovalEnum.Rejected)
+                                                        {
+                                                            <span class="badge bg-danger">@employeeJob.StatusApproval</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-warning">@employeeJob.StatusApproval</span>
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         </td>
                                         <td>
-                                            <form action="/employeejob/update" method="get">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                    <i class="ri-edit-box-fill"></i>
-                                                </button>
-                                            </form>
-                                            <form action="/employeejob/delete" method="post">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                            {
+                                                foreach (var employeeJob in employeeJobs)
+                                                {
+                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeejob/delete" method="post">
+                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                foreach (var employeeJob in employeeJobs)
+                                                {
+                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeejob/approve" method="post">
+                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                                <i class="bi bi-check-square"></i> Approve
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                            {
+                                                foreach (var employeeJob in employeeJobs)
+                                                {
+                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    {
+                                                        <form action="/employeejob/reject" method="post">
+                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                            <button type="submit" class="btn btn-danger" style="margin: 2px">
+                                                                <i class="bi bi-x-square"></i> Reject
+                                                            </button>
+                                                        </form>
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         </td>
                                     </tr>
                                     i++;

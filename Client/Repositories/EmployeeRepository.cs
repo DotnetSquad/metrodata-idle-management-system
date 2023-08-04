@@ -59,4 +59,28 @@ public class EmployeeRepository : BaseRepository<EmployeeDtoGet, Guid>, IEmploye
 
         return entity;
     }
+
+    public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetEmployeeByJob(Guid guid)
+    {
+        ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
+        using (var response = await HttpClient.GetAsync(Request + "GetByJob/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeDtoGet>>>(apiResponse);
+        }
+
+        return entity;
+    }
+
+    public async Task<ResponseHandler<IEnumerable<EmployeeDtoGet>>> GetExcludeJob(Guid guid)
+    {
+        ResponseHandler<IEnumerable<EmployeeDtoGet>> entity = null;
+        using (var response = await HttpClient.GetAsync(Request + "GetExcludeJob/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeDtoGet>>>(apiResponse);
+        }
+
+        return entity;
+    }
 }
