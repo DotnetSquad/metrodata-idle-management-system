@@ -1,6 +1,4 @@
-﻿@using Client.DataTransferObjects.Interviews;
-@using Client.DataTransferObjects.Employees;
-@using Client.DataTransferObjects.Jobs;
+﻿@using Client.DataTransferObjects.Employees;
 @model Client.DataTransferObjects.EmployeeJobs.EmployeeJobDtoCreate
 
 @{
@@ -10,17 +8,17 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Form Validation</h1>
+        <h1>Form Create</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="~/Dashboard/Index">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="~/EmployeeJob/Index">Interview Management</a>
+                    <a href="~/EmployeeJob/Index?guid=@ViewData["JobGuid"]">Job Management</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="~/EmployeeJob/Create">Create Interview Management</a>
+                    <a href="~/EmployeeJob/Create?guid=@ViewData["JobGuid"]">Create Job Management</a>
                 </li>
             </ol>
         </nav>
@@ -32,35 +30,29 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Create Interview Management Form</h5>
+                        <h5 class="card-title">Create Job Management Form</h5>
                         <p>This form allows you to manage the interview process for prospective candidates seeking employment with client's company. Please provide the necessary information to facilitate the interview process. Thank you for your cooperation in making the interview process seamless and efficient.</p>
 
                         <!-- Custom Styled Validation -->
                         <form action="/employeejob/create" method="post" class="row g-3 needs-validation" novalidate>
-                            <div class="col-md-6">
-                                <label for="employeeGuid" class="form-label">Employee Name</label>
-                                <select asp-for="EmployeeGuid" class="form-select" id="employeeGuid" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    @* foreach view bag employee *@
-                                    @{
-                                        foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
-                                        {
-                                            <option value="@item.Guid">@item.FirstName @item.LastName</option>
-                                        }
-                                    }
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid state.
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6" hidden>
+                                <label for="validationCustom01" class="form-label">Job</label>
+                                <input asp-for="JobGuid" type="text" class="form-control" id="validationCustom01" value="@ViewData["JobGuid"]">
+                                <div class="valid-feedback">
+                                    Looks good!
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="jobGuid" class="form-label">Job Name</label>
-                                <select asp-for="JobGuid" class="form-select" id="jobGuid" required>
+                                <label for="validationCustom04" class="form-label">Employee</label>
+                                <select asp-for="EmployeeGuid" class="form-select" id="validationCustom04" required>
                                     <option selected disabled value="">Choose...</option>
+                                    @* foreach view data employees *@
                                     @{
-                                        foreach (var item in (IEnumerable<JobDtoGet>)ViewData["Jobs"])
+                                        var employees = (IEnumerable<EmployeeDtoGet>)ViewData["Employees"];
+                                        foreach (var item in employees)
                                         {
-                                            <option value="@item.Guid">@item.JobName</option>
+                                            <option value="@item.Guid">@item.Nik - @item.FirstName @item.LastName</option>
                                         }
                                     }
                                 </select>

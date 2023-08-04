@@ -10,7 +10,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+
 public class EmployeeJobController : ControllerBase
 {
     private readonly EmployeeJobService _employeeJobService;
@@ -20,6 +20,7 @@ public class EmployeeJobController : ControllerBase
         _employeeJobService = employeeJobService;
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}")]
     [HttpGet]
     public IActionResult Get()
     {
@@ -45,6 +46,7 @@ public class EmployeeJobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -70,6 +72,7 @@ public class EmployeeJobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public IActionResult Create(EmployeeJobDtoCreate employeeJobDtoCreate)
     {
@@ -95,6 +98,7 @@ public class EmployeeJobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)},")]
     [HttpPut]
     public IActionResult Update(EmployeeJobDtoUpdate employeeJobDtoUpdate)
     {
@@ -131,6 +135,7 @@ public class EmployeeJobController : ControllerBase
         });
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpDelete("{guid}")]
     public IActionResult Delete(Guid guid)
     {
@@ -166,9 +171,10 @@ public class EmployeeJobController : ControllerBase
             Data = null
         });
     }
-    
+
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}")]
     [HttpGet("GetByJob/{guid}")]
-    public IActionResult GetByProject(Guid guid)
+    public IActionResult GetByJob(Guid guid)
     {
         var jobs = _employeeJobService.GetByJob(guid);
 

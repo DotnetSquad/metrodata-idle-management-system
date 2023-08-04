@@ -20,7 +20,7 @@ public class JobController : ControllerBase
         _jobService = jobService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpGet]
     public IActionResult Get()
     {

@@ -369,7 +369,7 @@
                 </li> <!-- End Role Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -377,6 +377,20 @@
                         if (isNotCollapsed == "EmployeeJobController") employeeJobController = "";
                     }
                     <a class="nav-link @employeeJobController" href="~/EmployeeJob/Index">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Job Management</span>
+                    </a>
+                </li> <!-- End employee job Page Nav -->
+            }
+
+            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
+            {
+                <li class="nav-item">
+                    @{
+                        var employeeJobController = "collapsed";
+                        if (isNotCollapsed == "EmployeeJobController") employeeJobController = "";
+                    }
+                    <a class="nav-link @employeeJobController" href="~/Job/Index">
                         <i class="bi bi-people-fill"></i>
                         <span>Job Management</span>
                     </a>
