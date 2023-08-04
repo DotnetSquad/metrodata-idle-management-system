@@ -2,6 +2,7 @@
 using Client.DataTransferObjects.EmployeeProjects;
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
+using Client.DataTransferObjects.Roles;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,14 @@ public class EmployeeProjectController : Controller
     private readonly IEmployeeProjectRepository _employeeProjectRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IProjectRepository _projectRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public EmployeeProjectController(IEmployeeProjectRepository employeeProjectRepository, IEmployeeRepository employeeRepository, IProjectRepository projectRepository)
+    public EmployeeProjectController(IEmployeeProjectRepository employeeProjectRepository, IEmployeeRepository employeeRepository, IProjectRepository projectRepository, IRoleRepository roleRepository)
     {
         _employeeProjectRepository = employeeProjectRepository;
         _employeeRepository = employeeRepository;
         _projectRepository = projectRepository;
+        _roleRepository = roleRepository;
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
@@ -55,12 +58,25 @@ public class EmployeeProjectController : Controller
     public async Task<IActionResult> Create(Guid guid)
     {
         var employeesExcludeProject = await _employeeRepository.GetExcludeProject(guid);
-        var project = await _projectRepository.Get(guid);
-        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+        var listEmployeeDtoGets = employeesExcludeProject.Data?.ToList() ?? new List<EmployeeDtoGet>();
 
-        if (employeesExcludeProject.Data is not null) listEmployeeDtoGets = employeesExcludeProject.Data.ToList();
+        var roles = await _roleRepository.Get();
+        var listRoleDtoGets = roles.Data?.ToList() ?? new List<RoleDtoGet>();
 
-        ViewData["Employees"] = listEmployeeDtoGets;
+        var employeeRoleDtoGet = listRoleDtoGets.FirstOrDefault(role => role.Name == RoleLevelEnum.Employee.ToString());
+
+        var filteredEmployees = new List<EmployeeDtoGet>();
+        if (employeeRoleDtoGet != null)
+        {
+            var employeeRoles = await _employeeRepository.GetByRole(employeeRoleDtoGet.Guid);
+            var listEmployeeRoleDtoGets = employeeRoles.Data?.ToList() ?? new List<EmployeeDtoGet>();
+
+            filteredEmployees = listEmployeeDtoGets
+                .Join(listEmployeeRoleDtoGets, emp => emp.Guid, empRole => empRole.Guid, (emp, empRole) => emp)
+                .ToList();
+        }
+
+        ViewData["Employees"] = filteredEmployees;
         ViewData["ProjectGuid"] = guid;
         ViewData["isNotCollapsed"] = isNotCollapsed;
 

@@ -50,7 +50,7 @@
                                     @* foreach view data employees *@
                                     @{
                                         var employees = (IEnumerable<EmployeeDtoGet>)ViewData["Employees"];
-                                        foreach (var item in employees.Where(e => e.Status == Client.Utilities.Enums.StatusEnum.Idle)){
+                                        foreach (var item in employees){
                                             <option value="@item.Guid">@item.Nik - @item.FirstName @item.LastName</option>
                                         }
                                     }

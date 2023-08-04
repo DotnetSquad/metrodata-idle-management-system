@@ -20,7 +20,7 @@ public class CompanyController : ControllerBase
         _companyService = companyService;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}")]
     [HttpGet]
     public IActionResult Get()
     {

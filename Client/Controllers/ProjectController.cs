@@ -1,6 +1,7 @@
 using Client.Contracts;
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Projects;
+using Client.DataTransferObjects.Roles;
 using Client.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,13 @@ public class ProjectController : Controller
     public string isNotCollapsed = "ProjectController";
     private readonly IProjectRepository _projectRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public ProjectController(IProjectRepository projectRepository, IEmployeeRepository employeeRepository)
+    public ProjectController(IProjectRepository projectRepository, IEmployeeRepository employeeRepository, IRoleRepository roleRepository)
     {
         _projectRepository = projectRepository;
         _employeeRepository = employeeRepository;
+        _roleRepository = roleRepository;
     }
 
     [Authorize(Roles =
@@ -55,14 +58,24 @@ public class ProjectController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        // get employees
-        var employees = await _employeeRepository.Get();
-        var listEmployeeDtoGets = new List<EmployeeDtoGet>();
+        var roles = await _roleRepository.Get();
+        var listRoleDtoGets = new List<RoleDtoGet>();
 
-        if (employees.Data is not null)
+        if (roles.Data is not null) listRoleDtoGets = roles.Data.ToList();
+        var roleDtoGet = new RoleDtoGet();
+
+        foreach (var role in listRoleDtoGets)
         {
-            listEmployeeDtoGets = employees.Data.ToList();
+            if (role.Name == RoleLevelEnum.Trainer.ToString())
+            {
+                roleDtoGet = role;
+            }
         }
+
+        var trainers = await _employeeRepository.GetByRole(roleDtoGet.Guid);
+        var listTrainerDtoGets = new List<EmployeeDtoGet>();
+
+        if (trainers.Data is not null) listTrainerDtoGets = trainers.Data.ToList();
 
         if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
         {
@@ -71,7 +84,7 @@ public class ProjectController : Controller
 
         // add to view data
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Employees"] = listEmployeeDtoGets;
+        ViewData["Employees"] = listTrainerDtoGets;
 
         return View();
     }
