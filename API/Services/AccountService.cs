@@ -73,7 +73,7 @@ public class AccountService
         if (account is null) return -1;
 
         var accountUpdated = _accountRepository.Update(accountDtoUpdate);
-        return !accountUpdated ? 0 : 1;
+        return accountUpdated ? 1 : 0;
     }
 
     public int Delete(Guid guid)
@@ -82,7 +82,7 @@ public class AccountService
         if (account is null) return -1;
 
         var accountDeleted = _accountRepository.Delete(account);
-        return !accountDeleted ? 0 : 1;
+        return accountDeleted ? 1 : 0;
     }
 
 
@@ -136,9 +136,6 @@ public class AccountService
             var claims = new List<Claim>()
             {
                 new Claim("Guid", employee.Guid.ToString()),
-                new Claim("NIK", employee.Nik),
-                new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
-                new Claim("EmailAddress", accountDtoLogin.Email),
                 new Claim("GradeGuid", employee.GradeGuid.ToString() ?? Guid.Empty.ToString()),
                 new Claim("ProfileGuid", employee.ProfileGuid.ToString() ?? Guid.Empty.ToString()),
             };
