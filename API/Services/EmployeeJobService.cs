@@ -1,5 +1,6 @@
 using API.Contracts;
 using API.DataTransferObjects.EmployeeJobs;
+using API.DataTransferObjects.Interviews;
 using API.DataTransferObjects.Placements;
 using API.Utilities.Enums;
 
@@ -10,14 +11,16 @@ public class EmployeeJobService
     private readonly ICompanyRepository _companyRepository;
     private readonly IEmployeeJobRepository _employeeJobRepository;
     private readonly IPlacementRepository _placementRepository;
+    private readonly IInterviewRepository _interviewRepository;
     private readonly IJobRepository _jobRepository;
     private readonly IEmployeeRepository _employeeRepository;
 
-    public EmployeeJobService(ICompanyRepository companyRepository, IEmployeeJobRepository employeeJobRepository, IPlacementRepository placementRepository, IJobRepository jobRepository, IEmployeeRepository employeeRepository)
+    public EmployeeJobService(ICompanyRepository companyRepository, IEmployeeJobRepository employeeJobRepository, IPlacementRepository placementRepository, IInterviewRepository interviewRepository, IJobRepository jobRepository, IEmployeeRepository employeeRepository)
     {
         _companyRepository = companyRepository;
         _employeeJobRepository = employeeJobRepository;
         _placementRepository = placementRepository;
+        _interviewRepository = interviewRepository;
         _jobRepository = jobRepository;
         _employeeRepository = employeeRepository;
     }
@@ -46,7 +49,23 @@ public class EmployeeJobService
 
     public EmployeeJobDtoCreate? Create(EmployeeJobDtoCreate employeeJobDtoCreate)
     {
+        var job = _jobRepository.GetByGuid(employeeJobDtoCreate.JobGuid);
+        var company = _companyRepository.GetByGuid(job.CompanyGuid);
+        var employee = _employeeRepository.GetByGuid(employeeJobDtoCreate.EmployeeGuid);
+
+
+        var interviewDtoCreate = new InterviewDtoCreate
+        {
+            Title = $"{job.JobName} at {company.CompanyName} - {employee.Nik} {employee.FirstName} {employee.LastName}",
+            Link = "",
+            InterviewDate = DateTime.Now,
+            Description = ""
+        };
+
+        var interviewCreated = _interviewRepository.Create(interviewDtoCreate);
+        employeeJobDtoCreate.InterviewGuid = interviewCreated.Guid;
         var employeeJobCreated = _employeeJobRepository.Create(employeeJobDtoCreate);
+
         if (employeeJobCreated is null) return null!;
 
         return (EmployeeJobDtoCreate)employeeJobCreated;
@@ -106,12 +125,13 @@ public class EmployeeJobService
 
         var job = _jobRepository.GetByGuid(employeeJob.JobGuid);
         var company = _companyRepository.GetByGuid(job.CompanyGuid);
+        var interview = _interviewRepository.GetByGuid(employeeJob.InterviewGuid);
 
         if (employeeJobDeleted)
         {
             employee.Status = StatusEnum.Idle;
             var employeeUpdated = _employeeRepository.Update(employee);
-
+            _interviewRepository.Delete(interview);
             if (placementDtoGets != null)
             {
                 if (placementDtoGets.EmployeeGuid == employeeJob.EmployeeGuid && placementDtoGets.CompanyGuid == company.Guid)
