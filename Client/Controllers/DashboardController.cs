@@ -12,11 +12,13 @@ public class DashboardController : Controller
 {
     public string isNotCollapsed = "DashboardController";
     private readonly IDashboardRepository _dashboardRepository;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IGradeRepository _gradeRepository;
 
-    public DashboardController(IDashboardRepository dashboardRepository, IGradeRepository gradeRepository)
+    public DashboardController(IDashboardRepository dashboardRepository, IEmployeeRepository employeeRepository, IGradeRepository gradeRepository)
     {
         _dashboardRepository = dashboardRepository;
+        _employeeRepository = employeeRepository;
         _gradeRepository = gradeRepository;
     }
 
@@ -25,7 +27,11 @@ public class DashboardController : Controller
     {
         var guidEmployee = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
         var guid = Guid.Parse(guidEmployee ?? string.Empty);
-        var grade = await _gradeRepository.Get(guid);
+        var employee = await _employeeRepository.Get(guid);
+        
+        ViewData["Employee"] = employee.Data;
+        
+        var grade = await _gradeRepository.Get(employee.Data.GradeGuid);
         var statisticEmployees = await _dashboardRepository.GetStatisticEmployee();
         var statisticInterviewStatus = await _dashboardRepository.GetStatisticInterviewStatus();
 

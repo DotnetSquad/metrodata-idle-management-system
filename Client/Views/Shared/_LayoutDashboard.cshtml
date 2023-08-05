@@ -1,9 +1,10 @@
 @using Client.Utilities.Enums;
+@using Client.DataTransferObjects.Employees
 
 @{
     var successMessage = TempData["Success"] as string;
     var failMessage = TempData["Error"] as string;
-    var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+    var employee = (EmployeeDtoGet)ViewData["Employee"];
     var gradeGuid = User.Claims.FirstOrDefault(x => x.Type == "GradeGuid")?.Value;
     var profileGuid = User.Claims.FirstOrDefault(x => x.Type == "ProfileGuid")?.Value;
     var isNotCollapsed = (string)ViewData["isNotCollapsed"]!;
@@ -168,12 +169,12 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img src="~/NiceAdmin/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">@fullName</span>
+                        <span class="d-none d-md-block dropdown-toggle ps-2">@employee.FirstName @employee.LastName</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>@fullName</h6>
+                            <h6>@employee.FirstName @employee.LastName</h6>
                             <span>Web Designer</span>
                         </li>
                         <li>
