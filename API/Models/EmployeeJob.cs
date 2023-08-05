@@ -10,7 +10,7 @@ public class EmployeeJob : BaseEntity
     public Guid EmployeeGuid { get; set; }
 
     [Column("interview_guid")]
-    public Guid? InterviewGuid { get; set; }
+    public Guid InterviewGuid { get; set; }
 
     [Column("job_guid")]
     public Guid JobGuid { get; set; }
