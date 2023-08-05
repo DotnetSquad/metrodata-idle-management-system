@@ -3,340 +3,338 @@
 
 @{
     Layout = "_LayoutDashboard";
-    var employee = ViewData["Employee"] as Client.DataTransferObjects.Employees.EmployeeDtoGet;
-    var emailAddress = User.Claims.FirstOrDefault(x => x.Type == "EmailAddress")?.Value;
 }
 
 <main id="main" class="main">
 
-<div class="pagetitle">
-    <h1>Profile</h1>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
-            </li>
-            <li class="breadcrumb-item">Users</li>
-            <li class="breadcrumb-item active">Profile</li>
-        </ol>
-    </nav>
-</div><!-- End Page Title -->
+    <div class="pagetitle">
+        <h1>Profile</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Users</li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-<section class="section profile">
-<div class="row">
-<div class="col-xl-4">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-4">
 
-    <div class="card">
-        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="@Model.PhotoProfile" alt="Profile" class="rounded-circle">
-            <h2>@employee.FirstName @employee.LastName</h2>
-            <h3>Web Designer</h3>
-            <div class="social-links mt-2">
-                <a href="#" class="twitter">
-                    <i class="bi bi-twitter"></i>
-                </a>
-                <a href="#" class="facebook">
-                    <i class="bi bi-facebook"></i>
-                </a>
-                <a href="#" class="instagram">
-                    <i class="bi bi-instagram"></i>
-                </a>
-                <a href="#" class="linkedin">
-                    <i class="bi bi-linkedin"></i>
-                </a>
+                        <img src="@Model.PhotoProfile" alt="Profile" class="rounded-circle">
+                        <h2>@Model.FirstName @Model.LastName</h2>
+                        <h3>Web Designer</h3>
+                        <div class="social-links mt-2">
+                            <a href="#" class="twitter">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" class="facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" class="instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" class="linkedin">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-8">
+
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                <h5 class="card-title">About</h5>
+                                <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+
+                                <h5 class="card-title">Profile Details</h5>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">NIK</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Nik</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                    <div class="col-lg-9 col-md-8">@Model.FirstName @Model.LastName</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Gender</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Gender</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Birth Date</div>
+                                    <div class="col-lg-9 col-md-8">@Model.BirthDate</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Hiring Date</div>
+                                    <div class="col-lg-9 col-md-8">@Model.HiringDate</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Company</div>
+                                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Job</div>
+                                    <div class="col-lg-9 col-md-8">Web Designer</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        @Model.PhoneNumber
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Email</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Status</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Status</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Skills</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Skills</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Linkedin</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Linkedin</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Resume</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Resume</div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                                <form action="/profile/UpdateEmployeeProfile" method="post" EncType="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                                    @Html.AntiForgeryToken()
+                                    <div class="row mb-3">
+                                        <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="FirstName" type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="LastName" type="text" class="form-control" id="lastName">
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="birthDate" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="BirthDate" type="date" class="form-control" id="birthDate" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your birth date!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <select asp-for="Gender" class="form-control" id="gender" required>
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="1">Male</option>
+                                                <option value="0">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select your gender!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="hiringDate" class="col-md-4 col-lg-3 col-form-label">Hiring Date</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="HiringDate" type="date" class="form-control" id="hiringDate" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your hiring date!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="Email" type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid Email adddress!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="phoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="PhoneNumber" type="text" class="form-control" id="phoneNumber" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your phone number!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" hidden>
+                                        <label for="status" class="col-md-4 col-lg-3 col-form-label">Status</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <select asp-for="Status" class="form-control" id="status" required>
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="1">Working</option>
+                                                <option value="0">Idle</option>
+                                            </select>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select your status!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" hidden>
+                                        <label for="guid" class="col-md-4 col-lg-3 col-form-label">Guid</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="EmployeeGuid" type="text" class="form-control" id="guid" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" hidden>
+                                        <label for="nik" class="col-md-4 col-lg-3 col-form-label">Nik</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="Nik" type="text" class="form-control" id="nik" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" hidden>
+                                        <label for="gradeGuid" class="col-md-4 col-lg-3 col-form-label">Grade</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="GradeGuid" type="text" class="form-control" id="nik" required>
+
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a valid Grade.
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" hidden>
+                                        <label for="profileGuid" class="col-md-4 col-lg-3 col-form-label">Profile</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="ProfileGuidInEmployee" type="text" class="form-control" id="nik" required>
+
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a valid Profile.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" hidden>
+                                        <label for="validationCustom01" class="form-label">Guid</label>
+                                        <input asp-for="ProfileGuid" type="text" class="form-control" id="validationCustom01" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="skill" class="col-md-4 col-lg-3 col-form-label">Skills</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="Skills" type="text" class="form-control" id="skill" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your skills!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input text="url" asp-for="Linkedin" class="form-control" id="linkedin" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your Linkedin Link!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="resume" class="col-md-4 col-lg-3 col-form-label">Resume</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input type="url" asp-for="Resume" class="form-control" id="resume" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your resume link!
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="photo" class="col-md-4 col-lg-3 col-form-label">Photo Profile</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input type="file" asp-for="PhotoProfile" class="form-control" id="photo" required>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your photo profile link!
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit">Submit form</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
-
-</div>
-
-<div class="col-xl-8">
-
-<div class="card">
-<div class="card-body pt-3">
-<!-- Bordered Tabs -->
-<ul class="nav nav-tabs nav-tabs-bordered">
-
-    <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
-    </li>
-
-    <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
-    </li>
-
-</ul>
-<div class="tab-content pt-2">
-
-<div class="tab-pane fade show active profile-overview" id="profile-overview">
-    <h5 class="card-title">About</h5>
-    <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
-
-    <h5 class="card-title">Profile Details</h5>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label ">NIK</div>
-        <div class="col-lg-9 col-md-8">@employee.Nik</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label ">Full Name</div>
-        <div class="col-lg-9 col-md-8">@employee.FirstName @employee.LastName</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label ">Gender</div>
-        <div class="col-lg-9 col-md-8">@employee.Gender</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label ">Birth Date</div>
-        <div class="col-lg-9 col-md-8">@employee.BirthDate</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label ">Hiring Date</div>
-        <div class="col-lg-9 col-md-8">@employee.HiringDate</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Company</div>
-        <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Job</div>
-        <div class="col-lg-9 col-md-8">Web Designer</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Phone</div>
-        <div class="col-lg-9 col-md-8">
-            @employee.PhoneNumber
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Email</div>
-        <div class="col-lg-9 col-md-8">@emailAddress</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Status</div>
-        <div class="col-lg-9 col-md-8">@employee.Status</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Skills</div>
-        <div class="col-lg-9 col-md-8">@Model.Skills</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Linkedin</div>
-        <div class="col-lg-9 col-md-8">@Model.Linkedin</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-4 label">Resume</div>
-        <div class="col-lg-9 col-md-8">@Model.Resume</div>
-    </div>
-
-</div>
-
-<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-    <form action="/profile/UpdateEmployeeProfile" method="post" EncType="multipart/form-data"  class="row g-3 needs-validation" novalidate>
-        @Html.AntiForgeryToken()
-        <div class="row mb-3">
-            <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="FirstName" type="text" class="form-control" id="firstName" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="LastName" type="text" class="form-control" id="lastName">
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="birthDate" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="BirthDate" type="date" class="form-control" id="birthDate" required>
-            </div>
-            <div class="invalid-feedback">
-                Please enter your birth date!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
-            <div class="col-md-8 col-lg-9">
-                <select asp-for="Gender" class="form-control" id="gender" required>
-                    <option selected disabled value="">Choose...</option>
-                    <option value="1">Male</option>
-                    <option value="0">Female</option>
-                </select>
-            </div>
-            <div class="invalid-feedback">
-                Please select your gender!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="hiringDate" class="col-md-4 col-lg-3 col-form-label">Hiring Date</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="HiringDate" type="date" class="form-control" id="hiringDate" required>
-            </div>
-            <div class="invalid-feedback">
-                Please enter your hiring date!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="Email" type="email" class="form-control" id="email" required>
-            </div>
-            <div class="invalid-feedback">
-                Please enter a valid Email adddress!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="phoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="PhoneNumber" type="text" class="form-control" id="phoneNumber" required>
-            </div>
-            <div class="invalid-feedback">
-                Please enter your phone number!
-            </div>
-        </div>
-        <div class="row mb-3" hidden>
-            <label for="status" class="col-md-4 col-lg-3 col-form-label">Status</label>
-            <div class="col-md-8 col-lg-9">
-                <select asp-for="Status" class="form-control" id="status" required>
-                    <option selected disabled value="">Choose...</option>
-                    <option value="1">Working</option>
-                    <option value="0">Idle</option>
-                </select>
-            </div>
-            <div class="invalid-feedback">
-                Please select your status!
-            </div>
-        </div>
-        <div class="row mb-3" hidden>
-            <label for="guid" class="col-md-4 col-lg-3 col-form-label">Guid</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="EmployeeGuid" type="text" class="form-control" id="guid" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="row mb-3" hidden>
-            <label for="nik" class="col-md-4 col-lg-3 col-form-label">Nik</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="Nik" type="text" class="form-control" id="nik" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="row mb-3" hidden>
-            <label for="gradeGuid" class="col-md-4 col-lg-3 col-form-label">Grade</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="GradeGuid" type="text" class="form-control" id="nik" required>
-
-            </div>
-            <div class="invalid-feedback">
-                Please select a valid Grade.
-            </div>
-        </div>
-        <div class="row mb-3" hidden>
-            <label for="profileGuid" class="col-md-4 col-lg-3 col-form-label">Profile</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="ProfileGuidInEmployee" type="text" class="form-control" id="nik" required>
-
-            </div>
-            <div class="invalid-feedback">
-                Please select a valid Profile.
-            </div>
-        </div>
-        <div class="col-md-8" hidden>
-            <label for="validationCustom01" class="form-label">Guid</label>
-            <input asp-for="ProfileGuid" type="text" class="form-control" id="validationCustom01" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="skill" class="col-md-4 col-lg-3 col-form-label">Skills</label>
-            <div class="col-md-8 col-lg-9">
-                <input asp-for="Skills" type="text" class="form-control" id="skill" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please enter your skills!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin</label>
-            <div class="col-md-8 col-lg-9">
-                <input text="url" asp-for="Linkedin" class="form-control" id="linkedin" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please enter your Linkedin Link!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="resume" class="col-md-4 col-lg-3 col-form-label">Resume</label>
-            <div class="col-md-8 col-lg-9">
-                <input type="url" asp-for="Resume" class="form-control" id="resume" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please enter your resume link!
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="photo" class="col-md-4 col-lg-3 col-form-label">Photo Profile</label>
-            <div class="col-md-8 col-lg-9">
-                <input type="file" asp-for="PhotoProfile" class="form-control" id="photo" required>
-            </div>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please enter your photo profile link!
-            </div>
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary" type="submit">Submit form</button>
-        </div>
-    </form>
-</div>
-
-</div>
-
-<!-- End Bordered Tabs -->
-
-</div>
-</div>
-
-</div>
-</div>
-</section>
+    </section>
 
 </main>
 
