@@ -151,11 +151,10 @@ public class ProfileController : Controller
         var employeeDtoGet = new EmployeeDtoGet();
 
         if (employee.Data is not null) employeeDtoGet = employee.Data;
-   
+
 
         ViewData["isNotCollapsed"] = isNotCollapsed;
-        ViewData["Employee"] = employeeDtoGet;
-        
+
         var employeeProfileDtoGet = new EmployeeProfileDtoGet
         {
             EmployeeGuid = employeeDtoGet.Guid,
@@ -227,9 +226,9 @@ public class ProfileController : Controller
         var uploadResult = _cloudinary.Upload(uploadParams);
 
         var photoProfile = uploadResult.Url.ToString();
-        
+
         profileDtoGet.PhotoProfile = photoProfile;
-        
+
         var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
         var employee = await _employeeRepository.Put(employeeDtoGet.Guid, employeeDtoGet);
 
