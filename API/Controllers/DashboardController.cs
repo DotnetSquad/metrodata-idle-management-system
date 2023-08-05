@@ -64,4 +64,52 @@ public class DashboardController : ControllerBase
             Data = status
         });
     }
+
+    [HttpGet("GetProjectStatus")]
+    public IActionResult GetProjectStatus()
+    {
+        var status = _dashboardService.GetProjectStatus();
+        if (status is null)
+        {
+            return NotFound(new ResponseHandler<DashboardDtoGetInterviewStatus>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No project status found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<DashboardDtoGetInterviewStatus>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Project status found",
+            Data = status
+        });
+    }
+
+    [HttpGet("GetTop5Client")]
+    public IActionResult GetTop5Client()
+    {
+        var clients = _dashboardService.GetTop5Client();
+        if (!clients.Any())
+        {
+            return NotFound(new ResponseHandler<DashboardDtoGetClient>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No client found",
+                Data = null
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<DashboardDtoGetClient>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Clients found",
+            Data = clients
+        });
+    }
 }
