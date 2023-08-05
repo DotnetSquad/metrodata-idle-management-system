@@ -116,6 +116,7 @@ public class EmployeeJobService
     {
         var employeeJob = _employeeJobRepository.GetByGuid(guid);
         if (employeeJob is null) return -1;
+        var employee = _employeeRepository.GetByGuid(employeeJob.EmployeeGuid);
 
         var employeeJobDeleted = _employeeJobRepository.Delete(employeeJob);
 
@@ -128,6 +129,8 @@ public class EmployeeJobService
 
         if (employeeJobDeleted)
         {
+            employee.Status = StatusEnum.Idle;
+            var employeeUpdated = _employeeRepository.Update(employee);
             _interviewRepository.Delete(interview);
             if (placementDtoGets != null)
             {
