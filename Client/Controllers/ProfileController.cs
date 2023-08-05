@@ -193,6 +193,8 @@ public class ProfileController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateEmployeeProfile(EmployeeProfileDtoGet employeeProfileDtoGet)
     {
+        var profile = await _profileRepository.Get(employeeProfileDtoGet.ProfileGuid);
+
         var profileDtoGet = new ProfileDtoGet
         {
             Guid = employeeProfileDtoGet.ProfileGuid,
@@ -218,21 +220,31 @@ public class ProfileController : Controller
         };
 
         // get photo profile file and upload to cloudinary
-        var file = HttpContext.Request.Form.Files[0];
-        var uploadParams = new ImageUploadParams()
-        {
-            File = new FileDescription(file.FileName, file.OpenReadStream())
-        };
-        var uploadResult = _cloudinary.Upload(uploadParams);
+        // if photo profile file is null, then use default photo profile
+        string photoProfile = "";
 
-        var photoProfile = uploadResult.Url.ToString();
+        if (HttpContext.Request.Form.Files.Count != 0)
+        {
+            var file = HttpContext.Request.Form.Files[0];
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(file.FileName, file.OpenReadStream())
+            };
+            var uploadResult = _cloudinary.Upload(uploadParams);
+
+            photoProfile = uploadResult.Url.ToString();
+        }
+        else
+        {
+            photoProfile = profile.Data!.PhotoProfile;
+        }       
 
         profileDtoGet.PhotoProfile = photoProfile;
 
-        var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
-        var employee = await _employeeRepository.Put(employeeDtoGet.Guid, employeeDtoGet);
+        var profileUpdated = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
+        var employeeUpdated = await _employeeRepository.Put(employeeDtoGet.Guid, employeeDtoGet);
 
-        switch (profile.Code)
+        switch (profileUpdated.Code)
         {
             case 200:
                 TempData["Success"] = profile.Message;
