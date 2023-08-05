@@ -136,6 +136,7 @@ public class AccountService
             var claims = new List<Claim>()
             {
                 new Claim("Guid", employee.Guid.ToString()),
+                new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
                 new Claim("GradeGuid", employee.GradeGuid.ToString() ?? Guid.Empty.ToString()),
                 new Claim("ProfileGuid", employee.ProfileGuid.ToString() ?? Guid.Empty.ToString()),
             };

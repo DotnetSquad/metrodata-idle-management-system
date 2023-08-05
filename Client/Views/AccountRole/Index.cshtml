@@ -45,6 +45,9 @@
                                     @Html.DisplayName("No")
                                 </th>
                                 <th scope="col">
+                                    @Html.DisplayName("NIK")
+                                </th>
+                                <th scope="col">
                                     @Html.DisplayName("Name")
                                 </th>
                                 <th scope="col">
@@ -63,7 +66,13 @@
                                         @i
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                        @Html.DisplayFor(modelItem => item.Nik)
+                                    </td>
+                                    <td>
+                                        @{
+                                            var fullName = $"{item.FirstName} {item.LastName}";
+                                        }
+                                        @fullName
                                     </td>
                                     <td>
                                         @{
