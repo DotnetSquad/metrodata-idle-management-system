@@ -4,7 +4,6 @@
 @{
     Layout = "_LayoutDashboard";
     var employee = ViewData["Employee"] as Client.DataTransferObjects.Employees.EmployeeDtoGet;
-    var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
     var emailAddress = User.Claims.FirstOrDefault(x => x.Type == "EmailAddress")?.Value;
 }
 
@@ -30,8 +29,8 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>@fullName</h2>
+                        <img src="~/NiceAdmin/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <h2>@employee.FirstName @employee.LastName</h2>
                         <h3>Web Designer</h3>
                         <div class="social-links mt-2">
                             <a href="#" class="twitter">
@@ -91,7 +90,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">@fullName</div>
+                                    <div class="col-lg-9 col-md-8">@employee.FirstName @employee.LastName</div>
                                 </div>
 
                                 <div class="row">
