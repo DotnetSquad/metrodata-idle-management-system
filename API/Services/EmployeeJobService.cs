@@ -1,6 +1,5 @@
 using API.Contracts;
 using API.DataTransferObjects.EmployeeJobs;
-using API.DataTransferObjects.EmployeeProjects;
 using API.DataTransferObjects.Placements;
 using API.Utilities.Enums;
 
@@ -12,13 +11,15 @@ public class EmployeeJobService
     private readonly IEmployeeJobRepository _employeeJobRepository;
     private readonly IPlacementRepository _placementRepository;
     private readonly IJobRepository _jobRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public EmployeeJobService(ICompanyRepository companyRepository, IEmployeeJobRepository employeeJobRepository, IPlacementRepository placementRepository, IJobRepository jobRepository)
+    public EmployeeJobService(ICompanyRepository companyRepository, IEmployeeJobRepository employeeJobRepository, IPlacementRepository placementRepository, IJobRepository jobRepository, IEmployeeRepository employeeRepository)
     {
         _companyRepository = companyRepository;
         _employeeJobRepository = employeeJobRepository;
         _placementRepository = placementRepository;
         _jobRepository = jobRepository;
+        _employeeRepository = employeeRepository;
     }
 
     public IEnumerable<EmployeeJobDtoGet> Get()
@@ -57,12 +58,15 @@ public class EmployeeJobService
         if (employeeJob is null) return -1;
 
         var employeeJobUpdated = _employeeJobRepository.Update(employeeJobDtoUpdate);
+        var employee = _employeeRepository.GetByGuid(employeeJobDtoUpdate.EmployeeGuid);
         var job = _jobRepository.GetByGuid(employeeJobDtoUpdate.JobGuid);
         var company = _companyRepository.GetByGuid(job.CompanyGuid);
         if (employeeJobUpdated)
         {
             if (employeeJobDtoUpdate.StatusApproval == StatusApprovalEnum.Accepted)
             {
+                employee.Status = StatusEnum.Working;
+                _employeeRepository.Update(employee);
                 var placementDtoCreate = new PlacementDtoCreate
                 {
                     Title = $"{job.JobName} at {company.CompanyName}",
@@ -72,15 +76,17 @@ public class EmployeeJobService
                 };
                 var placementCreated = _placementRepository.Create(placementDtoCreate);
             }
-            
+
             if (employeeJobDtoUpdate.StatusApproval == StatusApprovalEnum.Rejected)
             {
+                employee.Status = StatusEnum.Idle;
+                _employeeRepository.Update(employee);
                 var placement = _placementRepository.GetByEmployeeGuid(employeeJobDtoUpdate.EmployeeGuid);
-                var placemrntDtoGets = (List<PlacementDtoGet>)placement;
-                foreach (var placementDtoGet in placemrntDtoGets)
+                var placementDtoGets = placement;
+
+                if (placementDtoGets != null)
                 {
-                    if (placementDtoGet.EmployeeGuid == employeeJobDtoUpdate.EmployeeGuid && placementDtoGet.CompanyGuid == company.Guid) _placementRepository.Delete(placementDtoGet);
-                    
+                    if (placementDtoGets.EmployeeGuid == employeeJobDtoUpdate.EmployeeGuid && placementDtoGets.CompanyGuid == company.Guid) _placementRepository.Delete(placementDtoGets);
                 }
             }
         }
@@ -93,29 +99,29 @@ public class EmployeeJobService
         if (employeeJob is null) return -1;
 
         var employeeJobDeleted = _employeeJobRepository.Delete(employeeJob);
-        
+
         var placement = _placementRepository.GetByEmployeeGuid(employeeJob.EmployeeGuid);
-        var placementDtoGets = (List<PlacementDtoGet>)placement;
-        
+        var placementDtoGets = placement;
+
         var job = _jobRepository.GetByGuid(employeeJob.JobGuid);
         var company = _companyRepository.GetByGuid(job.CompanyGuid);
 
         if (employeeJobDeleted)
         {
-            foreach (var placementDtoGet in placementDtoGets)
+            if (placementDtoGets != null)
             {
-                if (placementDtoGet.EmployeeGuid == employeeJob.EmployeeGuid && placementDtoGet.CompanyGuid == company.Guid) _placementRepository.Delete(placementDtoGet);
-                    
+                if (placementDtoGets.EmployeeGuid == employeeJob.EmployeeGuid && placementDtoGets.CompanyGuid == company.Guid)
+                    _placementRepository.Delete(placementDtoGets);
             }
         }
         return !employeeJobDeleted ? 0 : 1;
     }
-    
+
     public IEnumerable<EmployeeJobDtoGet> GetByJob(Guid jobGuid)
     {
         var allJobs = _employeeJobRepository.GetAll();
         var employeeJobs = allJobs.Where(employeeJob => employeeJob.JobGuid == jobGuid);
-        
+
         List<EmployeeJobDtoGet> employeeJobDtoGets = new();
 
         foreach (var employeeJob in employeeJobs)

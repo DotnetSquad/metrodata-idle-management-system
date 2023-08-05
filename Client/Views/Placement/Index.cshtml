@@ -1,5 +1,6 @@
 @using Client.DataTransferObjects.Companies;
 @using Client.DataTransferObjects.Employees;
+@using Client.Utilities.Enums;
 @model IEnumerable<Client.DataTransferObjects.Placements.PlacementDtoGet>
 
 @{
@@ -30,11 +31,14 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Placement Listings</h5>
-                        <a href="/placement/create">
-                            <button class="btn btn-primary" style="margin-bottom: 15px">
-                                <i class="bi bi-plus-square"></i> Create
-                            </button>
-                        </a>
+                        @if (User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                        {
+                            <a href="/placement/create">
+                                <button class="btn btn-primary" style="margin-bottom: 15px">
+                                    <i class="bi bi-plus-square"></i> Create
+                                </button>
+                            </a>
+                        }
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
@@ -54,9 +58,12 @@
                                     <th scope="col">
                                         @Html.DisplayName("Company")
                                     </th>
-                                    <th scope="col">
-                                        @Html.DisplayName("Action")
-                                    </th>
+                                    @if (User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                    {
+                                        <th scope="col">
+                                            @Html.DisplayName("Action")
+                                        </th>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,20 +108,23 @@
                                                 }
                                             }
                                         </td>
-                                        <td>
-                                            <form action="/placement/update" method="get">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                    <i class="ri-edit-box-fill"></i>
-                                                </button>
-                                            </form>
-                                            <form action="/placement/delete" method="post">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+                                        @if (User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                        {
+                                            <td>
+                                                <form action="/placement/update" method="get">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                        <i class="ri-edit-box-fill"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="/placement/delete" method="post">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        }
                                     </tr>
                                     i++;
                                 }
