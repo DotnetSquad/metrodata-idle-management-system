@@ -4,6 +4,7 @@ namespace API.DataTransferObjects.Profiles;
 
 public class ProfileDtoCreate
 {
+    public string PhotoProfile { get; set; }
     public string Skills { get; set; }
     public string Linkedin { get; set; }
     public string Resume { get; set; }
@@ -14,6 +15,7 @@ public class ProfileDtoCreate
         return new Profile
         {
             Skills = profileDtoCreate.Skills,
+            PhotoProfile = profileDtoCreate.PhotoProfile,
             Linkedin = profileDtoCreate.Linkedin,
             Resume = profileDtoCreate.Resume,
             CreatedDate = DateTime.UtcNow
@@ -26,6 +28,7 @@ public class ProfileDtoCreate
         return new ProfileDtoCreate
         {
             Skills = profile.Skills,
+            PhotoProfile = profile.PhotoProfile,
             Linkedin = profile.Linkedin,
             Resume = profile.Resume
         };

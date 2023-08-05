@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230805101211_add-coloumn-photo-profile")]
+    partial class addcoloumnphotoprofile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("gender");
 
-                    b.Property<Guid>("GradeGuid")
+                    b.Property<Guid?>("GradeGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("grade_guid");
 
@@ -184,7 +186,7 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("phone_number");
 
-                    b.Property<Guid>("ProfileGuid")
+                    b.Property<Guid?>("ProfileGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("profile_guid");
 
@@ -195,10 +197,12 @@ namespace API.Migrations
                     b.HasKey("Guid");
 
                     b.HasIndex("GradeGuid")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[grade_guid] IS NOT NULL");
 
                     b.HasIndex("ProfileGuid")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[profile_guid] IS NOT NULL");
 
                     b.HasIndex("Nik", "Email", "PhoneNumber")
                         .IsUnique();
@@ -581,15 +585,11 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Grade", "Grade")
                         .WithOne("Employee")
-                        .HasForeignKey("API.Models.Employee", "GradeGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("API.Models.Employee", "GradeGuid");
 
                     b.HasOne("API.Models.Profile", "Profile")
                         .WithOne("Employee")
-                        .HasForeignKey("API.Models.Employee", "ProfileGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("API.Models.Employee", "ProfileGuid");
 
                     b.Navigation("Grade");
 
