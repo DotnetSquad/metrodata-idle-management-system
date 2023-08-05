@@ -3,12 +3,11 @@
 public class ResponseHandler<TEntity>
 {
     public int Code { get; set; }
-    public string StatusAPI { get; set; }
+    public string Status { get; set; }
     public string Message { get; set; }
     public TEntity? Data { get; set; }
     public string Type { get; set; }
     public string Title { get; set; }
-    public int Status { get; set; }
     public string TraceId { get; set; }
     public Errors Errors { get; set; }
 }

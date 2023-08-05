@@ -5,6 +5,9 @@ namespace API.Models;
 [Table("tb_m_profiles")]
 public class Profile : BaseEntity
 {
+    [Column("photo_profile", TypeName = "nvarchar(255)")]
+    public string PhotoProfile { get; set; }
+    
     [Column("skills", TypeName = "nvarchar(255)")]
     public string Skills { get; set; }
 

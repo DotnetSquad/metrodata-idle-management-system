@@ -34,10 +34,10 @@ public class Employee : BaseEntity
     public string PhoneNumber { get; set; }
 
     [Column("grade_guid")]
-    public Guid? GradeGuid { get; set; }
+    public Guid GradeGuid { get; set; }
 
     [Column("profile_guid")]
-    public Guid? ProfileGuid { get; set; }
+    public Guid ProfileGuid { get; set; }
 
     // Cardinality
     public Account? Account { get; set; }

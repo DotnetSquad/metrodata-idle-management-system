@@ -124,6 +124,7 @@ public class AccountService
     {
         var employee = _employeeRepository.GetByEmail(accountDtoLogin.Email);
         if (employee is null) return "0";
+        var profile = _profileRepository.GetByGuid(employee.ProfileGuid);
 
         var account = _accountRepository.GetByGuid(employee.Guid);
         if (account is null) return "0";
@@ -137,6 +138,7 @@ public class AccountService
             {
                 new Claim("Guid", employee.Guid.ToString()),
                 new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
+                new Claim("PhotoProfile", profile.PhotoProfile),
                 new Claim("GradeGuid", employee.GradeGuid.ToString() ?? Guid.Empty.ToString()),
                 new Claim("ProfileGuid", employee.ProfileGuid.ToString() ?? Guid.Empty.ToString()),
             };

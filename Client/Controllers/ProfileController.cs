@@ -2,6 +2,8 @@
 using Client.DataTransferObjects.Employees;
 using Client.DataTransferObjects.Profiles;
 using Client.Utilities.Enums;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +14,13 @@ public class ProfileController : Controller
     public string isNotCollapsed = "ProfileController";
     private readonly IProfileRepository _profileRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly Cloudinary _cloudinary;
 
-    public ProfileController(IProfileRepository profileRepository, IEmployeeRepository employeeRepository)
+    public ProfileController(IProfileRepository profileRepository, IEmployeeRepository employeeRepository, Cloudinary cloudinary)
     {
         _profileRepository = profileRepository;
         _employeeRepository = employeeRepository;
+        _cloudinary = cloudinary;
     }
 
     [Authorize(Roles =
@@ -167,6 +171,7 @@ public class ProfileController : Controller
             GradeGuid = employeeDtoGet.GradeGuid,
             ProfileGuidInEmployee = employeeDtoGet.ProfileGuid,
             ProfileGuid = profileDtoGet.Guid,
+            PhotoProfile = profileDtoGet.PhotoProfile,
             Skills = profileDtoGet.Skills,
             Linkedin = profileDtoGet.Linkedin,
             Resume = profileDtoGet.Resume
@@ -175,10 +180,6 @@ public class ProfileController : Controller
         switch (profile.Code)
         {
             case 200:
-                profileDtoGet.Guid = profile.Data!.Guid;
-                profileDtoGet.Skills = profile.Data!.Skills;
-                profileDtoGet.Linkedin = profile.Data!.Linkedin;
-                profileDtoGet.Resume = profile.Data!.Resume;
                 return View(employeeProfileDtoGet);
             case 400:
                 TempData["Error"] = profile.Message;
@@ -216,6 +217,18 @@ public class ProfileController : Controller
             GradeGuid = employeeProfileDtoGet.GradeGuid,
             ProfileGuid = employeeProfileDtoGet.ProfileGuidInEmployee
         };
+
+        // get photo profile file and upload to cloudinary
+        var file = HttpContext.Request.Form.Files[0];
+        var uploadParams = new ImageUploadParams()
+        {
+            File = new FileDescription(file.FileName, file.OpenReadStream())
+        };
+        var uploadResult = _cloudinary.Upload(uploadParams);
+
+        var photoProfile = uploadResult.Url.ToString();
+        
+        profileDtoGet.PhotoProfile = photoProfile;
         
         var profile = await _profileRepository.Put(profileDtoGet.Guid, profileDtoGet);
         var employee = await _employeeRepository.Put(employeeDtoGet.Guid, employeeDtoGet);

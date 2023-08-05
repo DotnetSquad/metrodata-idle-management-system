@@ -13,8 +13,8 @@ public class EmployeeDtoCreate
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public StatusEnum Status { get; set; }
-    public Guid? GradeGuid { get; set; }
-    public Guid? ProfileGuid { get; set; }
+    public Guid GradeGuid { get; set; }
+    public Guid ProfileGuid { get; set; }
 
     // implicit operator
     public static implicit operator Employee(EmployeeDtoCreate employeeDtoCreate)
