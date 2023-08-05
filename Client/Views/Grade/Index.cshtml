@@ -3,7 +3,7 @@
 @model IEnumerable<Client.DataTransferObjects.Grades.GradeDtoGet>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Grade";
     Layout = "_LayoutDashboard";
 }
 
@@ -42,92 +42,107 @@
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <caption>List of roles</caption>
                             <thead>
-                                <tr>
-                                    <th scope="col">
-                                        @Html.DisplayName("No")
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayName("Employee Name")
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.ScoreSegment1)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.ScoreSegment2)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.ScoreSegment3)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.ScoreSegment4)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.TotalScore)
-                                    </th>
-                                    <th scope="col">
-                                        @Html.DisplayNameFor(model => model.GradeLevel)
-                                    </th>
+                            <tr>
+                                <th scope="col">
+                                    @Html.DisplayName("No")
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayName("Employee Name")
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.ScoreSegment1)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.ScoreSegment2)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.ScoreSegment3)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.ScoreSegment4)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TotalScore)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.GradeLevel)
+                                </th>
+                                @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                {
                                     <th scope="col">
                                         @Html.DisplayName("Action")
                                     </th>
-                                </tr>
+                                }
+                            </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    var i = 1;
-                                }
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @i
-                                        </td>
-                                        <td>
-                                            @{
-                                                foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                            @{
+                                var i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @{
+                                            foreach (var employee in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
+                                            {
+                                                var fullName = $"{employee.FirstName} {employee.LastName}";
+                                                if (item.Guid == employee.GradeGuid)
                                                 {
-                                                    var fullName = $"{employee.FirstName} {employee.LastName}";
-                                                    if (item.Guid == employee.GradeGuid)
-                                                    {
-                                                        @Html.DisplayFor(x => fullName)
-                                                    }
+                                                    @Html.DisplayFor(x => fullName)
                                                 }
                                             }
-                                        </td>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScoreSegment1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScoreSegment2)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScoreSegment3)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScoreSegment4)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalScore)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.GradeLevel)
+                                    </td>
+                                    @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                    {
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ScoreSegment1)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ScoreSegment2)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ScoreSegment3)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ScoreSegment4)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TotalScore)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.GradeLevel)
-                                        </td>
-                                        <td>
-                                            <form action="/grade/update" method="get">
-                                                <input type="hidden" value="@item.Guid" name="guid" />
-                                                <button type="submit" class="btn btn-primary" style="margin: 2px"><i class="ri-edit-box-fill"></i></button>
-                                            </form>
+                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                            {
+                                                <form action="/grade/update" method="get">
+                                                    <input type="hidden" value="@item.Guid" name="guid"/>
+                                                    <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                        <i class="ri-edit-box-fill"></i>
+                                                    </button>
+                                                </form>
+                                            }
+
                                             @if (User.IsInRole(RoleLevelEnum.Admin.ToString()))
                                             {
                                                 <form action="/grade/delete" method="post">
-                                                    <input type="hidden" value="@item.Guid" name="guid" />
-                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px"><i class="bi bi-trash"></i></button>
+                                                    <input type="hidden" value="@item.Guid" name="guid"/>
+                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
                                                 </form>
                                             }
                                         </td>
-                                    </tr>
-                                    i++;
-                                }
+                                    }
+                                </tr>
+                                i++;
+                            }
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
