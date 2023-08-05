@@ -9,9 +9,9 @@ public class PlacementRepository : BaseRepository<Placement>, IPlacementReposito
     public PlacementRepository(ApplicationDbContext context) : base(context)
     {
     }
-    
-    public IEnumerable<Placement> GetByEmployeeGuid(Guid guid)
+
+    public Placement GetByEmployeeGuid(Guid guid)
     {
-        return Context.Placements.Where(placement => placement.EmployeeGuid == guid);
+        return Context.Set<Placement>().FirstOrDefault(p => p.EmployeeGuid == guid);
     }
 }
