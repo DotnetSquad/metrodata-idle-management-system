@@ -30,7 +30,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Interview Listings</h5>
-                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()) && !User.IsInRole(RoleLevelEnum.Manager.ToString()))
                         {
                             <a href="/interview/create">
                                 <button class="btn btn-primary" style="margin-bottom: 15px">
@@ -58,7 +58,7 @@
                                     <th scope="col">
                                         @Html.DisplayNameFor(model => model.Description)
                                     </th>
-                                    @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                                    @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()) && !User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                     {
                                         <th scope="col">
                                             @Html.DisplayName("Action")
@@ -95,7 +95,7 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Description)
                                         </td>
-                                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()) && !User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                         {
                                             <td>
                                                 <form action="/interview/update" method="get">

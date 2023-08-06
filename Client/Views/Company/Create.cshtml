@@ -35,6 +35,7 @@
 
                         <!-- Custom Styled Validation -->
                         <form action="/company/create" method="post" class="row g-3 needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
                             <div class="col-md-6">
                                 <label for="validationCustom01" class="form-label">Company Name</label>
                                 <input asp-for="CompanyName" type="text" class="form-control" id="validationCustom01" required>
@@ -47,22 +48,22 @@
                             </div>
                             <div class="col-md-8">
                                 <label for="validationCustom02" class="form-label">Description</label>
-                                <textarea asp-for="Description" class="form-control" id="validationCustom02" required rows="5" cols="10"></textarea>
+                                <textarea asp-for="Description" class="form-control" id="validationCustom02" maxlength="250" required rows="5" cols="10"></textarea>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                                 <div class="invalid-feedback">
-                                    Please enter description!
+                                    Please enter description or your description is more than 250 characters
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <label for="validationCustom03" class="form-label">Address</label>
-                                <textarea asp-for="Address" class="form-control" id="validationCustom03" required rows="5" cols="10"></textarea>
+                                <textarea asp-for="Address" class="form-control" id="validationCustom03" maxlength="250" required rows="5" cols="10"></textarea>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                                 <div class="invalid-feedback">
-                                    Please enter address!
+                                    Please enter address or your address is more than 250 characters
                                 </div>
                             </div>
                             <div class="col-12">

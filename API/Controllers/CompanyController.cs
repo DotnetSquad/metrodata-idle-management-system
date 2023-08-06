@@ -46,7 +46,7 @@ public class CompanyController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.HR)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
