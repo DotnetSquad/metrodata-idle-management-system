@@ -57,8 +57,14 @@
                                     @{
                                         foreach (var item in (IEnumerable<EmployeeDtoGet>)ViewData["Employees"])
                                         {
-                                            <option value="@item.FirstName @item.LastName">@item.FirstName @item.LastName</option>
-                                        }
+                                            if (Model.ProjectLead == $"{item.Nik} - {item.FirstName} {item.LastName}")
+                                            {
+                                                <option value="@item.Nik - @item.FirstName @item.LastName" selected>@item.Nik - @item.FirstName @item.LastName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Nik - @item.FirstName @item.LastName">@item.Nik - @item.FirstName @item.LastName</option>
+                                            }                                        }
                                     }
                                 </select>
                                 <div class="invalid-feedback">

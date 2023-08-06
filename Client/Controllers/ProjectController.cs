@@ -114,21 +114,25 @@ public class ProjectController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(Guid guid)
     {
-        // get employees
-        var employees = await _employeeRepository.Get();
+        var roles = await _roleRepository.Get();
+        var listRoleDtoGets = new List<RoleDtoGet>();
+
+        if (roles.Data is not null) listRoleDtoGets = roles.Data.ToList();
+        var roleDtoGet = new RoleDtoGet();
+
+        foreach (var role in listRoleDtoGets)
+            if (role.Name == RoleLevelEnum.Trainer.ToString())
+                roleDtoGet = role;
+
+        var trainers = await _employeeRepository.GetByRole(roleDtoGet.Guid);
         var listEmployeeDtoGets = new List<EmployeeDtoGet>();
 
-        if (employees.Data != null)
-        {
-            listEmployeeDtoGets = employees.Data.ToList();
-        }
+        if (trainers.Data is not null)
+            listEmployeeDtoGets = trainers.Data.ToList();
 
         if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-        {
             isNotCollapsed = "EmployeeProjectController";
-        }
 
-        // add to view data
         ViewData["isNotCollapsed"] = isNotCollapsed;
         ViewData["Employees"] = listEmployeeDtoGets;
 
