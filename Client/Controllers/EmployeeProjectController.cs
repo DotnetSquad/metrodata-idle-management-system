@@ -147,16 +147,16 @@ public class EmployeeProjectController : Controller
         {
             case 200:
                 TempData["Success"] = employeeProject.Message;
-                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data!.ProjectGuid });
             case 404:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data!.ProjectGuid });
             case 500:
                 TempData["Error"] = employeeProject.Message;
-                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data!.ProjectGuid });
             default:
                 TempData["Error"] = "An error occurred, please try again later.";
-                return RedirectToAction("Index", new { guid = getEmployeeProject.Data.ProjectGuid });
+                return RedirectToAction("Index", new { guid = getEmployeeProject.Data!.ProjectGuid });
         }
     }
 
@@ -165,7 +165,7 @@ public class EmployeeProjectController : Controller
     public async Task<IActionResult> Approve(Guid guid)
     {
         var getEmployeeProject = await _employeeProjectRepository.Get(guid);
-        getEmployeeProject.Data.StatusApproval = StatusApprovalEnum.Accepted;
+        getEmployeeProject.Data!.StatusApproval = StatusApprovalEnum.Accepted;
         var employeeProject = await _employeeProjectRepository.Put(getEmployeeProject.Data.Guid, getEmployeeProject.Data);
 
         switch (employeeProject.Code)
@@ -190,7 +190,7 @@ public class EmployeeProjectController : Controller
     public async Task<IActionResult> Reject(Guid guid)
     {
         var getEmployeeProject = await _employeeProjectRepository.Get(guid);
-        getEmployeeProject.Data.StatusApproval = StatusApprovalEnum.Rejected;
+        getEmployeeProject.Data!.StatusApproval = StatusApprovalEnum.Rejected;
         var employeeProject = await _employeeProjectRepository.Put(getEmployeeProject.Data.Guid, getEmployeeProject.Data);
 
         switch (employeeProject.Code)
