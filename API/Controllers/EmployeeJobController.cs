@@ -98,7 +98,7 @@ public class EmployeeJobController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)},")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.HR)}")]
     [HttpPut]
     public IActionResult Update(EmployeeJobDtoUpdate employeeJobDtoUpdate)
     {
