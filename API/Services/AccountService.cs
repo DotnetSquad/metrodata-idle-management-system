@@ -213,6 +213,7 @@ public class AccountService
             var profile = new Profile
             {
                 Guid = Guid.NewGuid(),
+                PhotoProfile = "",
                 Skills = "",
                 Linkedin = "",
                 Resume = "",

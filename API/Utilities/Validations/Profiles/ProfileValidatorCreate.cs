@@ -7,6 +7,9 @@ public class ProfileValidatorCreate : AbstractValidator<ProfileDtoCreate>
 {
     public ProfileValidatorCreate()
     {
+        RuleFor(x => x.PhotoProfile)
+            .NotEmpty();
+        
         RuleFor(x => x.Skills)
             .NotEmpty();
 
