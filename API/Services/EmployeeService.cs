@@ -94,11 +94,34 @@ public class EmployeeService
         employee.ProfileGuid = profileCreated.Guid;
 
         var employeeCreated = _employeeRepository.Create(employee);
+
+        var randomPassword = GenerateHandler.GenerateRandomString(10);
+        var account = new Account
+        {
+            Guid = employee.Guid,
+            Password = HashingHandler.HashPassword(randomPassword),
+            IsDeleted = false,
+            IsUsed = false,
+            Otp = 0,
+            CreatedDate = DateTime.Now,
+            ModifiedDate = DateTime.Now,
+            ExpiredTime = DateTime.Now.AddMinutes(10)
+        };
+        var accountCreated = _accountRepository.Create(account);
+
+        var roleEmployee = _roleRepository.GetByName("Employee");
+        var accountRoleCreated = _accountRoleRepository.Create(new AccountRole
+        {
+            AccountGuid = account.Guid,
+            RoleGuid = roleEmployee.Guid
+        });
         if (employeeCreated is null)
         {
             // delete when employee is null
             _gradeRepository.Delete(gradeCreated);
             _profileRepository.Delete(profileCreated);
+            _accountRepository.Delete(accountCreated);
+            _accountRoleRepository.Delete(accountRoleCreated);
             return null!;
         }
 

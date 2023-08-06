@@ -27,4 +27,13 @@ public class GenerateHandler
         var grade = GenerateTotalScore(scoreSegment1, scoreSegment2, scoreSegment3, scoreSegment4);
         return grade < 80 ? GradeEnum.B : GradeEnum.A;
     }
+
+    private static Random random = new Random();
+
+    public static string GenerateRandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
 }
