@@ -1,4 +1,5 @@
 @using Client.DataTransferObjects.Jobs
+@using Client.Utilities.Enums;
 @model IEnumerable<Client.DataTransferObjects.Interviews.InterviewDtoGet>
 
 @{
@@ -29,81 +30,91 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Interview Listings</h5>
-                        <a href="/interview/create">
-                            <button class="btn btn-primary" style="margin-bottom: 15px">
-                                <i class="bi bi-plus-square"></i> Create
-                            </button>
-                        </a>
+                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                        {
+                            <a href="/interview/create">
+                                <button class="btn btn-primary" style="margin-bottom: 15px">
+                                    <i class="bi bi-plus-square"></i> Create
+                                </button>
+                            </a>
+                        }
+
                         <!-- Table with stripped rows -->
                         <table id="data-table" class="table table-striped" style="width:100%">
                             <thead>
-                            <tr>
-                                <th scope="col">
-                                    @Html.DisplayName("No")
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Title)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Link)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.InterviewDate)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayName("Action")
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">
+                                        @Html.DisplayName("No")
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.Title)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.Link)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.InterviewDate)
+                                    </th>
+                                    <th scope="col">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                                    {
+                                        <th scope="col">
+                                            @Html.DisplayName("Action")
+                                        </th>
+                                    }
+                                </tr>
                             </thead>
                             <tbody>
-                            @{
-                                var i = 1;
-                            }
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    @{
-                                        var culture = new System.Globalization.CultureInfo("id-ID");
-                                    }
-                                    <td>
-                                        @i
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Title)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Link)
-                                    </td>
-                                    <td>
-
+                                @{
+                                    var i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
                                         @{
-                                            var interviewDate = item.InterviewDate.ToString("dd MMMM yyyy", culture);
+                                            var culture = new System.Globalization.CultureInfo("id-ID");
                                         }
-                                        @Html.DisplayFor(modelItem => interviewDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        <form action="/interview/update" method="get">
-                                            <input type="hidden" value="@item.Guid" name="guid"/>
-                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                <i class="ri-edit-box-fill"></i>
-                                            </button>
-                                        </form>
-                                        <form action="/interview/delete" method="post">
-                                            <input type="hidden" value="@item.Guid" name="guid"/>
-                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                i++;
-                            }
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Link)
+                                        </td>
+                                        <td>
+
+                                            @{
+                                                var interviewDate = item.InterviewDate.ToString("dd MMMM yyyy", culture);
+                                            }
+                                            @Html.DisplayFor(modelItem => interviewDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        @if (!User.IsInRole(RoleLevelEnum.Employee.ToString()))
+                                        {
+                                            <td>
+                                                <form action="/interview/update" method="get">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                        <i class="ri-edit-box-fill"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="/interview/delete" method="post">
+                                                    <input type="hidden" value="@item.Guid" name="guid" />
+                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        }
+                                    </tr>
+                                    i++;
+                                }
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

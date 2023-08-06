@@ -268,7 +268,7 @@
                 </li> <!-- End Company Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Employee.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -296,7 +296,7 @@
                 </li> <!-- End Employee Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Employee.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -310,7 +310,7 @@
                 </li> <!-- End Interview Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Employee.ToString()))
             {
                 <li class="nav-item">
                     @{
@@ -380,7 +380,7 @@
                 </li> <!-- End Role Page Nav -->
             }
 
-            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) )
             {
                 <li class="nav-item">
                     @{
