@@ -21,7 +21,7 @@ public class PlacementController : ControllerBase
     }
 
     [Authorize(Roles =
-        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}")]
+        $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Employee)}")]
     [HttpGet]
     public IActionResult Get()
     {

@@ -54,9 +54,12 @@
                                     <th scope="col">
                                         @Html.DisplayName("Company")
                                     </th>
-                                    <th scope="col">
-                                        @Html.DisplayName("Action")
-                                    </th>
+                                    @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                    {
+                                        <th scope="col">
+                                            @Html.DisplayName("Action")
+                                        </th>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,31 +92,34 @@
                                                 }
                                             }
                                         </td>
-                                        <td>
-                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                            {
-                                                <form action="~/employeeJob/index" method="get">
-                                                    <input type="hidden" name="guid" value="@item.Guid" />
-                                                    <button type="submit" class="btn btn-success" style="margin: 2px">
-                                                        <i class="bi bi-clipboard-check"></i>
-                                                    </button>
-                                                </form>
-                                            }
-                                            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
-                                            {
-                                                <form action="/job/update" method="get">
-                                                    <input type="hidden" value="@item.Guid" name="guid" />
-                                                    <button type="submit" class="btn btn-primary" style="margin: 2px"><i class="ri-edit-box-fill"></i></button>
-                                                </form>
-                                            }
-                                            @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
-                                            {
-                                                <form action="/job/delete" method="post">
-                                                    <input type="hidden" value="@item.Guid" name="guid" />
-                                                    <button type="submit" class="btn btn-danger delete-button" style="margin: 2px"><i class="bi bi-trash"></i></button>
-                                                </form>
-                                            }
-                                        </td>
+                                        @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                        {
+                                            <td>
+                                                @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                                {
+                                                    <form action="~/employeeJob/index" method="get">
+                                                        <input type="hidden" name="guid" value="@item.Guid" />
+                                                        <button type="submit" class="btn btn-success" style="margin: 2px">
+                                                            <i class="bi bi-clipboard-check"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                                @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                                {
+                                                    <form action="/job/update" method="get">
+                                                        <input type="hidden" value="@item.Guid" name="guid" />
+                                                        <button type="submit" class="btn btn-primary" style="margin: 2px"><i class="ri-edit-box-fill"></i></button>
+                                                    </form>
+                                                }
+                                                @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()))
+                                                {
+                                                    <form action="/job/delete" method="post">
+                                                        <input type="hidden" value="@item.Guid" name="guid" />
+                                                        <button type="submit" class="btn btn-danger delete-button" style="margin: 2px"><i class="bi bi-trash"></i></button>
+                                                    </form>
+                                                }
+                                            </td>
+                                        }
                                     </tr>
                                     i++;
                                 }
