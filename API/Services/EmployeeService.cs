@@ -82,6 +82,7 @@ public class EmployeeService
         var profile = new Profile
         {
             Guid = Guid.NewGuid(),
+            PhotoProfile = "",
             Skills = "",
             Linkedin = "",
             Resume = "",
