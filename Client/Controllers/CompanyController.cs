@@ -16,7 +16,7 @@ public class CompanyController : Controller
         _companyRepository = companyRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -41,6 +41,7 @@ public class CompanyController : Controller
     }
 
     [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [ValidateAntiForgeryToken]
     [HttpPost]
     public async Task<IActionResult> Create(CompanyDtoGet companyDtoPost)
     {

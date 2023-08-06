@@ -54,7 +54,7 @@
                                     <th scope="col">
                                         @Html.DisplayName("Company")
                                     </th>
-                                    @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                    @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                     {
                                         <th scope="col">
                                             @Html.DisplayName("Action")
@@ -92,10 +92,10 @@
                                                 }
                                             }
                                         </td>
-                                        @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()))
+                                        @if (User.IsInRole(RoleLevelEnum.HR.ToString()) || User.IsInRole(RoleLevelEnum.Admin.ToString()) || User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
                                         {
                                             <td>
-                                                @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                                @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()) || User.IsInRole(RoleLevelEnum.Manager.ToString()) || User.IsInRole(RoleLevelEnum.HR.ToString()))
                                                 {
                                                     <form action="~/employeeJob/index" method="get">
                                                         <input type="hidden" name="guid" value="@item.Guid" />

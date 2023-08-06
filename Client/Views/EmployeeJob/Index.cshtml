@@ -66,9 +66,12 @@
                                     <th scope="col">
                                         @Html.DisplayName("Status")
                                     </th>
-                                    <th scope="col">
-                                        @Html.DisplayName("Action")
-                                    </th>
+                                    @if (!User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                    {
+                                        <th scope="col">
+                                            @Html.DisplayName("Action")
+                                        </th>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,58 +160,61 @@
                                                 }
                                             }
                                         </td>
-                                        <td>
-                                            @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
-                                            {
-                                                foreach (var employeeJob in employeeJobs)
+                                        @if (!User.IsInRole(RoleLevelEnum.Manager.ToString()))
+                                        {
+                                            <td>
+                                                @if (User.IsInRole(RoleLevelEnum.Trainer.ToString()))
                                                 {
-                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    foreach (var employeeJob in employeeJobs)
                                                     {
-                                                        <form action="/employeejob/delete" method="post">
-                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
-                                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                        break;
+                                                        if (employeeJob.EmployeeGuid == item.Guid)
+                                                        {
+                                                            <form action="/employeejob/delete" method="post">
+                                                                <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                                <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                            break;
+                                                        }
                                                     }
                                                 }
-                                            }
 
-                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                            {
-                                                foreach (var employeeJob in employeeJobs)
+                                                @if (User.IsInRole(RoleLevelEnum.HR.ToString()))
                                                 {
-                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    foreach (var employeeJob in employeeJobs)
                                                     {
-                                                        <form action="/employeejob/approve" method="post">
-                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
-                                                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                                                <i class="bi bi-check-square"></i> Approve
-                                                            </button>
-                                                        </form>
-                                                        break;
+                                                        if (employeeJob.EmployeeGuid == item.Guid)
+                                                        {
+                                                            <form action="/employeejob/approve" method="post">
+                                                                <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                                <button type="submit" class="btn btn-primary" style="margin: 2px">
+                                                                    <i class="bi bi-check-square"></i> Approve
+                                                                </button>
+                                                            </form>
+                                                            break;
+                                                        }
                                                     }
                                                 }
-                                            }
 
-                                            @if (User.IsInRole(RoleLevelEnum.Manager.ToString()))
-                                            {
-                                                foreach (var employeeJob in employeeJobs)
+                                                @if (User.IsInRole(RoleLevelEnum.HR.ToString()))
                                                 {
-                                                    if (employeeJob.EmployeeGuid == item.Guid)
+                                                    foreach (var employeeJob in employeeJobs)
                                                     {
-                                                        <form action="/employeejob/reject" method="post">
-                                                            <input type="hidden" value="@employeeJob.Guid" name="guid" />
-                                                            <button type="submit" class="btn btn-danger" style="margin: 2px">
-                                                                <i class="bi bi-x-square"></i> Reject
-                                                            </button>
-                                                        </form>
-                                                        break;
+                                                        if (employeeJob.EmployeeGuid == item.Guid)
+                                                        {
+                                                            <form action="/employeejob/reject" method="post">
+                                                                <input type="hidden" value="@employeeJob.Guid" name="guid" />
+                                                                <button type="submit" class="btn btn-danger" style="margin: 2px">
+                                                                    <i class="bi bi-x-square"></i> Reject
+                                                                </button>
+                                                            </form>
+                                                            break;
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        </td>
+                                            </td>
+                                        }
                                     </tr>
                                     i++;
                                 }

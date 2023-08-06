@@ -47,7 +47,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Employee)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.HR)}")]
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
@@ -73,7 +73,7 @@ public class InterviewController : ControllerBase
         });
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.Trainer)}")]
     [HttpPost]
     public IActionResult Create(InterviewDtoCreate interviewDtoCreate)
     {
@@ -131,7 +131,7 @@ public class InterviewController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Placement updated",
+            Message = "Interview updated",
             Data = interviewDtoUpdate
         });
     }

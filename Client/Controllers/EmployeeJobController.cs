@@ -28,7 +28,7 @@ public class EmployeeJobController : Controller
         _roleRepository = roleRepository;
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.Trainer)}, {nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}, {nameof(RoleLevelEnum.HR)}")]
     [HttpGet]
     public async Task<IActionResult> Index(Guid guid)
     {
@@ -211,7 +211,7 @@ public class EmployeeJobController : Controller
         }
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Approve(Guid guid)
     {
@@ -236,7 +236,7 @@ public class EmployeeJobController : Controller
         }
     }
 
-    [Authorize(Roles = $"{nameof(RoleLevelEnum.Manager)}, {nameof(RoleLevelEnum.Admin)}")]
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Reject(Guid guid)
     {

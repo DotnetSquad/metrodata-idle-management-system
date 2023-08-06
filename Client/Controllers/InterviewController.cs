@@ -53,6 +53,7 @@ public class InterviewController : Controller
         return View();
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Create(InterviewDtoGet interviewDtoGet)
     {
@@ -102,6 +103,7 @@ public class InterviewController : Controller
         return View(interviewDtoGet);
     }
 
+    [Authorize(Roles = $"{nameof(RoleLevelEnum.HR)}, {nameof(RoleLevelEnum.Admin)}")]
     [HttpPost]
     public async Task<IActionResult> Update(InterviewDtoGet interviewDtoGet)
     {
