@@ -32,8 +32,8 @@
                         <h5 class="card-title">Datatables Role</h5>
                         <form action="~/accountrole/create" method="get">
                             <input type="hidden" name="guid" value="@roleGuid"/>
-                            <button type="submit" class="btn btn-primary" style="margin: 2px">
-                                <i class="ri-edit-box-fill"></i> Add
+                            <button type="submit" class="btn btn-primary" style="margin: 2px" data-bs-toggle="tooltip" data-bs-placement="right" title="Create">
+                                <i class="ri-edit-box-fill"></i> Create
                             </button>
                         </form>
                         <!-- Table with stripped rows -->
@@ -87,7 +87,7 @@
                                         }
                                         <form action="/accountrole/delete" method="post">
                                             <input type="hidden" value="@accountRoleGuid" name="guid"/>
-                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px">
+                                            <button type="submit" class="btn btn-danger delete-button" style="margin: 2px" data-bs-toggle="tooltip" data-bs-placement="right" title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
