@@ -15,7 +15,6 @@ public class DashboardService
     private readonly IPlacementRepository _placementRepository;
     private readonly IJobRepository _jobRepository;
 
-
     public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeJobRepository employeeJobRepository, IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository, ICompanyRepository companyRepository, IPlacementRepository placementRepository, IJobRepository jobRepository)
     {
         _employeeRepository = employeeRepository;
@@ -44,6 +43,7 @@ public class DashboardService
 
     public DashboardDtoGetInterviewStatus GetInterviewStatus()
     {
+
         var interviewStatus = (from j in _jobRepository.GetAll()
                                join ej in _employeeJobRepository.GetAll() on j.Guid equals ej.JobGuid
                                join e in _employeeRepository.GetAll() on ej.EmployeeGuid equals e.Guid
@@ -113,20 +113,10 @@ public class DashboardService
     public IEnumerable<DashboardDtoGetClient> GetTop5Client()
     {
         var getClient = _placementRepository.GetAll()
-            .Join(_companyRepository.GetAll(),
-                placement => placement.CompanyGuid,
-                company => company.Guid,
-                (placement, company) => new DashboardDtoGetClient
-                {
-                    CompanyGuid = placement.CompanyGuid,
-                    CompanyName = company.CompanyName
-                })
-            .GroupBy(placement => placement.CompanyGuid)
+            .GroupBy(pl => pl.CompanyGuid)
             .Select(group => new DashboardDtoGetClient
             {
                 CompanyGuid = group.Key,
-                CompanyName =
-                    group.First().CompanyName, // You can take the CompanyName from the first item in the group
                 TotalEmployees = group.Count()
             })
             .OrderByDescending(x => x.TotalEmployees)
