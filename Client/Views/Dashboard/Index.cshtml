@@ -6,219 +6,187 @@
     var statisticEmployee = (DashboardsDtoGetStatus)ViewData["StatisticEmployees"];
     var statisticInterviewStatus = (DashboardDtoGetInterviewStatus)ViewData["StatisticInterviewStatus"];
     var grade = (GradeDtoGet)ViewData["Grade"];
+    var get5TopClient = (List<DashboardDtoGetClient>)ViewData["top5Clients"];
 }
 
 <main id="main" class="main">
 
-<div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
-            </li>
-            <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-    </nav>
-</div><!-- End Page Title -->
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-<section class="section dashboard">
-<div class="row">
+    <section class="section dashboard">
+        <div class="row">
 
-<div class="col-lg-12">
-    <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
 
-        <!-- Sales Card -->
-        <div class="col-3">
-            <div class="card info-card sales-card">
-                <div class="card-body">
-                    <h5 class="card-title">My Grade</h5>
+                    <!-- Sales Card -->
+                    <div class="col-3">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Grade</h5>
 
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-award"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h6>@grade.GradeLevel</h6>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div><!-- End Sales Card -->
-
-        <!-- Sales Card -->
-        <div class="col-3">
-            <div class="card info-card sales-card">
-                <div class="card-body">
-                    <h5 class="card-title">Accepted</h5>
-
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-person-check"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h6>@statisticInterviewStatus.Accepted</h6>
-                            @* <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>@grade.GradeLevel</h6>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                    </div>
-                </div>
+                    </div><!-- End Sales Card -->
 
-            </div>
-        </div><!-- End Sales Card -->
+                    <!-- Sales Card -->
+                    <div class="col-3">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Accepted</h5>
 
-        <!-- Revenue Card -->
-        <div class="col-3">
-            <div class="card info-card revenue-card">
-                <div class="card-body">
-                    <h5 class="card-title">Pending</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-person-check"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>@statisticInterviewStatus.Accepted</h6>
+                                        @* <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
 
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-person-dash"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h6>@statisticInterviewStatus.Pending</h6>
-                            @*<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div><!-- End Revenue Card -->
-
-        <!-- Revenue Card -->
-        <div class="col-3">
-            <div class="card info-card customers-card">
-                <div class="card-body">
-                    <h5 class="card-title">Rejected</h5>
-
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-person-x"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h6>@statisticInterviewStatus.Rejected</h6>
-                            @*<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                    </div>
-                </div>
+                    </div><!-- End Sales Card -->
 
-            </div>
-        </div><!-- End Revenue Card -->
+                    <!-- Revenue Card -->
+                    <div class="col-3">
+                        <div class="card info-card revenue-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Pending</h5>
 
-    </div>
-</div>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-person-dash"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>@statisticInterviewStatus.Pending</h6>
+                                        @*<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
 
-<!-- Left side columns -->
-<div class="col-lg-8">
-    <div class="row">
+                                    </div>
+                                </div>
+                            </div>
 
-        
+                        </div>
+                    </div><!-- End Revenue Card -->
 
-        <!-- Top Client -->
-        <div class="col-12">
-            <div class="card top-selling overflow-auto">
+                    <!-- Revenue Card -->
+                    <div class="col-3">
+                        <div class="card info-card customers-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Rejected</h5>
 
-                <div class="card-body pb-0">
-                    <h5 class="card-title">Top Client </h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-person-x"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>@statisticInterviewStatus.Rejected</h6>
+                                        @*<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>*@
 
-                    <table class="table table-borderless">
-                        <thead>
-                        <tr>
-                            <th scope="col">Preview</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">Employee Total</th>
-                            <th scope="col">%Percentage</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">
-                                <a href="#">
-                                    <img src="~/Arsha/assets/img/clients/bni-logo.png" alt="logo bni" width="100px">
-                                </a>
-                            </th>
-                            <td>
-                                <a href="#" class="text-primary fw-bold">PT. Bank Negara Indonesia Persero Tbk</a>
-                            </td>
-                            <td class="fw-bold">124</td>
-                            <td>20%</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <a href="#">
-                                    <img src="~/Arsha/assets/img/clients/bri-logo.png" alt="logo bri" width="100px">
-                                </a>
-                            </th>
-                            <td>
-                                <a href="#" class="text-primary fw-bold">PT. Bank Rakyat Indonesia Tbk</a>
-                            </td>
-                            <td class="fw-bold">98</td>
-                            <td>15%</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <a href="#">
-                                    <img src="~/Arsha/assets/img/clients/cimb-logo.png" alt="logo cimb" width="100px">
-                                </a>
-                            </th>
-                            <td>
-                                <a href="#" class="text-primary fw-bold">PT. Bank CIMB Niaga Tbk</a>
-                            </td>
-                            <td class="fw-bold">74</td>
-                            <td>11%</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <a href="#">
-                                    <img src="~/Arsha/assets/img/clients/adira-logo.png" alt="logo adira" width="100px">
-                                </a>
-                            </th>
-                            <td>
-                                <a href="#" class="text-primary fw-bold">PT. Adira Dinamika Multi Finance Tbk</a>
-                            </td>
-                            <td class="fw-bold">63</td>
-                            <td>8%</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <a href="#">
-                                    <img src="https://cmsportal.jalin.co.id/uploads/setting/logo-header_(1)101.webp" alt="logo jalin" width="100px">
-                                </a>
-                            </th>
-                            <td>
-                                <a href="#" class="text-primary fw-bold">PT. Jalin Pembayaran Nusantara</a>
-                            </td>
-                            <td class="fw-bold">40</td>
-                            <td>5%</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- End Revenue Card -->
 
                 </div>
-
             </div>
-        </div><!-- End Top Selling -->
 
-    </div>
-</div><!-- End Left side columns -->
+            <!-- Left side columns -->
+            <div class="col-lg-8">
+                <div class="row">
 
-<!-- Right side columns -->
-<div class="col-lg-4">
+                    <!-- Top Client -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Bar CHart</h5>
 
-    <!-- Website Traffic -->
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body pb-0">
-                <h5 class="card-title">Statistic Employees</h5>
+                                <!-- Bar Chart -->
+                                <canvas id="barChart" style="max-height: 400px;"></canvas>
+                                <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                              new Chart(document.querySelector('#barChart'), {
+                                type: 'bar',
+                                data: {
+                                  labels: [ "@get5TopClient[0].CompanyName", "@get5TopClient[1].CompanyName", "@get5TopClient[2].CompanyName", "@get5TopClient[3].CompanyName", "@get5TopClient[4].CompanyName"],
+                                  datasets: [{
+                                    label: 'Top Client',
+                                    data: [ @get5TopClient[0].TotalEmployees, @get5TopClient[1].TotalEmployees, @get5TopClient[2].TotalEmployees, @get5TopClient[3].TotalEmployees, @get5TopClient[4].TotalEmployees],
+                                    backgroundColor: [
+                                      'rgba(255, 99, 132, 0.2)',
+                                      'rgba(255, 159, 64, 0.2)',
+                                      'rgba(255, 205, 86, 0.2)',
+                                      'rgba(75, 192, 192, 0.2)',
+                                      'rgba(54, 162, 235, 0.2)',
+                                      'rgba(153, 102, 255, 0.2)',
+                                      'rgba(201, 203, 207, 0.2)'
+                                    ],
+                                    borderColor: [
+                                      'rgb(255, 99, 132)',
+                                      'rgb(255, 159, 64)',
+                                      'rgb(255, 205, 86)',
+                                      'rgb(75, 192, 192)',
+                                      'rgb(54, 162, 235)',
+                                      'rgb(153, 102, 255)',
+                                      'rgb(201, 203, 207)'
+                                    ],
+                                    borderWidth: 1
+                                  }]
+                                },
+                                options: {
+                                  scales: {
+                                    y: {
+                                      beginAtZero: true
+                                    }
+                                  }
+                                }
+                              });
+                            });
+                          </script>
+                                <!-- End Bar CHart -->
 
-                <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+                            </div>
+                        </div>
+                    </div><!-- End Top Selling -->
 
-                <script>
+                </div>
+            </div><!-- End Left side columns -->
+
+            <!-- Right side columns -->
+            <div class="col-lg-4">
+
+                <!-- Website Traffic -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Statistic Employees</h5>
+
+                            <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                            <script>
                     document.addEventListener("DOMContentLoaded", () => {
                       echarts.init(document.querySelector("#trafficChart")).setOption({
                         tooltip: {
@@ -260,13 +228,13 @@
                       });
                     });
                   </script>
-            </div>
-        </div><!-- End Website Traffic -->
-    </div>
+                        </div>
+                    </div><!-- End Website Traffic -->
+                </div>
 
-</div><!-- End Right side columns -->
+            </div><!-- End Right side columns -->
 
-</div>
-</section>
+        </div>
+    </section>
 
 </main><!-- End #main -->

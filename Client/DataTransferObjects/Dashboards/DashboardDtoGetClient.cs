@@ -1,4 +1,4 @@
-﻿namespace API.DataTransferObjects.Dashboards;
+namespace Client.DataTransferObjects.Dashboards;
 
 public class DashboardDtoGetClient
 {
