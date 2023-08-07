@@ -65,17 +65,17 @@ public class DashboardController : ControllerBase
         });
     }
 
-    [HttpGet("GetProjectStatus")]
+    [HttpGet("GetStatus")]
     public IActionResult GetProjectStatus()
     {
-        var status = _dashboardService.GetProjectStatus();
+        var status = _dashboardService.GetStatus();
         if (status is null)
         {
             return NotFound(new ResponseHandler<DashboardDtoGetInterviewStatus>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "No project status found",
+                Message = "No status found",
                 Data = null
             });
         }
@@ -84,7 +84,7 @@ public class DashboardController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Project status found",
+            Message = "Status found",
             Data = status
         });
     }

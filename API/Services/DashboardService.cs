@@ -13,8 +13,9 @@ public class DashboardService
     private readonly ICompanyRepository _companyRepository;
     private readonly IProjectRepository _projectRepository;
     private readonly IPlacementRepository _placementRepository;
+    private readonly IJobRepository _jobRepository;
 
-    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeJobRepository employeeJobRepository, IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository, ICompanyRepository companyRepository, IPlacementRepository placementRepository)
+    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeJobRepository employeeJobRepository, IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository, ICompanyRepository companyRepository, IPlacementRepository placementRepository, IJobRepository jobRepository)
     {
         _employeeRepository = employeeRepository;
         _interviewRepository = interviewRepository;
@@ -23,16 +24,11 @@ public class DashboardService
         _employeeProjectRepository = employeeProjectRepository;
         _companyRepository = companyRepository;
         _placementRepository = placementRepository;
+        _jobRepository = jobRepository;
     }
 
     public DashboardsDtoGetStatus GetEmployeeStatus()
     {
-        var employees = _employeeRepository.GetAll();
-        if (!employees.Any())
-        {
-            return null;
-        }
-
         int idleEmployeeCount = _employeeRepository.GetIdleEmployeeStatus();
         int workingEmployeeCount = _employeeRepository.GetWorkingEmployeeStatus();
 
@@ -48,8 +44,8 @@ public class DashboardService
     public DashboardDtoGetInterviewStatus GetInterviewStatus()
     {
 
-        var interviewStatus = (from i in _interviewRepository.GetAll()
-                               join ej in _employeeJobRepository.GetAll() on i.Guid equals ej.InterviewGuid
+        var interviewStatus = (from j in _jobRepository.GetAll()
+                               join ej in _employeeJobRepository.GetAll() on j.Guid equals ej.JobGuid
                                join e in _employeeRepository.GetAll() on ej.EmployeeGuid equals e.Guid
                                select new DashboardDtoGetInterviewStatus
                                {
@@ -73,29 +69,42 @@ public class DashboardService
         return status;
     }
 
-    public DashboardDtoGetInterviewStatus GetProjectStatus()
+    public DashboardDtoGetInterviewStatus GetStatus()
     {
+        var jobStatus = (from j in _jobRepository.GetAll()
+                         join ej in _employeeJobRepository.GetAll() on j.Guid equals ej.JobGuid
+                         join e in _employeeRepository.GetAll() on ej.EmployeeGuid equals e.Guid
+                         select new DashboardDtoGetInterviewStatus
+                         {
+                             Accepted = ej.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
+                             Pending = ej.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
+                             Rejected = ej.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
+                         });
 
-        var interviewStatus = (from p in _projectRepository.GetAll()
-                               join ep in _employeeProjectRepository.GetAll() on p.Guid equals ep.ProjectGuid
-                               join e in _employeeRepository.GetAll() on ep.EmployeeGuid equals e.Guid
-                               select new DashboardDtoGetInterviewStatus
-                               {
-                                   Accepted = ep.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
-                                   Pending = ep.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
-                                   Rejected = ep.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
-                               });
+        var projectStatus = (from p in _projectRepository.GetAll()
+                             join ep in _employeeProjectRepository.GetAll() on p.Guid equals ep.ProjectGuid
+                             join e in _employeeRepository.GetAll() on ep.EmployeeGuid equals e.Guid
+                             select new DashboardDtoGetInterviewStatus
+                             {
+                                 Accepted = ep.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
+                                 Pending = ep.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
+                                 Rejected = ep.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
+                             });
 
-        if (!interviewStatus.Any())
+        if (!jobStatus.Any() && !projectStatus.Any())
         {
             return null;
         }
 
+        var totalAccepted = (jobStatus?.Sum(i => i.Accepted) ?? 0) + (projectStatus?.Sum(p => p.Accepted) ?? 0);
+        var totalPending = (jobStatus?.Sum(i => i.Pending) ?? 0) + (projectStatus?.Sum(p => p.Pending) ?? 0);
+        var totalRejected = (jobStatus?.Sum(i => i.Rejected) ?? 0) + (projectStatus?.Sum(p => p.Rejected) ?? 0);
+
         var status = new DashboardDtoGetInterviewStatus
         {
-            Accepted = interviewStatus.Sum(i => i.Accepted),
-            Pending = interviewStatus.Sum(i => i.Pending),
-            Rejected = interviewStatus.Sum(i => i.Rejected)
+            Accepted = totalAccepted,
+            Pending = totalPending,
+            Rejected = totalRejected
         };
 
         return status;
