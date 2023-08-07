@@ -26,7 +26,7 @@ public class DashboardRepository : BaseRepository<DashboardsDtoGetStatus, Guid>,
     public async Task<ResponseHandler<DashboardDtoGetInterviewStatus>> GetStatisticInterviewStatus()
     {
         ResponseHandler<DashboardDtoGetInterviewStatus> entity = null!;
-        using (var response = await HttpClient.GetAsync(Request + "GetInterviewStatus"))
+        using (var response = await HttpClient.GetAsync(Request + "GetStatus"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entity = JsonConvert.DeserializeObject<ResponseHandler<DashboardDtoGetInterviewStatus>>(apiResponse);
