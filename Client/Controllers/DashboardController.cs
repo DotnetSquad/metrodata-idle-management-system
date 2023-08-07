@@ -89,6 +89,18 @@ public class DashboardController : Controller
                 ViewData["grade"] = grade.Data;
                 break;
         }
+        
+        var top5Clients = await _dashboardRepository.GetTop5Clients();
+        switch (top5Clients.Code)
+        {
+            case 200:
+                ViewData["top5Clients"] = top5Clients.Data;
+                break;
+            default:
+                var top5ClientsDtoGet = new List<DashboardDtoGetClient>();
+                ViewData["top5Clients"] = top5ClientsDtoGet;
+                break;
+        }
 
         return View();
     }

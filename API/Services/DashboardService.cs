@@ -14,7 +14,10 @@ public class DashboardService
     private readonly IProjectRepository _projectRepository;
     private readonly IPlacementRepository _placementRepository;
 
-    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository, IEmployeeJobRepository employeeJobRepository, IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository, ICompanyRepository companyRepository, IPlacementRepository placementRepository)
+    public DashboardService(IEmployeeRepository employeeRepository, IInterviewRepository interviewRepository,
+        IEmployeeJobRepository employeeJobRepository, IProjectRepository projectRepository,
+        IEmployeeProjectRepository employeeProjectRepository, ICompanyRepository companyRepository,
+        IPlacementRepository placementRepository)
     {
         _employeeRepository = employeeRepository;
         _interviewRepository = interviewRepository;
@@ -47,16 +50,15 @@ public class DashboardService
 
     public DashboardDtoGetInterviewStatus GetInterviewStatus()
     {
-
         var interviewStatus = (from i in _interviewRepository.GetAll()
-                               join ej in _employeeJobRepository.GetAll() on i.Guid equals ej.InterviewGuid
-                               join e in _employeeRepository.GetAll() on ej.EmployeeGuid equals e.Guid
-                               select new DashboardDtoGetInterviewStatus
-                               {
-                                   Accepted = ej.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
-                                   Pending = ej.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
-                                   Rejected = ej.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
-                               });
+            join ej in _employeeJobRepository.GetAll() on i.Guid equals ej.InterviewGuid
+            join e in _employeeRepository.GetAll() on ej.EmployeeGuid equals e.Guid
+            select new DashboardDtoGetInterviewStatus
+            {
+                Accepted = ej.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
+                Pending = ej.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
+                Rejected = ej.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
+            });
 
         if (!interviewStatus.Any())
         {
@@ -75,16 +77,15 @@ public class DashboardService
 
     public DashboardDtoGetInterviewStatus GetProjectStatus()
     {
-
         var interviewStatus = (from p in _projectRepository.GetAll()
-                               join ep in _employeeProjectRepository.GetAll() on p.Guid equals ep.ProjectGuid
-                               join e in _employeeRepository.GetAll() on ep.EmployeeGuid equals e.Guid
-                               select new DashboardDtoGetInterviewStatus
-                               {
-                                   Accepted = ep.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
-                                   Pending = ep.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
-                                   Rejected = ep.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
-                               });
+            join ep in _employeeProjectRepository.GetAll() on p.Guid equals ep.ProjectGuid
+            join e in _employeeRepository.GetAll() on ep.EmployeeGuid equals e.Guid
+            select new DashboardDtoGetInterviewStatus
+            {
+                Accepted = ep.StatusApproval == StatusApprovalEnum.Accepted ? 1 : 0,
+                Pending = ep.StatusApproval == StatusApprovalEnum.Pending ? 1 : 0,
+                Rejected = ep.StatusApproval == StatusApprovalEnum.Rejected ? 1 : 0
+            });
 
         if (!interviewStatus.Any())
         {
@@ -104,10 +105,20 @@ public class DashboardService
     public IEnumerable<DashboardDtoGetClient> GetTop5Client()
     {
         var getClient = _placementRepository.GetAll()
-            .GroupBy(pl => pl.CompanyGuid)
+            .Join(_companyRepository.GetAll(),
+                placement => placement.CompanyGuid,
+                company => company.Guid,
+                (placement, company) => new DashboardDtoGetClient
+                {
+                    CompanyGuid = placement.CompanyGuid,
+                    CompanyName = company.CompanyName
+                })
+            .GroupBy(placement => placement.CompanyGuid)
             .Select(group => new DashboardDtoGetClient
             {
                 CompanyGuid = group.Key,
+                CompanyName =
+                    group.First().CompanyName, // You can take the CompanyName from the first item in the group
                 TotalEmployees = group.Count()
             })
             .OrderByDescending(x => x.TotalEmployees)
