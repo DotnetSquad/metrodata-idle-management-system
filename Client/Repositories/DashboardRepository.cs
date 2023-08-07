@@ -34,14 +34,14 @@ public class DashboardRepository : BaseRepository<DashboardsDtoGetStatus, Guid>,
 
         return entity;
     }
-    
-    public async Task<ResponseHandler<DashboardDtoGetClient>> GetTop5Clients()
+
+    public async Task<ResponseHandler<IEnumerable<DashboardDtoGetClient>>> GetTop5Clients()
     {
-        ResponseHandler<DashboardDtoGetClient> entity = null!;
+        ResponseHandler<IEnumerable<DashboardDtoGetClient>> entity = null!;
         using (var response = await HttpClient.GetAsync(Request + "GetTop5Client"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
-            entity = JsonConvert.DeserializeObject<ResponseHandler<DashboardDtoGetClient>>(apiResponse);
+            entity = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<DashboardDtoGetClient>>>(apiResponse);
         }
 
         return entity;
