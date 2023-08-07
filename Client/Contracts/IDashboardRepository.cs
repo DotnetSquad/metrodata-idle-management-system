@@ -7,5 +7,5 @@ public interface IDashboardRepository : IBaseRepository<DashboardsDtoGetStatus, 
 {
     Task<ResponseHandler<DashboardsDtoGetStatus>> GetStatisticEmployee();
     Task<ResponseHandler<DashboardDtoGetInterviewStatus>> GetStatisticInterviewStatus();
-    public Task<ResponseHandler<DashboardDtoGetClient>> GetTop5Clients();
+    public Task<ResponseHandler<IEnumerable<DashboardDtoGetClient>>> GetTop5Clients();
 }

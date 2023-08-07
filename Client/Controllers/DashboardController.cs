@@ -28,9 +28,9 @@ public class DashboardController : Controller
         var guidEmployee = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
         var guid = Guid.Parse(guidEmployee ?? string.Empty);
         var employee = await _employeeRepository.Get(guid);
-        
+
         ViewData["Employee"] = employee.Data;
-        
+
         var grade = await _gradeRepository.Get(employee.Data.GradeGuid);
         var statisticEmployees = await _dashboardRepository.GetStatisticEmployee();
         var statisticInterviewStatus = await _dashboardRepository.GetStatisticInterviewStatus();
@@ -89,12 +89,17 @@ public class DashboardController : Controller
                 ViewData["grade"] = grade.Data;
                 break;
         }
-        
+
         var top5Clients = await _dashboardRepository.GetTop5Clients();
+        var dashboardDtoGetClient = new List<DashboardDtoGetClient>();
+        if (top5Clients.Data is not null)
+        {
+            dashboardDtoGetClient = top5Clients.Data.ToList();
+        }
         switch (top5Clients.Code)
         {
             case 200:
-                ViewData["top5Clients"] = top5Clients.Data;
+                ViewData["top5Clients"] = dashboardDtoGetClient;
                 break;
             default:
                 var top5ClientsDtoGet = new List<DashboardDtoGetClient>();
